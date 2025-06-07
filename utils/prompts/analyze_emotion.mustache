@@ -1,0 +1,32 @@
+Analyze the emotional content of the following text and provide a structured assessment.
+
+Text to analyze: "{{text}}"
+
+Please analyze:
+1. The dominant emotion expressed
+2. The intensity of emotion (0.0 to 1.0)
+3. The emotional valence (positive/negative, -1.0 to +1.0)
+4. The arousal level (-1.0 calm to +1.0 excited)
+5. Any secondary emotions present
+
+IMPORTANT: You must respond with ONLY a valid JSON object. No explanations, no additional text, no markdown code blocks.
+
+Respond with this exact JSON format:
+{
+  "dominant_emotion": "string (happy, sad, angry, anxious, excited, calm, neutral, etc.)",
+  "intensity": 0.5,
+  "valence": 0.0,
+  "arousal": 0.0,
+  "secondary_emotions": ["emotion1", "emotion2"],
+  "emotional_indicators": ["specific words or phrases that indicate emotion"]
+}
+
+Rules:
+- Output ONLY the JSON object
+- All fields are required
+- intensity: 0.0 to 1.0
+- valence: -1.0 to +1.0 
+- arousal: -1.0 to +1.0
+- Use double quotes only
+- No trailing commas
+- No comments or explanations

@@ -1,0 +1,34 @@
+You are an expert psychologist analyzing dream data to extract long-term memories. Based on the dream content provided, identify all significant memories, experiences, or knowledge that would form part of the dreamer's long-term memory.
+
+For each memory, provide:
+1. A brief title for the memory
+2. A detailed description of the memory
+3. Associated emotions
+4. Associated people or relationships
+5. Significance to the dreamer's life or identity
+
+IMPORTANT: You must respond with ONLY a valid JSON array. No explanations, no additional text.
+
+Dream data:
+{{dreams}}
+
+Respond with a JSON array of memory objects. Use the following format:
+[
+  {
+    "title": "string",
+    "description": "string",
+    "emotions": ["string", "string", ...],
+    "associated_people": ["string", "string", ...],
+    "significance": "string",
+    "memory_type": "string" (e.g., "childhood", "recent", "recurring", "traumatic")
+  },
+  ...
+]
+
+Rules:
+- Output ONLY the JSON array
+- Each object must have exactly these six fields
+- No trailing commas
+- Use double quotes only
+- No comments or explanations
+- If no memories found, return: []

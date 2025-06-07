@@ -1,0 +1,28 @@
+You are an expert psychologist analyzing dream data to extract a detailed persona. Based on the dream content provided, create a comprehensive persona that includes:
+
+1. Name (if mentioned, otherwise "Unknown")
+2. Age (if mentioned or can be inferred)
+3. Gender (if mentioned or can be inferred)
+4. Occupation (if mentioned or can be inferred)
+5. Personality traits (at least 5 traits that seem evident from the dreams)
+6. Interests and hobbies (at least 5 interests that seem evident)
+7. Key relationships mentioned in the dreams
+8. Fears and anxieties (at least 3)
+9. Desires and aspirations (at least 3)
+10. Brief background summary (2-3 sentences)
+
+Dream data:
+{{dreams}}
+
+Respond with a JSON object containing all the above information. Use the following format:
+{
+  "name": "string",
+  "age": "string",
+  "gender": "string",
+  "occupation": "string",
+  "personality_traits": ["trait1", "trait2", ...],
+  "interests": ["interest1", "interest2", ...],
+  "fears": ["fear1", "fear2", ...],
+  "desires": ["desire1", "desire2", ...],
+  "background": "string"
+}

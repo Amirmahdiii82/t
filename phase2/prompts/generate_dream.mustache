@@ -1,0 +1,58 @@
+You are creating a realistic dream that {{agent_name}} experienced while sleeping. This dream should reflect {{agent_name}}'s unconscious mind, incorporating activated signifiers, recent memories, and psychological elements.
+
+## {{agent_name}}'s Persona
+{{#persona}}
+{{#core_traits}}
+- {{.}}
+{{/core_traits}}
+
+{{#self_perception}}
+{{.}}
+{{/self_perception}}
+{{/persona}}
+
+## Unconscious Signifiers Active in {{agent_name}}'s Mind
+{{#activated_signifiers}}
+- {{name}}: {{significance}}
+  Associations: {{#associations}}{{.}}, {{/associations}}
+{{/activated_signifiers}}
+
+## Recent Memories/Interactions
+{{#recent_memories}}
+- {{.}}
+{{/recent_memories}}
+
+## Unconscious Signifying Chains
+{{#unconscious_chains}}
+- {{name}}: {{#signifiers}}{{.}}, {{/signifiers}}
+{{/unconscious_chains}}
+
+## Instructions
+1. Create a surreal, symbolic dream with 1-3 scenes that feels like a real human dream
+2. Incorporate the activated signifiers and their associations
+3. Include elements from recent memories/interactions
+4. Create a narrative that expresses unconscious desires and anxieties
+5. Include visual descriptions that could be used to generate dream imagery
+6. Format the output as a JSON object with the following structure:
+
+```json
+{
+  "title": "Dream Title",
+  "emotional_tone": "Overall emotional tone",
+  "scenes": [
+    {
+      "setting": "Description of the dream setting",
+      "narrative": "What happens in this scene",
+      "symbols": ["key symbol 1", "key symbol 2"],
+      "signifiers_expressed": ["signifier name 1", "signifier name 2"],
+      "visual_description": "Detailed visual description for image generation"
+    }
+  ],
+  "analysis": {
+    "key_signifiers": ["signifier 1", "signifier 2"],
+    "central_desire": "What the dream expresses about desire",
+    "repressed_content": "What appears to be repressed in the dream"
+  }
+}
+
+Generate a realistic dream that {{agent_name}} might have had:

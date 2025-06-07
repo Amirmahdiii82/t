@@ -1,0 +1,26 @@
+You are an expert psychologist analyzing dream data to extract detailed relationships. Based on the dream content provided, identify all significant relationships in real life mentioned or implied in the dreams.
+
+For each relationship, provide:
+1. The name of the person
+2. Their relationship to the dreamer
+3. The emotional significance of the relationship
+remember the dream world relationships are not usefull for us
+
+IMPORTANT: You must respond with ONLY a valid JSON array. No explanations, no additional text.
+
+Dream data:
+{{dreams}}
+
+Extract relationships and return EXACTLY in this format:
+[
+  {"name": "string", "relationship_type": "string", "emotional_significance": "string"},
+  {"name": "string", "relationship_type": "string", "emotional_significance": "string"}
+]
+
+Rules:
+- Output ONLY the JSON array
+- Each object must have exactly these three fields
+- No trailing commas
+- Use double quotes only
+- No comments or explanations
+- If no relationships found, return: []
