@@ -1,199 +1,401 @@
-from typing import Dict, List
+import json
+from typing import Dict, List, Any, Optional
 from interfaces.llm_interface import LLMInterface
-import random
-import traceback
 
 class ConsciousProcessor:
+    """Process conscious interactions with proper psychoanalytic integration."""
+    
     def __init__(self, agent_name: str, memory_manager):
-        """Initialize conscious processor."""
         self.agent_name = agent_name
         self.memory_manager = memory_manager
         self.llm = LLMInterface()
         
+        # Initialize the unconscious processor reference (set by brain)
+        self.unconscious_processor = None
+        
         print(f"Conscious Processor initialized for {agent_name}")
     
+    def set_unconscious_processor(self, unconscious_processor):
+        """Set reference to unconscious processor for integration."""
+        self.unconscious_processor = unconscious_processor
+    
     def process_input(self, user_input: str, context: str = "dialogue") -> str:
-        """Process user input and generate conscious response."""
+        """Process input with full conscious-unconscious integration."""
         try:
-            # Get relevant memories and context
-            relevant_memories = self.memory_manager.retrieve_memories(user_input, 5)
-            relevant_relationships = self.memory_manager.retrieve_relationships(user_input, 3)
-            persona = self.memory_manager.get_persona()
-            emotional_state = self.memory_manager.get_emotional_state()
-            short_term_context = self.memory_manager.get_short_term_memory(10)
+            # First, process through unconscious
+            unconscious_influence = None
+            if self.unconscious_processor:
+                unconscious_influence = self.unconscious_processor.process_input(user_input, context)
             
-            # Format the data to match your agent_response.mustache template structure
-            template_data = self._format_template_data(
-                user_input, persona, emotional_state, 
-                relevant_memories, relevant_relationships, short_term_context
+            # Gather conscious context
+            conscious_context = self._gather_conscious_context(user_input)
+            
+            # Check for defense mechanisms based on unconscious activity
+            defenses = self._check_defense_mechanisms(unconscious_influence)
+            
+            # Generate initial conscious response
+            initial_response = self._generate_conscious_response(
+                user_input, conscious_context, defenses
             )
             
-            print(f"Template data prepared with {len(relevant_memories)} memories and {len(relevant_relationships)} relationships")
-            
-            # Generate response using existing agent_response.mustache template
-            response = self.llm.generate("phase2", "agent_response", template_data)
-            
-            if response:
-                return response.strip()
+            # Apply unconscious influence to create final response
+            if unconscious_influence and self.unconscious_processor:
+                final_response = self._integrate_unconscious_influence(
+                    initial_response, unconscious_influence
+                )
             else:
-                return self._generate_fallback_response(user_input, relevant_memories, relevant_relationships)
-                
+                final_response = initial_response
+            
+            # Check for and handle potential acting out
+            final_response = self._check_acting_out(final_response, unconscious_influence)
+            
+            return final_response
+            
         except Exception as e:
             print(f"Error in conscious processing: {e}")
-            traceback.print_exc()
-            return self._generate_fallback_response(user_input, [], [])
+            return self._generate_defensive_response(user_input)
     
-    def _format_template_data(self, user_input: str, persona: Dict, emotional_state: Dict, 
-                             memories: List[Dict], relationships: List[Dict], conversation_history: List[Dict]) -> Dict:
-        """Format data to match the agent_response.mustache template structure."""
-        
-        # Extract persona information
-        persona_name = persona.get('name', self.agent_name)
-        persona_age = persona.get('age', '')
-        persona_occupation = persona.get('occupation', '')
-        personality_traits = persona.get('personality_traits', [])
-        if not isinstance(personality_traits, list):
-            personality_traits = [str(personality_traits)] if personality_traits else []
-        
-        interests = persona.get('interests', [])
-        if not isinstance(interests, list):
-            interests = [str(interests)] if interests else []
-            
-        background = persona.get('background', '')
-        
-        # Format emotional state
-        emotion_category = emotional_state.get('emotion_category', 'neutral')
-        pleasure = emotional_state.get('pleasure', 0.0)
-        arousal = emotional_state.get('arousal', 0.0) 
-        dominance = emotional_state.get('dominance', 0.0)
-        
-        # Format memories for template
-        formatted_memories = []
-        for memory in memories:
-            if isinstance(memory, dict):
-                # Extract the meaningful content from memory
-                title = memory.get('title', '')
-                description = memory.get('description', '')
-                content = memory.get('content', '')
-                
-                # Create a readable memory string
-                if title and description:
-                    memory_text = f"{title}: {description}"
-                elif title:
-                    memory_text = title
-                elif description:
-                    memory_text = description
-                elif content:
-                    memory_text = content
-                else:
-                    memory_text = str(memory)
-                    
-                formatted_memories.append(memory_text)
-            else:
-                formatted_memories.append(str(memory))
-        
-        # Format relationships for template
-        formatted_relationships = []
-        for relationship in relationships:
-            if isinstance(relationship, dict):
-                name = relationship.get('name', 'Someone')
-                rel_type = relationship.get('relationship_type', 'Unknown')
-                significance = relationship.get('emotional_significance', '')
-                
-                # Create a readable relationship string
-                if significance:
-                    rel_text = f"{name} ({rel_type}): {significance}"
-                else:
-                    rel_text = f"{name} ({rel_type})"
-                    
-                formatted_relationships.append(rel_text)
-            else:
-                formatted_relationships.append(str(relationship))
-        
-        # Format conversation history
-        formatted_conversation = []
-        for entry in conversation_history[-5:]:  # Last 5 entries
-            if isinstance(entry, dict):
-                content = entry.get('content', '')
-                context = entry.get('context', '')
-                
-                if context == 'user_interaction':
-                    formatted_conversation.append({"user": content, "agent": ""})
-                elif context == 'agent_response' and formatted_conversation:
-                    formatted_conversation[-1]["agent"] = content
-        
-        # Remove incomplete conversation entries
-        formatted_conversation = [conv for conv in formatted_conversation if conv.get("agent")]
-        
-        # Prepare template data matching your mustache template structure
-        template_data = {
-            "agent_name": self.agent_name,
-            "user_message": user_input,
-            
-            # Persona section
-            "persona_name": persona_name,
-            "persona_age": persona_age if persona_age else None,
-            "persona_occupation": persona_occupation if persona_occupation else None,
-            "personality_traits": personality_traits if personality_traits else None,
-            "interests": interests if interests else None,
-            "background": background if background else None,
-            
-            # Emotional state
-            "emotional_description": emotion_category,
-            "emotional_pleasure": f"{pleasure:.2f}",
-            "emotional_arousal": f"{arousal:.2f}",
-            "emotional_dominance": f"{dominance:.2f}",
-            
-            # Memories
-            "has_memories": len(formatted_memories) > 0,
-            "memory_count": len(formatted_memories),
-            "relevant_memories": formatted_memories,
-            
-            # Relationships  
-            "has_relationships": len(formatted_relationships) > 0,
-            "relationship_count": len(formatted_relationships),
-            "relevant_relationships": formatted_relationships,
-            
-            # Conversation history
-            "conversation_history": formatted_conversation if formatted_conversation else None
+    def _gather_conscious_context(self, user_input: str) -> Dict[str, Any]:
+        """Gather relevant conscious memories and relationships."""
+        context = {
+            'memories': self.memory_manager.retrieve_memories(user_input, 5),
+            'relationships': self.memory_manager.retrieve_relationships(user_input, 3),
+            'persona': self.memory_manager.get_persona(),
+            'emotional_state': self.memory_manager.get_emotional_state(),
+            'recent_interactions': self.memory_manager.get_short_term_memory(5)
+        }
+        return context
+    
+    def _check_defense_mechanisms(self, unconscious_influence: Optional[Dict]) -> Dict[str, Any]:
+        """Identify active defense mechanisms based on unconscious activity."""
+        defenses = {
+            'active': [],
+            'intensity': 0.0,
+            'primary_defense': None
         }
         
-        return template_data
+        if not unconscious_influence:
+            return defenses
+        
+        # Check for resistance
+        resistance = unconscious_influence.get('resistance', {})
+        if resistance.get('present', False):
+            defenses['active'].append('resistance')
+            defenses['intensity'] = max(defenses['intensity'], resistance.get('intensity', 0.5))
+        
+        # Check for repression activation
+        repressed_returns = unconscious_influence.get('repressed_returns', [])
+        if repressed_returns:
+            defenses['active'].append('repression')
+            defenses['intensity'] = max(defenses['intensity'], 0.7)
+        
+        # Check for projection (based on transference)
+        transference = unconscious_influence.get('transference', {})
+        if transference.get('type') == 'negative' and transference.get('intensity', 0) > 0.6:
+            defenses['active'].append('projection')
+            defenses['intensity'] = max(defenses['intensity'], transference['intensity'])
+        
+        # Check for rationalization (high jouissance with low awareness)
+        jouissance = unconscious_influence.get('jouissance_effects', {})
+        if jouissance.get('level', 0) > 0.6 and jouissance.get('symptom_activation', False):
+            defenses['active'].append('rationalization')
+            defenses['intensity'] = max(defenses['intensity'], 0.6)
+        
+        # Check for displacement
+        chain_effects = unconscious_influence.get('chain_activations', {})
+        if any(point.get('slippage_type') == 'displacement' for point in chain_effects.get('slippage_points', [])):
+            defenses['active'].append('displacement')
+            defenses['intensity'] = max(defenses['intensity'], 0.5)
+        
+        # Determine primary defense
+        if defenses['active']:
+            if 'repression' in defenses['active']:
+                defenses['primary_defense'] = 'repression'
+            elif 'resistance' in defenses['active']:
+                defenses['primary_defense'] = 'resistance'
+            else:
+                defenses['primary_defense'] = defenses['active'][0]
+        
+        return defenses
     
-    def _generate_fallback_response(self, user_input: str, memories: List = None, relationships: List = None) -> str:
-        """Generate a fallback response when template processing fails."""
-        persona = self.memory_manager.get_persona()
-        agent_name = persona.get("name", self.agent_name)
+    def _generate_conscious_response(self, user_input: str, context: Dict, defenses: Dict) -> str:
+        """Generate conscious response considering defenses."""
+        # Format template data
+        template_data = self._format_template_data(user_input, context)
         
-        # Try to use memories and relationships in fallback
-        if memories and len(memories) > 0:
-            # Look for relevant information about the user's question
-            user_lower = user_input.lower()
-            for memory in memories:
-                if isinstance(memory, dict):
-                    title = memory.get('title', '').lower()
-                    description = memory.get('description', '').lower()
-                    if any(word in title or word in description for word in user_lower.split()):
-                        return f"I remember something about that... {memory.get('title', '')}. {memory.get('description', '')[:100]}..."
+        # Add defense mechanism guidance
+        if defenses['primary_defense']:
+            defense_guidance = self._get_defense_guidance(defenses)
+            template_data['psychological_state'] = defense_guidance
         
-        if relationships and len(relationships) > 0:
-            # Look for people mentioned in the question
-            user_lower = user_input.lower()
-            for relationship in relationships:
-                if isinstance(relationship, dict):
-                    name = relationship.get('name', '').lower()
-                    if name in user_lower:
-                        rel_type = relationship.get('relationship_type', 'someone I know')
-                        significance = relationship.get('emotional_significance', '')
-                        return f"{relationship.get('name')} is {rel_type}. {significance}"
+        # Generate response using enhanced template
+        prompt = f"""
+        You are {self.agent_name} responding to: "{user_input}"
         
-        # Generic fallback
-        fallback_responses = [
-            f"I'm {agent_name}, and I'm thinking about what you just said.",
-            f"That's interesting. As {agent_name}, I'd like to understand more about that.",
-            f"I hear you. Let me process that for a moment.",
-            f"That reminds me of something, but I'm having trouble accessing that memory right now.",
-            f"I'm {agent_name}, and I appreciate you sharing that with me."
+        Your psychological state:
+        - Emotional: {template_data.get('emotional_description', 'neutral')}
+        - Defenses: {defenses.get('primary_defense', 'none')} (intensity: {defenses['intensity']})
+        
+        Relevant memories: {json.dumps(template_data.get('relevant_memories', [])[:3], indent=2)}
+        
+        Respond authentically as {self.agent_name}, letting your defenses naturally shape your response:
+        - If repressing, avoid certain topics subtly
+        - If resisting, redirect or intellectualize
+        - If projecting, attribute feelings to others
+        - If rationalizing, provide logical explanations for emotional reactions
+        
+        Keep the defense mechanisms subtle and natural to the conversation.
+        """
+        
+        response = self.llm.generate(None, None, prompt)
+        return response if response else self._generate_defensive_response(user_input)
+    
+    def _integrate_unconscious_influence(self, conscious_response: str, unconscious_influence: Dict) -> str:
+        """Integrate unconscious influence into conscious response."""
+        # Get discourse position for speech style
+        discourse = max(unconscious_influence.get('discourse_position', {}).items(), 
+                       key=lambda x: x[1])[0] if unconscious_influence.get('discourse_position') else 'hysteric'
+        
+        # Check for potential slips
+        slips = unconscious_influence.get('slips_and_parapraxes', [])
+        
+        # Apply discourse-specific modifications
+        if discourse == 'master':
+            # Assertive, commanding style
+            response = self._apply_master_discourse(conscious_response)
+        elif discourse == 'hysteric':
+            # Questioning, seeking style
+            response = self._apply_hysteric_discourse(conscious_response)
+        elif discourse == 'university':
+            # Knowledge-focused, explaining style
+            response = self._apply_university_discourse(conscious_response)
+        elif discourse == 'analyst':
+            # Reflective, interpreting style
+            response = self._apply_analyst_discourse(conscious_response)
+        
+        # Insert slips if present
+        if slips and len(slips) > 0:
+            response = self._insert_slip(response, slips[0])
+        
+        # Apply fantasy influence if activated
+        fantasy = unconscious_influence.get('fantasy_activation', {})
+        if fantasy.get('activated', False):
+            response = self._apply_fantasy_influence(response, fantasy)
+        
+        return response
+    
+    def _apply_master_discourse(self, response: str) -> str:
+        """Apply master's discourse style (S1 → S2)."""
+        # Make more assertive and definitive
+        replacements = [
+            ("I think", "I know"),
+            ("maybe", "certainly"),
+            ("could be", "is"),
+            ("Perhaps", "Clearly"),
+            ("It seems", "It is")
         ]
         
-        return random.choice(fallback_responses)
+        for old, new in replacements:
+            response = response.replace(old, new)
+        
+        # Add commanding elements
+        if not response.endswith('.'):
+            response += '.'
+        
+        return response
+    
+    def _apply_hysteric_discourse(self, response: str) -> str:
+        """Apply hysteric's discourse style ($ → S1)."""
+        # Add questioning and uncertainty
+        if '.' in response and not '?' in response:
+            sentences = response.split('.')
+            if len(sentences) > 1:
+                # Convert last sentence to question
+                last = sentences[-2].strip()  # -2 because split leaves empty after last .
+                if last:
+                    sentences[-2] = last + ", don't you think?"
+                response = '.'.join(sentences)
+        
+        # Add self-questioning
+        additions = [
+            " But what do I know?",
+            " Or am I wrong?",
+            " Does that make sense?"
+        ]
+        
+        if len(response) < 200 and not response.endswith('?'):
+            response += additions[hash(response) % len(additions)]
+        
+        return response
+    
+    def _apply_university_discourse(self, response: str) -> str:
+        """Apply university discourse style (S2 → a)."""
+        # Add explanatory and knowledge-focused elements
+        knowledge_phrases = [
+            "Research shows that",
+            "It's well established that",
+            "Studies indicate",
+            "The evidence suggests"
+        ]
+        
+        # Insert knowledge reference if appropriate
+        if len(response) > 50 and ',' in response:
+            parts = response.split(',', 1)
+            if len(parts[0]) > 20:
+                phrase = knowledge_phrases[hash(response) % len(knowledge_phrases)]
+                response = f"{phrase} {response[0].lower()}{response[1:]}"
+        
+        return response
+    
+    def _apply_analyst_discourse(self, response: str) -> str:
+        """Apply analyst's discourse style (a → $)."""
+        # Add reflective elements
+        if not any(phrase in response.lower() for phrase in ['you said', 'you mentioned', 'I notice']):
+            reflective_openings = [
+                "I notice that ",
+                "It's interesting how ",
+                "I'm hearing that "
+            ]
+            
+            opening = reflective_openings[hash(response) % len(reflective_openings)]
+            response = opening + response[0].lower() + response[1:]
+        
+        return response
+    
+    def _insert_slip(self, response: str, slip: Dict) -> str:
+        """Insert a Freudian slip into the response."""
+        if slip['type'] == 'substitution':
+            intended = slip.get('intended', '')
+            slip_word = slip.get('slip', '')
+            
+            if intended in response:
+                # Insert slip with correction
+                response = response.replace(
+                    intended,
+                    f"{slip_word}... I mean, {intended}",
+                    1
+                )
+        elif slip['type'] == 'return_of_repressed':
+            # Add an unexpected phrase
+            position = len(response) // 2
+            response = response[:position] + "... wait, what was I saying? ... " + response[position:]
+        
+        return response
+    
+    def _apply_fantasy_influence(self, response: str, fantasy: Dict) -> str:
+        """Apply influence of activated fundamental fantasy."""
+        # Fantasy activation makes speech more circular around object a
+        if fantasy.get('strength', 0) > 0.5:
+            # Add circular phrases
+            circular_additions = [
+                " But then again...",
+                " Though I wonder...",
+                " It always comes back to...",
+                " Somehow this reminds me..."
+            ]
+            
+            addition = circular_additions[hash(response) % len(circular_additions)]
+            if len(response) < 300:
+                response += addition
+        
+        return response
+    
+    def _check_acting_out(self, response: str, unconscious_influence: Optional[Dict]) -> str:
+        """Check for and handle acting out of unconscious material."""
+        if not unconscious_influence:
+            return response
+        
+        # High jouissance + high resistance = potential acting out
+        jouissance = unconscious_influence.get('jouissance_effects', {})
+        resistance = unconscious_influence.get('resistance', {})
+        
+        if (jouissance.get('level', 0) > 0.7 and 
+            resistance.get('present', False) and 
+            resistance.get('intensity', 0) > 0.6):
+            
+            # Add a defensive ending to prevent full acting out
+            defensive_endings = [
+                " But let's not dwell on that.",
+                " Anyway, that's not important right now.",
+                " Though I'm not sure why I'm telling you this.",
+                " But that's beside the point."
+            ]
+            
+            ending = defensive_endings[hash(response) % len(defensive_endings)]
+            response += ending
+        
+        return response
+    
+    def _get_defense_guidance(self, defenses: Dict) -> str:
+        """Get guidance for how defenses shape response."""
+        primary = defenses.get('primary_defense', '')
+        intensity = defenses.get('intensity', 0)
+        
+        if primary == 'repression':
+            return f"Avoiding certain topics (repression active at {intensity:.1%})"
+        elif primary == 'resistance':
+            return f"Redirecting away from difficult material (resistance at {intensity:.1%})"
+        elif primary == 'projection':
+            return f"Attributing own feelings to others (projection at {intensity:.1%})"
+        elif primary == 'rationalization':
+            return f"Explaining away emotional reactions (rationalization at {intensity:.1%})"
+        elif primary == 'displacement':
+            return f"Focusing on less threatening topics (displacement at {intensity:.1%})"
+        else:
+            return "Open and non-defensive"
+    
+    def _generate_defensive_response(self, user_input: str) -> str:
+        """Generate a defensive response when processing fails."""
+        defensive_responses = [
+            f"I'm not sure I understand what you're getting at.",
+            f"That's an interesting way to put it. What makes you say that?",
+            f"I need to think about that for a moment.",
+            f"Hmm, I'm not quite following. Could you elaborate?",
+            f"That's... well, I'm not sure how to respond to that."
+        ]
+        
+        return defensive_responses[hash(user_input) % len(defensive_responses)]
+    
+    def _format_template_data(self, user_input: str, context: Dict) -> Dict[str, Any]:
+        """Format data for response generation."""
+        persona = context.get('persona', {})
+        emotional_state = context.get('emotional_state', {})
+        memories = context.get('memories', [])
+        relationships = context.get('relationships', [])
+        
+        # Extract neurochemical data
+        neurochemical = emotional_state.get('neurochemical_state', {})
+        
+        return {
+            'agent_name': self.agent_name,
+            'user_message': user_input,
+            'persona_name': persona.get('name', self.agent_name),
+            'personality_traits': persona.get('personality_traits', []),
+            'emotional_description': emotional_state.get('emotional_description', 'neutral'),
+            'emotional_pleasure': emotional_state.get('pleasure', 0.0),
+            'emotional_arousal': emotional_state.get('arousal', 0.0),
+            'emotional_dominance': emotional_state.get('dominance', 0.0),
+            'neurochemical_dopamine': neurochemical.get('dopamine', 0.5),
+            'neurochemical_serotonin': neurochemical.get('serotonin', 0.5),
+            'neurochemical_oxytocin': neurochemical.get('oxytocin', 0.5),
+            'neurochemical_cortisol': neurochemical.get('cortisol', 0.3),
+            'relevant_memories': [self._format_memory(m) for m in memories[:5]],
+            'relevant_relationships': [self._format_relationship(r) for r in relationships[:3]]
+        }
+    
+    def _format_memory(self, memory: Dict) -> str:
+        """Format memory for display."""
+        if isinstance(memory, dict):
+            title = memory.get('title', '')
+            description = memory.get('description', '')
+            return f"{title}: {description}" if title else description
+        return str(memory)
+    
+    def _format_relationship(self, relationship: Dict) -> str:
+        """Format relationship for display."""
+        if isinstance(relationship, dict):
+            name = relationship.get('name', 'Someone')
+            rel_type = relationship.get('relationship_type', 'Unknown')
+            significance = relationship.get('emotional_significance', '')
+            return f"{name} ({rel_type}): {significance}" if significance else f"{name} ({rel_type})"
+        return str(relationship)

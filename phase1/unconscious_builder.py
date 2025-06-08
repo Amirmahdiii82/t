@@ -2,394 +2,447 @@ import json
 import re
 import time
 from datetime import datetime
-import spacy
-from utils.signifier_graph import SignifierGraph, encode_experience
+import numpy as np
+from typing import Dict, List, Any, Tuple, Optional
+from interfaces.vlm_interface import VLMInterface
 from utils.file_utils import ensure_directory, save_json
 
 class UnconsciousBuilder:
-    def __init__(self, vlm_interface):
-        self.vlm_interface = vlm_interface
-        self.signifier_graph = SignifierGraph()
-        self.nlp = spacy.load("en_core_web_sm")
-
-    def _serialize_graph_data(self):
-        """Convert graph data to a serializable format."""
-        nodes = []
-        for node_id in self.signifier_graph.graph.nodes():
-            # Get node attributes and ensure datetime is serialized
-            attrs = self.signifier_graph.get_node_attributes(node_id)
-            if 'timestamp' in attrs and isinstance(attrs['timestamp'], datetime):
-                attrs['timestamp'] = attrs['timestamp'].isoformat()
-            nodes.append({'id': node_id, **attrs})
-        
-        edges = []
-        for source, target in self.signifier_graph.graph.edges():
-            edge_data = self.signifier_graph.get_edge_data(source, target)
-            for key, value in list(edge_data.items()):
-                if isinstance(value, datetime):
-                    edge_data[key] = value.isoformat()
-            edges.append({'source': source, 'target': target, **edge_data})
-        
-        return {'nodes': nodes, 'edges': edges}
+    """Builds unconscious structure from dreams using Lacanian psychoanalytic principles."""
     
-    def extract_json_from_response(self, text):
-        """Extract JSON from a response that might contain markdown or other text."""
-        json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
-        if json_match:
-            try:
-                return json.loads(json_match.group(1))
-            except json.JSONDecodeError:
-                pass
-        
-        try:
-            return json.loads(text)
-        except json.JSONDecodeError:
-            pass
-        
-        json_match = re.search(r'(\{[\s\S]*\})', text)
-        if json_match:
-            try:
-                return json.loads(json_match.group(1))
-            except json.JSONDecodeError:
-                pass
-        
-        signifiers = []
-        chains = []
-        
-        signifier_matches = re.findall(r'(?:signifier|symbol):\s*"?([^",]+)"?', text, re.IGNORECASE)
-        for match in signifier_matches:
-            signifiers.append({"name": match.strip(), "associations": [], "significance": "Extracted from analysis"})
-        
-        list_items = re.findall(r'- ([^:]+)(?::|$)', text)
-        for item in list_items:
-            if len(item.strip()) > 0 and len(item.strip()) < 30: 
-                signifiers.append({"name": item.strip(), "associations": [], "significance": "Extracted from analysis"})
-        
-        return {
-            "signifiers": signifiers[:15], 
-            "signifying_chains": chains,
-            "analysis": text
+    def __init__(self, vlm_interface: VLMInterface):
+        self.vlm = vlm_interface
+        # Initialize Lacanian structural components
+        self.master_signifiers = []  # S1 - anchoring points
+        self.knowledge_signifiers = []  # S2 - chain of knowledge
+        self.object_a_manifestations = []  # Cause of desire
+        self.jouissance_patterns = []  # Patterns of painful enjoyment
+        self.symbolic_positions = {
+            "master": 0.0,
+            "university": 0.0,
+            "hysteric": 0.0,
+            "analyst": 0.0
         }
-    
-    def extract_unconscious_signifiers(self, dream_data):
-        """Extract unconscious signifiers from dream data."""
-        print("Extracting unconscious signifiers...")
         
-        try:
-            # Try to extract using VLM
-            result = self.vlm_interface.generate_text("phase1", "extract_unconscious_signifiers", {"dreams": dream_data})
-            
-            # Parse the result
-            unconscious_data = self.extract_json_from_response(result)
-            
-            # Check if we got valid data
-            if not unconscious_data or not unconscious_data.get("signifiers"):
-                raise ValueError("Invalid response from VLM")
-        except Exception as e:
-            print(f"Warning: Error extracting signifiers using VLM: {e}")
-            print("Falling back to manual signifier extraction...")
-            
-            unconscious_data = self._extract_fallback_signifiers(dream_data)
+    def extract_unconscious_signifiers(self, dream_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract unconscious signifiers using pure VLM analysis with Lacanian framework."""
+        print("Extracting unconscious signifiers through Lacanian analysis...")
+        
+        # First pass: Extract raw signifiers
+        result = self.vlm.generate_text("phase1", "extract_unconscious_signifiers", {"dreams": dream_data})
+        unconscious_data = self._parse_vlm_response(result)
+        
+        # Second pass: Identify master signifiers (S1) vs knowledge signifiers (S2)
+        unconscious_data = self._differentiate_signifier_types(unconscious_data, dream_data)
+        
+        # Third pass: Map object a and jouissance patterns
+        unconscious_data = self._map_object_a_dynamics(unconscious_data, dream_data)
+        
+        # Fourth pass: Determine structural positions
+        unconscious_data = self._analyze_structural_positions(unconscious_data, dream_data)
         
         return unconscious_data
-
-    # def _extract_fallback_signifiers(self, dream_data):
-    #     """Extract signifiers from dreams when VLM fails."""
-    #     dream_text = json.dumps(dream_data).lower()
-        
-    #     # Common signifiers often found in dreams
-    #     signifiers = []
-    #     relationships = []
-        
-    #     # Check for common themes in dreams
-    #     theme_checks = [
-    #         {"name": "John", "associations": ["friendship", "rivalry", "childhood"], 
-    #         "significance": "A significant childhood friend representing peer relationships"},
-    #         {"name": "Father/Dad", "associations": ["authority", "absence", "scary", "provider"], 
-    #         "significance": "Represents paternal authority and its absence"},
-    #         {"name": "Mother/Mom", "associations": ["comfort", "home", "protection", "absent"], 
-    #         "significance": "Represents maternal care and attachment"},
-    #         {"name": "House/Home", "associations": ["security", "identity", "belonging", "refuge"], 
-    #         "significance": "Symbol of the self and personal identity"},
-    #         {"name": "Losing Teeth", "associations": ["vulnerability", "anxiety", "growth", "change"], 
-    #         "significance": "Common dream signifier representing anxiety about appearance or loss"}
-    #     ]
-        
-    #     # Add all themes (simpler than checking for them)
-    #     signifiers.extend(theme_checks)
-        
-    #     # Create signifying chains
-    #     chains = [
-    #         {
-    #             "name": "Family Structure Chain",
-    #             "signifiers": ["Mother/Mom", "Father/Dad", "House/Home"],
-    #             "explanation": "Chain representing the family structure and domestic environment",
-    #             "relation_to_fantasy": "Foundation of the subject's identity formation"
-    #         },
-    #         {
-    #             "name": "Anxiety Displacement Chain",
-    #             "signifiers": ["Losing Teeth", "John", "Father/Dad"],
-    #             "explanation": "Chain representing displacement of anxiety through peer and authority figures",
-    #             "relation_to_fantasy": "Manifestation of fears of inadequacy and judgment"
-    #         }
-    #     ]
-        
-    #     # Create object_a
-    #     object_a = {
-    #         "description": "The unattainable object of desire",
-    #         "manifestations": ["approval", "belonging", "security"],
-    #         "relation_to_desire": "Acts as the cause of desire, always out of reach"
-    #     }
-        
-    #     # Create symptom
-    #     symptom = {
-    #         "description": "Anxiety manifesting as fear of loss",
-    #         "signifiers_involved": ["Losing Teeth", "Father/Dad", "John"],
-    #         "jouissance_pattern": "Repetition of anxiety scenarios involving loss and judgment"
-    #     }
-        
-    #     # Create structural positions
-    #     structural_positions = [
-    #         {
-    #             "position": "Hysteric's Discourse",
-    #             "prominence": "Primary",
-    #             "evidence": ["Questioning identity", "Seeking approval", "Anxiety about inadequacy"],
-    #             "explanation": "The subject primarily speaks from a position of questioning their place"
-    #         }
-    #     ]
-        
-    #     return {
-    #         "signifiers": signifiers,
-    #         "signifying_chains": chains,
-    #         "object_a": object_a,
-    #         "symptom": symptom,
-    #         "structural_positions": structural_positions,
-    #         "analysis": "Analysis derived through manual extraction of common dream patterns."
-    #     }
     
-    def encode_experience(self, text):
-        """Extract signifiers from text and add them to the graph."""
-        doc = self.nlp(text)
+    def _differentiate_signifier_types(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Differentiate between S1 (master signifiers) and S2 (knowledge signifiers)."""
+        prompt = f"""
+        Analyze these signifiers and classify them as either:
+        1. S1 (Master Signifiers): Nonsensical, anchoring points that organize meaning
+        2. S2 (Knowledge Signifiers): Part of the chain of meaning and knowledge
         
-        signifiers = []
-        for token in doc:
-            if token.pos_ in ["NOUN", "VERB", "ADJ"] and not token.is_stop:
-                signifiers.append(token.text.lower())
+        Signifiers to analyze:
+        {json.dumps(data.get('signifiers', []), indent=2)}
         
-        for signifier in signifiers:
-            if signifier not in self.signifier_graph.graph:
-                self.signifier_graph.add_node(
-                    signifier,
-                    type='symbolic',
-                    activation=1.0,
-                    repressed=False,
-                    timestamp=datetime.now()
+        Consider their function in these dreams:
+        {json.dumps(dream_data, indent=2)[:2000]}...
+        
+        Return a JSON with:
+        {{
+            "master_signifiers": [
+                {{"name": "signifier", "anchoring_function": "how it organizes meaning"}}
+            ],
+            "knowledge_signifiers": [
+                {{"name": "signifier", "chain_position": "its role in meaning chain"}}
+            ]
+        }}
+        """
+        
+        classification = self.vlm.generate_text(None, None, prompt)
+        parsed = self._parse_vlm_response(classification)
+        
+        # Enhance original data with classification
+        data['signifier_classification'] = parsed
+        return data
+    
+    def _map_object_a_dynamics(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Map object a as cause of desire and identify jouissance patterns."""
+        prompt = f"""
+        Analyze how object a (the object-cause of desire) manifests in these dreams.
+        Remember: object a is NOT what is desired, but what CAUSES desire - the void around which desire circulates.
+        
+        Dreams: {json.dumps(dream_data, indent=2)[:2000]}...
+        Signifiers: {json.dumps(data.get('signifiers', []), indent=2)}
+        
+        Identify:
+        1. What void or lack repeatedly appears?
+        2. What impossible object organizes the subject's desire?
+        3. How does jouissance (painful enjoyment) manifest?
+        4. What symptoms repeat as failed attempts to capture object a?
+        
+        Return detailed analysis in JSON format.
+        """
+        
+        object_a_analysis = self.vlm.generate_text(None, None, prompt)
+        parsed = self._parse_vlm_response(object_a_analysis)
+        
+        # Deep integration of object a
+        if 'object_a' in data:
+            data['object_a']['structural_analysis'] = parsed
+            data['object_a']['void_manifestations'] = parsed.get('void_manifestations', [])
+            data['object_a']['circuit_of_desire'] = parsed.get('desire_circuit', {})
+        
+        return data
+    
+    def _analyze_structural_positions(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze the subject's position in the four discourses."""
+        prompt = f"""
+        Analyze the subject's structural position in Lacan's four discourses based on these dreams.
+        
+        Dreams: {json.dumps(dream_data, indent=2)[:2000]}...
+        
+        For each discourse, identify:
+        - Master: How does S1 (master signifier) relate to S2 (knowledge)?
+        - University: How does knowledge (S2) function as agent?
+        - Hysteric: How does the divided subject ($) question the master?
+        - Analyst: How does object a function as agent of desire?
+        
+        Consider the positions:
+        Agent → Other
+        Truth // Product
+        
+        Return percentages for each discourse position (must sum to 100%).
+        """
+        
+        discourse_analysis = self.vlm.generate_text(None, None, prompt)
+        parsed = self._parse_vlm_response(discourse_analysis)
+        
+        # Calculate discourse weights
+        if 'discourse_percentages' in parsed:
+            total = sum(parsed['discourse_percentages'].values())
+            for discourse in parsed['discourse_percentages']:
+                data['structural_positions'][discourse] = parsed['discourse_percentages'][discourse] / total
+        
+        return data
+    
+    def build_signifier_graph(self, signifiers: List[Dict], chains: List[Dict]) -> 'LacanianSignifierGraph':
+        """Build a proper Lacanian signifier graph with S1/S2 dynamics."""
+        from utils.lacanian_graph import LacanianSignifierGraph
+        
+        graph = LacanianSignifierGraph()
+        
+        # Add master signifiers (S1) first - they anchor the structure
+        for sig in signifiers:
+            if self._is_master_signifier(sig):
+                graph.add_master_signifier(
+                    sig['name'],
+                    anchoring_function=sig.get('significance', ''),
+                    primal_repression=sig.get('repressed', False)
                 )
             else:
-                self.signifier_graph.graph.nodes[signifier]['activation'] = 1.0
-                self.signifier_graph.graph.nodes[signifier]['timestamp'] = datetime.now()
+                graph.add_knowledge_signifier(
+                    sig['name'],
+                    sig.get('associations', []),
+                    metaphoric_substitutions=sig.get('substitutions', [])
+                )
         
-        for i in range(len(signifiers) - 1):
-            source = signifiers[i]
-            target = signifiers[i + 1]
-            
-            self.signifier_graph.add_edge(
-                source, target,
-                weight=0.5,
-                type='neutral',
-                context=[text]
+        # Build signifying chains with proper Lacanian logic
+        for chain in chains:
+            graph.create_signifying_chain(
+                chain['name'],
+                chain['signifiers'],
+                chain_type=self._determine_chain_type(chain),
+                retroactive_meaning=True  # Nachträglichkeit
             )
         
-        return signifiers
+        return graph
     
-    def build_signifier_graph(self, signifiers, signifying_chains):
-        """Build a graph representation of unconscious signifiers and their relationships."""
-        print("Building signifier graph...")
-        
-        # Add signifiers as nodes
-        for signifier in signifiers:
-            name = signifier.get('name', '')
-            if not name:
-                continue
-                
-            sig_type = 'symbolic'  # Default
-            if any(word in name.lower() for word in ['image', 'picture', 'visual', 'appearance']):
-                sig_type = 'imaginary'
-            elif any(word in name.lower() for word in ['impossible', 'trauma', 'death', 'void']):
-                sig_type = 'real'
-                
-            repressed = False
-            if 'significance' in signifier:
-                if any(word in signifier['significance'].lower() for word in 
-                       ['repressed', 'hidden', 'denied', 'avoided', 'unconscious']):
-                    repressed = True
-            
-            # Add to graph
-            self.signifier_graph.add_node(
-                name, 
-                type=sig_type,
-                activation=0.5,  # Initial activation
-                repressed=repressed
-            )
-        
-        # Add edges based on signifying chains
-        for chain in signifying_chains:
-            chain_signifiers = chain.get('signifiers', [])
-            chain_name = chain.get('name', '')
-            
-            # Create edges between consecutive signifiers in the chain
-            for i in range(len(chain_signifiers) - 1):
-                source = chain_signifiers[i]
-                target = chain_signifiers[i + 1]
-                
-                # Determine edge type based on chain description
-                edge_type = 'neutral'
-                if chain_name and 'condensation' in chain_name.lower():
-                    edge_type = 'condensation'
-                elif chain_name and 'displacement' in chain_name.lower():
-                    edge_type = 'displacement'
-                
-                # Add context from chain explanation
-                context = [chain.get('explanation', '')]
-                
-                # Add to graph if both nodes exist
-                if source in self.signifier_graph.graph and target in self.signifier_graph.graph:
-                    self.signifier_graph.add_edge(
-                        source, target,
-                        weight=0.7,  # Strong association within a chain
-                        type=edge_type,
-                        context=context
-                    )
-        
-        # Apply condensation to find similar signifiers
-        self.signifier_graph.condense_nodes()
-        
-        # Apply displacement to create indirect associations
-        for source in list(self.signifier_graph.graph.nodes()):
-            for target in list(self.signifier_graph.graph.nodes()):
-                if source != target:
-                    self.signifier_graph.displace_association(source, target)
-        
-        print(f"Built signifier graph with {len(self.signifier_graph.graph.nodes())} nodes and {len(self.signifier_graph.graph.edges())} edges")
-        return self.signifier_graph
+    def _is_master_signifier(self, signifier: Dict) -> bool:
+        """Determine if a signifier functions as S1 (master signifier)."""
+        # Master signifiers are often:
+        # - Repeated without clear meaning
+        # - Points of identification
+        # - Organizing principles
+        indicators = [
+            'identity' in signifier.get('significance', '').lower(),
+            'recurring' in signifier.get('significance', '').lower(),
+            'central' in signifier.get('significance', '').lower(),
+            len(signifier.get('associations', [])) > 5,  # Many connections
+            signifier.get('repressed', False)  # Often repressed
+        ]
+        return sum(indicators) >= 2
     
-    def build_unconscious_memory(self, dream_data, agent_name, agent_dir):
-        """Build the unconscious memory from dreams data."""
-        # Extract unconscious signifiers
-        unconscious_data = self.extract_unconscious_signifiers(dream_data)
+    def _determine_chain_type(self, chain: Dict) -> str:
+        """Determine the type of signifying chain."""
+        explanation = chain.get('explanation', '').lower()
+        if 'metaphor' in explanation or 'substitut' in explanation:
+            return 'metaphoric'
+        elif 'metonym' in explanation or 'displace' in explanation:
+            return 'metonymic'
+        else:
+            return 'mixed'
+    
+    def generate_dream_work_patterns(self, unconscious_data: Dict) -> Dict[str, Any]:
+        """Generate patterns of dream-work (condensation, displacement, etc.)."""
+        prompt = f"""
+        Analyze the dream-work mechanisms in this unconscious structure:
         
-        # Build graph from extracted signifiers
-        self.build_signifier_graph(
-            unconscious_data.get('signifiers', []),
-            unconscious_data.get('signifying_chains', [])
-        )
+        Signifiers: {json.dumps(unconscious_data.get('signifiers', []), indent=2)}
+        Chains: {json.dumps(unconscious_data.get('signifying_chains', []), indent=2)}
         
-        # Convert graph to serializable format for storage
-        graph_data = self._serialize_graph_data()
+        Identify:
+        1. Condensation patterns (Verdichtung) - multiple ideas in one image
+        2. Displacement patterns (Verschiebung) - affect shifted between elements
+        3. Considerations of representability - abstract ideas as concrete images
+        4. Secondary revision - rational narrative imposed on dream chaos
         
-        # Generate visualizations for signifiers
-        visualization_results = self.visualize_signifiers(unconscious_data, agent_name, agent_dir)
+        Return specific examples and patterns.
+        """
         
-        # Create final unconscious memory structure
-        unconscious_memory = {
-            'signifiers': unconscious_data.get('signifiers', []),
-            'signifying_chains': unconscious_data.get('signifying_chains', []),
-            'structural_positions': unconscious_data.get('structural_positions', []),
-            'analysis': unconscious_data.get('analysis', ''),
-            'object_a': unconscious_data.get('object_a', {}),
-            'symptom': unconscious_data.get('symptom', {}),
-            'signifier_graph': graph_data,
-            'visualizations': visualization_results
+        dream_work = self.vlm.generate_text(None, None, prompt)
+        return self._parse_vlm_response(dream_work)
+    
+    def map_jouissance_economy(self, unconscious_data: Dict, dream_data: Dict) -> Dict[str, Any]:
+        """Map the economy of jouissance in the unconscious structure."""
+        prompt = f"""
+        Analyze the economy of jouissance (painful enjoyment) in these dreams:
+        
+        Dreams excerpt: {json.dumps(dream_data, indent=2)[:1500]}...
+        Symptom: {json.dumps(unconscious_data.get('symptom', {}), indent=2)}
+        
+        Map:
+        1. Surplus jouissance (plus-de-jouir) - excess beyond pleasure principle
+        2. Phallic jouissance vs Other jouissance
+        3. Repetition compulsion patterns
+        4. Points of anxiety (signal of the Real)
+        5. Sinthome (unique mode of jouissance)
+        
+        Show how the subject organizes their jouissance.
+        """
+        
+        jouissance_map = self.vlm.generate_text(None, None, prompt)
+        return self._parse_vlm_response(jouissance_map)
+    
+    def create_fantasy_formula(self, unconscious_data: Dict) -> str:
+        """Create the subject's fundamental fantasy formula ($ ◊ a)."""
+        signifiers = unconscious_data.get('signifiers', [])
+        object_a = unconscious_data.get('object_a', {})
+        chains = unconscious_data.get('signifying_chains', [])
+        
+        prompt = f"""
+        Based on this unconscious structure, formulate the subject's fundamental fantasy.
+        
+        The fantasy formula is: $ ◊ a (divided subject in relation to object a)
+        
+        Signifiers: {json.dumps(signifiers[:5], indent=2)}
+        Object a: {json.dumps(object_a, indent=2)}
+        Chains: {json.dumps([c['name'] for c in chains], indent=2)}
+        
+        Describe:
+        1. How the divided subject ($) positions themselves
+        2. The specific form object a takes for this subject
+        3. The nature of their relation (◊) - could be: <>, ∧, ∨, etc.
+        4. How this fantasy defends against the Real
+        
+        Return a precise formulation with explanation.
+        """
+        
+        fantasy = self.vlm.generate_text(None, None, prompt)
+        return fantasy
+    
+    def _parse_vlm_response(self, response: str) -> Dict[str, Any]:
+        """Enhanced parsing that preserves psychoanalytic complexity."""
+        try:
+            # Try to extract JSON with multiple patterns
+            json_patterns = [
+                r'```json\s*(.*?)\s*```',
+                r'```\s*(.*?)\s*```',
+                r'\{[^{}]*\{[^{}]*\}[^{}]*\}',  # Nested JSON
+                r'\{[^{}]*\}'  # Simple JSON
+            ]
+            
+            for pattern in json_patterns:
+                matches = re.findall(pattern, response, re.DOTALL)
+                for match in matches:
+                    try:
+                        return json.loads(match)
+                    except:
+                        continue
+            
+            # If no JSON found, structure the response
+            return self._structure_text_response(response)
+            
+        except Exception as e:
+            print(f"Parse error: {e}")
+            return {"raw_analysis": response}
+    
+    def _structure_text_response(self, text: str) -> Dict[str, Any]:
+        """Structure non-JSON text into usable format while preserving meaning."""
+        lines = text.strip().split('\n')
+        structured = {
+            "signifiers": [],
+            "analysis": "",
+            "key_points": []
         }
         
-        # Save unconscious memory to file
-        unconscious_path = f"{agent_dir}/unconscious_memory.json"
-        save_json(unconscious_memory, unconscious_path)
-        print(f"Unconscious memory saved to {unconscious_path}")
+        current_section = None
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            if any(marker in line.lower() for marker in ['signifier:', 'symbol:', 'element:']):
+                # Extract signifier
+                name = line.split(':', 1)[1].strip() if ':' in line else line
+                structured["signifiers"].append({"name": name, "extracted_from": "text"})
+            elif line.startswith('-') or line.startswith('•'):
+                structured["key_points"].append(line[1:].strip())
+            else:
+                structured["analysis"] += line + " "
         
-        return unconscious_memory
+        return structured
     
-    def visualize_signifiers(self, unconscious_data, agent_name, agent_dir):
-        """Generate visualizations for unconscious signifiers."""
-        print("Generating visualizations for signifiers...")
+    def visualize_signifiers(self, unconscious_data: Dict, agent_name: str, agent_dir: str) -> Dict[str, Any]:
+        """Generate surrealist visualizations that capture unconscious dynamics."""
+        print("Generating psychoanalytic visualizations...")
         signifier_images_dir = f"{agent_dir}/signifier_images"
         ensure_directory(signifier_images_dir)
         
-        # Extract signifier names
-        signifiers = unconscious_data.get("signifiers", [])
-        
-        # Get signifier names, handling both string and dict formats
-        signifier_names = []
-        for signifier in signifiers:
-            if isinstance(signifier, dict) and "name" in signifier:
-                signifier_names.append(signifier["name"])
-            elif isinstance(signifier, str):
-                signifier_names.append(signifier)
-        
-        # Limit to 5 signifiers to avoid API overload
-        signifier_names = signifier_names[:5]
-        
-        if not signifier_names:
-            print("Warning: No signifiers found to visualize.")
-            return {}
-        
-        print(f"Found {len(signifier_names)} signifiers to visualize: {', '.join(signifier_names)}")
-        
         visualization_results = {}
         
-        for signifier_name in signifier_names:
-            print(f"Visualizing signifier: {signifier_name}")
-            
-            # Create a safe filename by replacing problematic characters
-            safe_name = re.sub(r'[^\w\s-]', '', signifier_name).strip().replace(' ', '_')
+        # Select key signifiers for visualization
+        key_signifiers = self._select_key_signifiers(unconscious_data)
+        
+        for signifier in key_signifiers[:5]:  # Limit to 5 most significant
+            safe_name = re.sub(r'[^\w\s-]', '', signifier['name']).strip().replace(' ', '_')
             output_path = f"{signifier_images_dir}/{safe_name}"
             
-            # Get signifier details for a better prompt
-            signifier_details = None
-            for signifier in signifiers:
-                if isinstance(signifier, dict) and signifier.get("name") == signifier_name:
-                    signifier_details = signifier
-                    break
+            # Create psychoanalytically informed prompt
+            viz_prompt = self._create_visualization_prompt(signifier, unconscious_data)
             
-            # Create a more detailed prompt if we have signifier details
-            if signifier_details and "associations" in signifier_details:
-                associations = ", ".join(signifier_details["associations"])
-                significance = signifier_details.get("significance", "")
-                
-                prompt = (
-                    f"Create a surrealist image representing the unconscious signifier '{signifier_name}' "
-                    f"with associations to {associations}. {significance} "
-                    f"The image should be dreamlike and symbolic in the style of Salvador Dali or René Magritte."
-                )
-            else:
-                prompt = (
-                    f"Create a surrealist image representing the unconscious signifier '{signifier_name}' "
-                    f"in the style of Salvador Dali or René Magritte. The image should be dreamlike and symbolic."
-                )
+            result = self.vlm.direct_image_generation(viz_prompt, output_path)
             
-            # Try direct generation first
-            result = self.vlm_interface.direct_image_generation(prompt, output_path)
-            
-            # If direct generation fails, try the template approach
-            if not result["success"]:
-                print(f"Direct generation failed for {signifier_name}, trying template approach...")
-                result = self.vlm_interface.generate_image(
-                    "phase1", 
-                    "visualize_signifier", 
-                    {"signifier": signifier_name}, 
-                    output_path
-                )
-            
-            if result["success"]:
-                visualization_results[signifier_name] = {
+            if result.get("success"):
+                visualization_results[signifier['name']] = {
                     "image_path": result["image_path"],
-                    "response_text": result.get("response_text", "")
+                    "signifier_data": signifier,
+                    "visualization_concept": viz_prompt
                 }
-                print(f"Successfully created visualization for {signifier_name}: {result['image_path']}")
-                
-                # Add a small delay to avoid rate limiting
-                time.sleep(2)
-            else:
-                print(f"Failed to visualize signifier {signifier_name}: {result.get('error', 'Unknown error')}")
+                time.sleep(2)  # Rate limiting
         
         return visualization_results
+    
+    def _select_key_signifiers(self, unconscious_data: Dict) -> List[Dict]:
+        """Select most psychoanalytically significant signifiers for visualization."""
+        signifiers = unconscious_data.get('signifiers', [])
+        
+        # Prioritize master signifiers and those related to object a
+        priority_signifiers = []
+        for sig in signifiers:
+            score = 0
+            # Master signifier indicators
+            if 'master' in str(sig.get('significance', '')).lower():
+                score += 3
+            # Object a relation
+            if any(obj in str(sig).lower() for obj in ['desire', 'lack', 'void', 'impossible']):
+                score += 2
+            # Repression indicator
+            if sig.get('repressed', False):
+                score += 2
+            # Chain participation
+            chain_count = sum(1 for chain in unconscious_data.get('signifying_chains', []) 
+                            if sig['name'] in chain.get('signifiers', []))
+            score += chain_count
+            
+            priority_signifiers.append((score, sig))
+        
+        # Sort by score and return top signifiers
+        priority_signifiers.sort(key=lambda x: x[0], reverse=True)
+        return [sig for _, sig in priority_signifiers]
+    
+    def _create_visualization_prompt(self, signifier: Dict, unconscious_data: Dict) -> str:
+        """Create visualization prompt that captures psychoanalytic dimensions."""
+        # Find related chains and object a manifestations
+        related_chains = [
+            chain for chain in unconscious_data.get('signifying_chains', [])
+            if signifier['name'] in chain.get('signifiers', [])
+        ]
+        
+        object_a_relation = ""
+        if 'object_a' in unconscious_data:
+            if signifier['name'] in str(unconscious_data['object_a']):
+                object_a_relation = "This signifier circles around the void of object a."
+        
+        prompt = f"""
+        Create a surrealist image for the unconscious signifier '{signifier['name']}'.
+        
+        Psychoanalytic significance: {signifier.get('significance', '')}
+        Associations: {', '.join(signifier.get('associations', []))}
+        {object_a_relation}
+        
+        Visual requirements:
+        - Capture the signifier's role as a nodal point in the unconscious
+        - Show traces of repression through visual distortion or absence
+        - Include dreamlike condensation of multiple meanings
+        - Suggest the impossible Real that the signifier attempts to symbolize
+        - Use techniques of Dalí, Magritte, and Remedios Varo
+        - Include subtle references to: {', '.join(s.get('associations', [])[:3])}
+        
+        The image should evoke the uncanny (Unheimlich) - familiar yet strange.
+        """
+        
+        return prompt
+    
+    def build_unconscious_memory(self, dream_data: Dict, agent_name: str, agent_dir: str) -> Dict[str, Any]:
+        """Build complete unconscious memory with all psychoanalytic structures."""
+        print(f"Building Lacanian unconscious structure for {agent_name}...")
+        
+        # Extract unconscious signifiers with full analysis
+        unconscious_data = self.extract_unconscious_signifiers(dream_data)
+        
+        # Generate dream-work patterns
+        dream_work = self.generate_dream_work_patterns(unconscious_data)
+        unconscious_data['dream_work_patterns'] = dream_work
+        
+        # Map jouissance economy
+        jouissance = self.map_jouissance_economy(unconscious_data, dream_data)
+        unconscious_data['jouissance_economy'] = jouissance
+        
+        # Create fundamental fantasy formula
+        fantasy = self.create_fantasy_formula(unconscious_data)
+        unconscious_data['fundamental_fantasy'] = fantasy
+        
+        # Build signifier graph
+        graph = self.build_signifier_graph(
+            unconscious_data.get('signifiers', []),
+            unconscious_data.get('signifying_chains', [])
+        )
+        unconscious_data['signifier_graph'] = graph.serialize()
+        
+        # Generate visualizations
+        visualizations = self.visualize_signifiers(unconscious_data, agent_name, agent_dir)
+        unconscious_data['visualizations'] = visualizations
+        
+        # Add metadata
+        unconscious_data['metadata'] = {
+            'agent_name': agent_name,
+            'extraction_date': datetime.now().isoformat(),
+            'theoretical_framework': 'Lacanian Psychoanalysis',
+            'dream_count': len(dream_data.get('dreams', []))
+        }
+        
+        # Save complete unconscious structure
+        unconscious_path = f"{agent_dir}/unconscious_memory.json"
+        save_json(unconscious_data, unconscious_path)
+        print(f"Unconscious memory saved to {unconscious_path}")
+        
+        return unconscious_data

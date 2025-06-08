@@ -1,468 +1,487 @@
 import networkx as nx
-import spacy
 from datetime import datetime
+from typing import Dict, List, Any, Optional, Tuple
+import numpy as np
 
-class SignifierGraph:
-    """A directed graph representing unconscious signifiers and their relationships."""
+class LacanianSignifierGraph:
+    """A graph implementing Lacanian signifier dynamics with S1/S2 distinction and proper psychoanalytic logic."""
     
     def __init__(self):
-        """Initialize the signifier graph."""
         self.graph = nx.DiGraph()
-        try:
-            self.nlp = spacy.load("en_core_web_sm")
-        except:
-            import subprocess
-            import sys
-            subprocess.call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
-            self.nlp = spacy.load("en_core_web_sm")
-    
-    def add_node(self, node_id, **attr):
-        """Add a node with required attributes."""
-        # Set default values for required attributes
-        node_attr = {
-            'type': attr.get('type', 'symbolic'),  # symbolic, imaginary, or real
-            'activation': attr.get('activation', 0.0),  # 0.0 to 1.0
-            'repressed': attr.get('repressed', False),  # Boolean or float 0.0-1.0
-            'timestamp': attr.get('timestamp', datetime.now())  # Current time by default
+        self.master_signifiers = {}  # S1 - Points de capiton
+        self.signifying_chains = {}  # Named chains with their logic
+        self.object_a_positions = []  # Where object a manifests as void
+        self.quilting_points = []  # Points de capiton that fix meaning
+        self.retroactive_effects = {}  # Nachträglichkeit mappings
+        
+    def add_master_signifier(self, s1: str, anchoring_function: str = "", primal_repression: bool = False):
+        """Add a master signifier (S1) that anchors meaning chains."""
+        self.graph.add_node(
+            s1,
+            node_type='S1',
+            anchoring_function=anchoring_function,
+            primal_repression=primal_repression,
+            inscription_time=datetime.now(),
+            retroactive_meanings=[]  # Meanings determined après-coup
+        )
+        self.master_signifiers[s1] = {
+            'anchors': [],  # What S2s it anchors
+            'void_relation': None,  # Relation to object a
+            'jouissance_mode': None  # How it organizes jouissance
         }
-        
-        # Validate attributes
-        if node_attr['type'] not in ['symbolic', 'imaginary', 'real']:
-            node_attr['type'] = 'symbolic'
-        
-        node_attr['activation'] = max(0.0, min(1.0, node_attr['activation']))
-        
-        if isinstance(node_attr['repressed'], (int, float)):
-            node_attr['repressed'] = max(0.0, min(1.0, node_attr['repressed']))
-        
-        # Add any additional attributes
-        for key, value in attr.items():
-            if key not in node_attr:
-                node_attr[key] = value
-        
-        # Add node to graph
-        self.graph.add_node(node_id, **node_attr)
         return self
     
-    def add_edge(self, source, target, **attr):
-        """Add an edge with required attributes."""
-        # Set default values for required attributes
-        edge_attr = {
-            'weight': attr.get('weight', 0.5),  # 0.0 to 1.0
-            'type': attr.get('type', 'neutral'),  # condensation, displacement, or neutral
-            'context': attr.get('context', [])  # List of context strings
-        }
-        
-        # Validate attributes
-        if edge_attr['type'] not in ['condensation', 'displacement', 'neutral']:
-            edge_attr['type'] = 'neutral'
-        
-        edge_attr['weight'] = max(0.0, min(1.0, edge_attr['weight']))
-        
-        if not isinstance(edge_attr['context'], list):
-            edge_attr['context'] = [str(edge_attr['context'])]
-        
-        # Add any additional attributes
-        for key, value in attr.items():
-            if key not in edge_attr:
-                edge_attr[key] = value
-        
-        # Add edge to graph
-        self.graph.add_edge(source, target, **edge_attr)
-        return self
-    
-    def get_node_attributes(self, node_id):
-        """Get all attributes of a node as a dictionary."""
-        if node_id in self.graph:
-            return dict(self.graph.nodes[node_id])
-        return {}
-    
-    def get_edge_data(self, source, target):
-        """Get edge data between two nodes."""
-        if self.graph.has_edge(source, target):
-            return dict(self.graph.edges[source, target])
-        return {}
-    
-    def nodes(self):
-        """Return all nodes in the graph."""
-        return self.graph.nodes()
-    
-    def edges(self):
-        """Return all edges in the graph."""
-        return self.graph.edges()
-    
-    def condense_nodes(self, threshold=0.75):
-        """Identify and merge or connect similar nodes."""
-        nodes = list(self.graph.nodes())
-        merged = set()
-        
-        for i, node1 in enumerate(nodes):
-            if node1 in merged:
-                continue
-                
-            for j in range(i+1, len(nodes)):
-                node2 = nodes[j]
-                if node2 in merged:
-                    continue
-                
-                # Skip if either node is repressed
-                if self.graph.nodes[node1].get('repressed', False) or self.graph.nodes[node2].get('repressed', False):
-                    continue
-                
-                # Calculate similarity using simple string matching
-                similarity = self._calculate_similarity(node1, node2)
-                
-                if similarity > threshold:
-                    # If same type, merge nodes
-                    if self.graph.nodes[node1].get('type') == self.graph.nodes[node2].get('type'):
-                        new_id = f"{node1}_{node2}"
-                        # Average activation
-                        new_activation = (self.graph.nodes[node1].get('activation', 0.5) + 
-                                         self.graph.nodes[node2].get('activation', 0.5)) / 2
-                        
-                        # Create new node
-                        self.add_node(
-                            new_id,
-                            type=self.graph.nodes[node1].get('type', 'symbolic'),
-                            activation=new_activation,
-                            repressed=False,
-                            timestamp=datetime.now(),
-                            merged_from=[node1, node2]
-                        )
-                        
-                        # Transfer all edges
-                        for pred in list(self.graph.predecessors(node1)):
-                            if pred != node2:  # Avoid self-loops
-                                edge_data = self.get_edge_data(pred, node1)
-                                self.add_edge(pred, new_id, **edge_data)
-                        
-                        for succ in list(self.graph.successors(node1)):
-                            if succ != node2:  # Avoid self-loops
-                                edge_data = self.get_edge_data(node1, succ)
-                                self.add_edge(new_id, succ, **edge_data)
-                        
-                        for pred in list(self.graph.predecessors(node2)):
-                            if pred != node1:  # Avoid self-loops
-                                edge_data = self.get_edge_data(pred, node2)
-                                self.add_edge(pred, new_id, **edge_data)
-                        
-                        for succ in list(self.graph.successors(node2)):
-                            if succ != node1:  # Avoid self-loops
-                                edge_data = self.get_edge_data(node2, succ)
-                                self.add_edge(new_id, succ, **edge_data)
-                        
-                        # Mark nodes as merged
-                        merged.add(node1)
-                        merged.add(node2)
-                    else:
-                        # If different types, strengthen connection
-                        if self.graph.has_edge(node1, node2):
-                            # Increase weight by 0.2, up to max 1.0
-                            current_weight = self.graph.edges[node1, node2].get('weight', 0.5)
-                            new_weight = min(1.0, current_weight + 0.2)
-                            self.graph.edges[node1, node2]['weight'] = new_weight
-                            self.graph.edges[node1, node2]['type'] = 'condensation'
-                        else:
-                            # Create new edge
-                            self.add_edge(
-                                node1, node2,
-                                weight=0.7,
-                                type='condensation',
-                                context=['semantic_similarity']
-                            )
-        
-        # Remove merged nodes
-        for node in merged:
-            if node in self.graph:
-                self.graph.remove_node(node)
-        
-        return self
-    
-    def _calculate_similarity(self, node1, node2):
-        """Calculate semantic similarity between two nodes using simple string matching."""
-        # Simple string similarity
-        s1 = node1.lower()
-        s2 = node2.lower()
-        
-        # If one is contained in the other, high similarity
-        if s1 in s2 or s2 in s1:
-            return 0.8
-        
-        # Check for common substrings
-        common = 0
-        for i in range(min(len(s1), len(s2))):
-            if s1[i] == s2[i]:
-                common += 1
-        
-        # Return similarity score
-        return common / max(len(s1), len(s2))
-    
-    def displace_association(self, source_id, target_id):
-        """Create a displacement association between two nodes."""
-        # Skip if direct edge already exists
-        if self.graph.has_edge(source_id, target_id):
-            return False
-        
-        # Find paths between source and target
-        try:
-            paths = list(nx.all_simple_paths(self.graph, source_id, target_id, cutoff=3))
-            
-            # If no paths or only direct path, nothing to displace
-            if not paths or (len(paths) == 1 and len(paths[0]) == 2):
-                return False
-            
-            # Get the shortest indirect path
-            indirect_paths = [p for p in paths if len(p) > 2]
-            if not indirect_paths:
-                return False
-                
-            path = min(indirect_paths, key=len)
-            
-            # Create displacement edge
-            weight = 0.3
-            
-            # Reduce weight if either node is repressed
-            if (self.graph.nodes[source_id].get('repressed', False) or 
-                self.graph.nodes[target_id].get('repressed', False)):
-                weight *= 0.5
-            
-            self.add_edge(
-                source_id, target_id,
-                weight=weight,
-                type='displacement',
-                context=['displaced_path'],
-                original_path=path
-            )
-            
-            # Reduce weights of intermediate edges
-            for i in range(len(path) - 1):
-                u, v = path[i], path[i+1]
-                current_weight = self.graph.edges[u, v].get('weight', 0.5)
-                new_weight = max(0.0, current_weight - 0.1)
-                self.graph.edges[u, v]['weight'] = new_weight
-            
-            return True
-        except:
-            return False
-    
-    def spread_activation(self, start_id, max_depth=3, repression_factor=0.5):
-        """Spread activation from a starting node."""
-        if start_id not in self.graph:
-            return []
-        
-        # Initialize activation values
-        activation_values = {node: 0.0 for node in self.graph.nodes()}
-        activation_values[start_id] = 1.0  # Full activation for start node
-        
-        # BFS to spread activation
-        visited = {start_id}
-        queue = [(start_id, 0)]  # (node, depth)
-        
-        while queue:
-            node, depth = queue.pop(0)
-            
-            if depth >= max_depth:
-                continue
-            
-            # Get current activation
-            current_activation = activation_values[node]
-            
-            # Apply depth decay
-            depth_decay = 0.8 ** depth
-            
-            # Spread to neighbors
-            for neighbor in self.graph.successors(node):
-                if neighbor in visited:
-                    continue
-                    
-                # Get edge weight
-                edge_weight = self.graph.edges[node, neighbor].get('weight', 0.5)
-                
-                # Calculate repression factor
-                node_repressed = self.graph.nodes[neighbor].get('repressed', False)
-                if isinstance(node_repressed, bool):
-                    rep_factor = repression_factor if node_repressed else 1.0
-                else:  # Float repression level
-                    rep_factor = 1.0 - node_repressed
-                
-                # Calculate new activation
-                new_activation = current_activation * edge_weight * rep_factor * depth_decay
-                
-                # Update if higher
-                if new_activation > activation_values[neighbor]:
-                    activation_values[neighbor] = new_activation
-                
-                # Add to queue
-                visited.add(neighbor)
-                queue.append((neighbor, depth + 1))
-        
-        # Sort by activation and return top 5
-        sorted_nodes = sorted(
-            [(node, act) for node, act in activation_values.items() if act > 0],
-            key=lambda x: x[1],
-            reverse=True
+    def add_knowledge_signifier(self, s2: str, associations: List[str], 
+                               metaphoric_substitutions: Optional[List[str]] = None):
+        """Add a knowledge signifier (S2) that forms chains of meaning."""
+        self.graph.add_node(
+            s2,
+            node_type='S2',
+            associations=associations,
+            metaphoric_substitutions=metaphoric_substitutions or [],
+            activation=0.0,
+            repressed=False,
+            timestamp=datetime.now()
         )
         
-        return sorted_nodes[:5]
+        # Create metonymic links to associations
+        for assoc in associations:
+            if assoc in self.graph:
+                self.add_metonymic_link(s2, assoc, association_type='contiguity')
+        
+        return self
     
-    def mark_repressed(self, node_id, level=1.0):
-        """Mark a node as repressed."""
-        if node_id in self.graph:
-            if isinstance(level, bool):
-                self.graph.nodes[node_id]['repressed'] = level
-            else:
-                self.graph.nodes[node_id]['repressed'] = max(0.0, min(1.0, level))
-            return True
-        return False
+    def add_metonymic_link(self, s1: str, s2: str, association_type: str = 'displacement'):
+        """Add metonymic (horizontal) link in the signifying chain."""
+        self.graph.add_edge(
+            s1, s2,
+            edge_type='metonymy',
+            association_type=association_type,
+            weight=0.7,
+            timestamp=datetime.now()
+        )
+        return self
     
-    def check_return_of_repressed(self, start_id):
-        """Check if any repressed nodes appear in top activated nodes."""
-        if not start_id or start_id not in self.graph:
-            return []
+    def add_metaphoric_link(self, signifier: str, substitute: str, repressed_content: Optional[str] = None):
+        """Add metaphoric (vertical) substitution link."""
+        self.graph.add_edge(
+            signifier, substitute,
+            edge_type='metaphor',
+            repressed_content=repressed_content,
+            substitution_type='paradigmatic',
+            weight=0.9,
+            timestamp=datetime.now()
+        )
+        
+        # Mark the original as potentially repressed
+        if repressed_content and signifier in self.graph:
+            self.graph.nodes[signifier]['repressed'] = True
+            self.graph.nodes[signifier]['repressed_content'] = repressed_content
+        
+        return self
+    
+    def create_signifying_chain(self, chain_name: str, signifiers: List[str], 
+                               chain_type: str = 'mixed', retroactive_meaning: bool = True):
+        """Create a named signifying chain with specific logic."""
+        chain_data = {
+            'name': chain_name,
+            'signifiers': signifiers,
+            'type': chain_type,
+            'retroactive': retroactive_meaning,
+            'quilting_points': [],  # Points where meaning is fixed
+            'slippage_points': []   # Where meaning slides
+        }
+        
+        # Build the chain
+        for i in range(len(signifiers) - 1):
+            if chain_type == 'metonymic' or chain_type == 'mixed':
+                self.add_metonymic_link(signifiers[i], signifiers[i+1])
             
-        activated_nodes = self.spread_activation(start_id)
+        # If retroactive, the last signifier determines meaning of the chain
+        if retroactive_meaning and len(signifiers) > 1:
+            last_signifier = signifiers[-1]
+            self.retroactive_effects[chain_name] = {
+                'determining_signifier': last_signifier,
+                'retroactive_targets': signifiers[:-1],
+                'meaning_effect': f"{last_signifier} retroactively determines meaning"
+            }
+            
+            # Add retroactive edges
+            for target in signifiers[:-1]:
+                if target in self.graph:
+                    self.graph.add_edge(
+                        last_signifier, target,
+                        edge_type='retroactive',
+                        effect='meaning_determination',
+                        timestamp=datetime.now()
+                    )
         
-        repressed_returns = []
-        for node_id, activation in activated_nodes:
-            if self.graph.nodes[node_id].get('repressed', False):
-                # Find indirect paths from start to this repressed node
-                try:
-                    paths = list(nx.all_simple_paths(self.graph, start_id, node_id, cutoff=3))
-                    indirect_paths = [p for p in paths if len(p) > 2]
-                    
-                    if indirect_paths:
-                        repressed_returns.append({
-                            'node': node_id,
-                            'activation': activation,
-                            'path': min(indirect_paths, key=len)
-                        })
-                except:
-                    pass
-        
-        return repressed_returns
+        self.signifying_chains[chain_name] = chain_data
+        return self
     
-    def update_memory(self, decay_rate=0.9, prune_threshold=0.1):
-        """Update memory by decaying activations and pruning weak nodes."""
-        # Decay all activations
-        for node in self.graph.nodes():
-            current_activation = self.graph.nodes[node].get('activation', 0.0)
-            new_activation = current_activation * decay_rate
-            self.graph.nodes[node]['activation'] = new_activation
-            self.graph.nodes[node]['timestamp'] = datetime.now()
+    def add_quilting_point(self, signifier: str, chains_to_quilt: List[str]):
+        """Add a point de capiton that fixes meaning across multiple chains."""
+        if signifier not in self.graph:
+            self.add_master_signifier(signifier, anchoring_function="quilting point")
         
-        # Identify nodes to prune
-        to_prune = []
-        for node in list(self.graph.nodes()):
-            # Skip repressed nodes
+        quilting_data = {
+            'signifier': signifier,
+            'quilted_chains': chains_to_quilt,
+            'fixing_function': f"{signifier} arrests the sliding of signification",
+            'timestamp': datetime.now()
+        }
+        
+        # Create edges to represent quilting
+        for chain_name in chains_to_quilt:
+            if chain_name in self.signifying_chains:
+                chain = self.signifying_chains[chain_name]
+                for s in chain['signifiers']:
+                    if s in self.graph and s != signifier:
+                        self.graph.add_edge(
+                            signifier, s,
+                            edge_type='quilting',
+                            chain=chain_name,
+                            effect='meaning_fixation'
+                        )
+                chain['quilting_points'].append(signifier)
+        
+        self.quilting_points.append(quilting_data)
+        return self
+    
+    def mark_object_a_void(self, position: str, surrounding_signifiers: List[str]):
+        """Mark where object a appears as a void in the signifying structure."""
+        void_data = {
+            'position': position,
+            'surrounding_signifiers': surrounding_signifiers,
+            'void_type': 'object_cause_of_desire',
+            'effects': []
+        }
+        
+        # Object a creates a gravitational effect on surrounding signifiers
+        for signifier in surrounding_signifiers:
+            if signifier in self.graph:
+                self.graph.nodes[signifier]['object_a_proximity'] = True
+                self.graph.nodes[signifier]['desire_vector'] = position
+                void_data['effects'].append(f"{signifier} circles around void")
+        
+        self.object_a_positions.append(void_data)
+        return self
+    
+    def apply_repression(self, signifier: str, return_formation: Optional[str] = None):
+        """Apply repression to a signifier with optional return formation."""
+        if signifier in self.graph:
+            self.graph.nodes[signifier]['repressed'] = True
+            self.graph.nodes[signifier]['repression_timestamp'] = datetime.now()
+            
+            if return_formation:
+                # The repressed returns in distorted form
+                self.add_metaphoric_link(
+                    signifier, 
+                    return_formation,
+                    repressed_content=f"repressed form of {signifier}"
+                )
+                
+                if return_formation in self.graph:
+                    self.graph.nodes[return_formation]['return_of_repressed'] = True
+                    self.graph.nodes[return_formation]['original_signifier'] = signifier
+        
+        return self
+    
+    def trace_desire_path(self, start_signifier: str, max_depth: int = 5) -> List[Tuple[str, str]]:
+        """Trace the path of desire through the signifying chain."""
+        if start_signifier not in self.graph:
+            return []
+        
+        desire_path = []
+        current = start_signifier
+        visited = set()
+        depth = 0
+        
+        while depth < max_depth and current not in visited:
+            visited.add(current)
+            
+            # Find next signifier based on metonymic displacement
+            next_signifiers = [
+                (n, d) for n, d in self.graph[current].items()
+                if d.get('edge_type') == 'metonymy'
+            ]
+            
+            if not next_signifiers:
+                # Check for metaphoric substitution
+                next_signifiers = [
+                    (n, d) for n, d in self.graph[current].items()
+                    if d.get('edge_type') == 'metaphor'
+                ]
+            
+            if next_signifiers:
+                # Desire follows the path of greatest weight
+                next_node = max(next_signifiers, key=lambda x: x[1].get('weight', 0))
+                desire_path.append((current, next_node[0]))
+                current = next_node[0]
+                depth += 1
+            else:
+                break
+        
+        return desire_path
+    
+    def identify_jouissance_points(self) -> List[Dict[str, Any]]:
+        """Identify points of jouissance (painful enjoyment) in the structure."""
+        jouissance_points = []
+        
+        # Look for repetition compulsion patterns
+        for node in self.graph.nodes():
+            # Check for cycles that indicate repetition
+            try:
+                cycles = list(nx.simple_cycles(self.graph))
+                for cycle in cycles:
+                    if node in cycle and len(cycle) > 2:
+                        jouissance_points.append({
+                            'type': 'repetition_compulsion',
+                            'signifier': node,
+                            'cycle': cycle,
+                            'interpretation': f"Compulsive return to {node} through {' -> '.join(cycle)}"
+                        })
+            except:
+                pass
+            
+            # Check for proximity to object a
+            if self.graph.nodes[node].get('object_a_proximity', False):
+                jouissance_points.append({
+                    'type': 'proximity_to_void',
+                    'signifier': node,
+                    'interpretation': f"{node} circles around the void of object a"
+                })
+            
+            # Check for repressed signifiers (jouissance of the symptom)
             if self.graph.nodes[node].get('repressed', False):
+                jouissance_points.append({
+                    'type': 'symptomatic_jouissance',
+                    'signifier': node,
+                    'interpretation': f"{node} provides jouissance through its repression"
+                })
+        
+        return jouissance_points
+    
+    def analyze_discourse_position(self, active_signifiers: List[str]) -> Dict[str, float]:
+        """Analyze which of the four discourses is active based on signifier positions."""
+        discourse_scores = {
+            'master': 0.0,
+            'university': 0.0,
+            'hysteric': 0.0,
+            'analyst': 0.0
+        }
+        
+        # Analyze the structural positions
+        for signifier in active_signifiers:
+            if signifier not in self.graph:
                 continue
                 
-            # Check activation and connections
-            if (self.graph.nodes[node].get('activation', 0.0) < prune_threshold and
-                self.graph.in_degree(node) == 0 and
-                self.graph.out_degree(node) < 2):
-                to_prune.append(node)
+            node_data = self.graph.nodes[signifier]
+            
+            # Master's discourse: S1 → S2
+            if node_data.get('node_type') == 'S1':
+                # Check if S1 commands S2
+                s2_targets = [n for n in self.graph.successors(signifier) 
+                             if self.graph.nodes.get(n, {}).get('node_type') == 'S2']
+                if s2_targets:
+                    discourse_scores['master'] += 0.3
+            
+            # University discourse: S2 → a
+            elif node_data.get('node_type') == 'S2':
+                # Check if S2 aims at object a
+                if node_data.get('object_a_proximity', False):
+                    discourse_scores['university'] += 0.3
+            
+            # Hysteric's discourse: $ → S1
+            if node_data.get('repressed', False) or node_data.get('return_of_repressed', False):
+                # Divided subject questioning master signifiers
+                s1_targets = [n for n in self.graph.successors(signifier)
+                             if self.graph.nodes.get(n, {}).get('node_type') == 'S1']
+                if s1_targets:
+                    discourse_scores['hysteric'] += 0.3
+            
+            # Analyst's discourse: a → $
+            if node_data.get('object_a_proximity', False):
+                # Object a causing division in subject
+                repressed_targets = [n for n in self.graph.successors(signifier)
+                                   if self.graph.nodes.get(n, {}).get('repressed', False)]
+                if repressed_targets:
+                    discourse_scores['analyst'] += 0.3
         
-        # Prune nodes
-        for node in to_prune:
-            self.graph.remove_node(node)
+        # Normalize scores
+        total = sum(discourse_scores.values())
+        if total > 0:
+            for discourse in discourse_scores:
+                discourse_scores[discourse] /= total
         
-        return to_prune
-
-def encode_experience(text, graph):
-    """Encode an experience in the signifier graph."""
-    # Process text with spaCy
-    doc = graph.nlp(text)
+        return discourse_scores
     
-    # Extract signifiers (nouns, verbs, adjectives)
-    signifiers = []
-    for token in doc:
-        if token.pos_ in ['NOUN', 'VERB', 'ADJ'] and not token.is_stop:
-            signifiers.append(token.text.lower())
-    
-    # Add nodes to graph
-    for signifier in signifiers:
-        if signifier in graph.graph:
-            # Update existing node
-            graph.graph.nodes[signifier]['activation'] = 1.0
-            graph.graph.nodes[signifier]['timestamp'] = datetime.now()
-        else:
-            # Add new node
-            graph.add_node(
-                signifier,
-                type='symbolic',
-                activation=1.0,
-                repressed=False,
-                timestamp=datetime.now()
-            )
-    
-    # Create edges between consecutive signifiers
-    for i in range(len(signifiers) - 1):
-        source = signifiers[i]
-        target = signifiers[i + 1]
+    def get_signifier_resonance(self, signifier: str, depth: int = 3) -> Dict[str, float]:
+        """Calculate how a signifier resonates through the network."""
+        if signifier not in self.graph:
+            return {}
         
-        if graph.graph.has_edge(source, target):
-            # Strengthen existing edge
-            current_weight = graph.graph.edges[source, target].get('weight', 0.5)
-            new_weight = min(1.0, current_weight + 0.1)
-            graph.graph.edges[source, target]['weight'] = new_weight
-            if 'context' in graph.graph.edges[source, target]:
-                graph.graph.edges[source, target]['context'].append(text)
-        else:
-            # Create new edge
-            graph.add_edge(
-                source, target,
-                weight=0.5,
-                type='neutral',
-                context=[text]
-            )
+        resonance = {signifier: 1.0}
+        current_level = {signifier: 1.0}
+        
+        for d in range(depth):
+            next_level = {}
+            decay = 0.7 ** (d + 1)
+            
+            for node, strength in current_level.items():
+                # Forward resonance (metonymy)
+                for successor in self.graph.successors(node):
+                    edge_data = self.graph[node][successor]
+                    edge_weight = edge_data.get('weight', 0.5)
+                    
+                    # Different decay for different edge types
+                    if edge_data.get('edge_type') == 'metaphor':
+                        transfer = strength * edge_weight * 0.9  # Strong transfer
+                    elif edge_data.get('edge_type') == 'metonymy':
+                        transfer = strength * edge_weight * 0.7  # Moderate transfer
+                    elif edge_data.get('edge_type') == 'retroactive':
+                        transfer = strength * edge_weight * 1.1  # Amplification
+                    else:
+                        transfer = strength * edge_weight * decay
+                    
+                    if successor not in resonance:
+                        resonance[successor] = 0
+                    resonance[successor] += transfer
+                    
+                    if successor not in next_level:
+                        next_level[successor] = 0
+                    next_level[successor] += transfer
+                
+                # Backward resonance (retroactive determination)
+                for predecessor in self.graph.predecessors(node):
+                    edge_data = self.graph[predecessor][node]
+                    if edge_data.get('edge_type') == 'retroactive':
+                        transfer = strength * 0.8  # Strong backward effect
+                        if predecessor not in resonance:
+                            resonance[predecessor] = 0
+                        resonance[predecessor] += transfer
+            
+            current_level = next_level
+        
+        return resonance
     
-    return signifiers
-
-def generate_dream(graph, start_id):
-    """Generate a dream narrative based on activated signifiers."""
-    # Get top activated nodes
-    top_nodes = graph.spread_activation(start_id, max_depth=3)
+    def find_fantasy_structure(self) -> Dict[str, Any]:
+        """Identify the fundamental fantasy structure ($ ◊ a)."""
+        fantasy = {
+            'divided_subjects': [],  # $ positions
+            'object_a_manifestations': [],  # a positions
+            'relations': [],  # ◊ types
+            'defensive_formations': []
+        }
+        
+        # Find divided subject positions (repressed/symptomatic nodes)
+        for node in self.graph.nodes():
+            node_data = self.graph.nodes[node]
+            if node_data.get('repressed', False) or node_data.get('return_of_repressed', False):
+                fantasy['divided_subjects'].append({
+                    'signifier': node,
+                    'division_type': 'repression' if node_data.get('repressed') else 'return'
+                })
+        
+        # Find object a manifestations
+        for void in self.object_a_positions:
+            fantasy['object_a_manifestations'].append(void)
+        
+        # Analyze relations between $ and a
+        for subject in fantasy['divided_subjects']:
+            for obj_a in fantasy['object_a_manifestations']:
+                # Check if subject circles around object a
+                if subject['signifier'] in obj_a['surrounding_signifiers']:
+                    fantasy['relations'].append({
+                        'subject': subject['signifier'],
+                        'object_a': obj_a['position'],
+                        'relation_type': 'circling',
+                        'interpretation': f"{subject['signifier']} desires around the void of {obj_a['position']}"
+                    })
+        
+        # Identify defensive formations
+        for node in self.graph.nodes():
+            if self.graph.nodes[node].get('node_type') == 'S1':
+                # Master signifiers often serve defensive functions
+                fantasy['defensive_formations'].append({
+                    'signifier': node,
+                    'defense_type': 'anchoring',
+                    'function': self.graph.nodes[node].get('anchoring_function', 'unknown')
+                })
+        
+        return fantasy
     
-    if not top_nodes:
-        return "I had a dream but couldn't remember it."
+    def detect_slippage_points(self) -> List[Dict[str, Any]]:
+        """Detect where meaning slips in the signifying chain."""
+        slippage_points = []
+        
+        for chain_name, chain_data in self.signifying_chains.items():
+            signifiers = chain_data['signifiers']
+            
+            for i in range(len(signifiers) - 1):
+                current = signifiers[i]
+                next_sig = signifiers[i + 1]
+                
+                if current in self.graph and next_sig in self.graph:
+                    # Check for weak metonymic links
+                    if self.graph.has_edge(current, next_sig):
+                        edge_data = self.graph[current][next_sig]
+                        if edge_data.get('weight', 1.0) < 0.5:
+                            slippage_points.append({
+                                'chain': chain_name,
+                                'position': f"{current} -> {next_sig}",
+                                'slippage_type': 'weak_link',
+                                'interpretation': 'Meaning may slip at this connection'
+                            })
+                    
+                    # Check for multiple possible paths (overdetermination)
+                    successors = list(self.graph.successors(current))
+                    if len(successors) > 2:
+                        slippage_points.append({
+                            'chain': chain_name,
+                            'position': current,
+                            'slippage_type': 'overdetermination',
+                            'possible_paths': successors,
+                            'interpretation': 'Multiple meaning paths create slippage'
+                        })
+        
+        return slippage_points
     
-    # Extract node IDs
-    node_ids = [node for node, _ in top_nodes]
-    
-    # Check for condensation (nodes with underscore)
-    condensed_nodes = [node for node in node_ids if '_' in node]
-    
-    # Check for displacement
-    displacement_edges = []
-    for i in range(len(node_ids)):
-        for j in range(i + 1, len(node_ids)):
-            if graph.graph.has_edge(node_ids[i], node_ids[j]):
-                edge_data = graph.get_edge_data(node_ids[i], node_ids[j])
-                if edge_data.get('type') == 'displacement':
-                    displacement_edges.append((node_ids[i], node_ids[j]))
-    
-    # Generate narrative
-    narrative = "I was in a place that reminded me of "
-    narrative += node_ids[0]
-    
-    if len(node_ids) > 1:
-        narrative += f". It felt {node_ids[1]}"
-    
-    if len(node_ids) > 2:
-        if condensed_nodes:
-            narrative += f", like a mixture of {condensed_nodes[0].replace('_', ' and ')}"
-        else:
-            narrative += f", like {node_ids[2]}"
-    
-    if len(node_ids) > 3:
-        if displacement_edges:
-            src, tgt = displacement_edges[0]
-            narrative += f". Then strangely, the {src} transformed into {tgt}"
-        else:
-            narrative += f". But then, it shifted to {node_ids[3]}"
-    
-    if len(node_ids) > 4:
-        narrative += f", leaving me with a sense of {node_ids[4]}"
-    
-    return narrative
+    def serialize(self) -> Dict[str, Any]:
+        """Serialize the graph for storage."""
+        nodes = []
+        for node_id, node_data in self.graph.nodes(data=True):
+            # Convert datetime objects to strings
+            node_dict = {'id': node_id}
+            for key, value in node_data.items():
+                if isinstance(value, datetime):
+                    node_dict[key] = value.isoformat()
+                else:
+                    node_dict[key] = value
+            nodes.append(node_dict)
+        
+        edges = []
+        for source, target, edge_data in self.graph.edges(data=True):
+            edge_dict = {'source': source, 'target': target}
+            for key, value in edge_data.items():
+                if isinstance(value, datetime):
+                    edge_dict[key] = value.isoformat()
+                else:
+                    edge_dict[key] = value
+            edges.append(edge_dict)
+        
+        return {
+            'nodes': nodes,
+            'edges': edges,
+            'master_signifiers': self.master_signifiers,
+            'signifying_chains': self.signifying_chains,
+            'object_a_positions': self.object_a_positions,
+            'quilting_points': self.quilting_points,
+            'retroactive_effects': self.retroactive_effects,
+            'metadata': {
+                'node_count': self.graph.number_of_nodes(),
+                'edge_count': self.graph.number_of_edges(),
+                'chain_count': len(self.signifying_chains),
+                'quilting_point_count': len(self.quilting_points)
+            }
+        }

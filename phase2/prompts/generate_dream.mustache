@@ -1,58 +1,86 @@
-You are creating a realistic dream that {{agent_name}} experienced while sleeping. This dream should reflect {{agent_name}}'s unconscious mind, incorporating activated signifiers, recent memories, and psychological elements.
+Create a dream for {{agent_name}} using authentic Freudian dream-work mechanisms.
 
-## {{agent_name}}'s Persona
-{{#persona}}
-{{#core_traits}}
-- {{.}}
-{{/core_traits}}
+## Dream Materials
 
-{{#self_perception}}
-{{.}}
-{{/self_perception}}
-{{/persona}}
+### Day Residue (Recent Experiences)
+{{#day_residue}}
+- {{content}} (emotional charge: {{emotional_charge}})
+  Triggers signifiers: {{signifier_triggers}}
+{{/day_residue}}
 
-## Unconscious Signifiers Active in {{agent_name}}'s Mind
-{{#activated_signifiers}}
+### Latent Dream Thoughts
+{{#latent_thoughts}}
+Repressed wishes: {{wishes}}
+Core anxieties: {{anxieties}}
+Forbidden content: {{forbidden_content}}
+{{/latent_thoughts}}
+
+### Active Unconscious Elements
+{{#unconscious_signifiers}}
 - {{name}}: {{significance}}
-  Associations: {{#associations}}{{.}}, {{/associations}}
-{{/activated_signifiers}}
+{{/unconscious_signifiers}}
 
-## Recent Memories/Interactions
-{{#recent_memories}}
-- {{.}}
-{{/recent_memories}}
+Object a manifestation: {{object_a.description}}
+Symptom pattern: {{symptom.description}}
 
-## Unconscious Signifying Chains
-{{#unconscious_chains}}
-- {{name}}: {{#signifiers}}{{.}}, {{/signifiers}}
-{{/unconscious_chains}}
+## Dream-Work Instructions
 
-## Instructions
-1. Create a surreal, symbolic dream with 1-3 scenes that feels like a real human dream
-2. Incorporate the activated signifiers and their associations
-3. Include elements from recent memories/interactions
-4. Create a narrative that expresses unconscious desires and anxieties
-5. Include visual descriptions that could be used to generate dream imagery
-6. Format the output as a JSON object with the following structure:
+### 1. Apply Condensation (Verdichtung)
+- Combine multiple latent thoughts into single dream images
+- Create composite figures from multiple people
+- Overdetermine dream elements with multiple meanings
+Example: A figure who is simultaneously mother/boss/judge
+
+### 2. Apply Displacement (Verschiebung)  
+- Shift emotional intensity from important to trivial
+- Transfer affect from forbidden to acceptable objects
+- Reverse significance (make central peripheral)
+Example: Intense anxiety about a button instead of death
+
+### 3. Considerations of Representability
+- Convert abstract thoughts to concrete visual scenes
+- Transform words into images
+- Use spatial relations for logical relations
+Example: "Feeling distant" becomes physical distance
+
+### 4. Symbolic Transformation
+- Apply both universal and personal symbols
+- Let signifiers appear in disguised form
+- Use the dreamer's unique symbolic vocabulary
+
+## Required Output Format
 
 ```json
 {
-  "title": "Dream Title",
-  "emotional_tone": "Overall emotional tone",
-  "scenes": [
-    {
-      "setting": "Description of the dream setting",
-      "narrative": "What happens in this scene",
-      "symbols": ["key symbol 1", "key symbol 2"],
-      "signifiers_expressed": ["signifier name 1", "signifier name 2"],
-      "visual_description": "Detailed visual description for image generation"
-    }
-  ],
-  "analysis": {
-    "key_signifiers": ["signifier 1", "signifier 2"],
-    "central_desire": "What the dream expresses about desire",
-    "repressed_content": "What appears to be repressed in the dream"
+  "manifest_content": {
+    "title": "Dream title",
+    "scenes": [
+      {
+        "setting": "Where the scene takes place",
+        "narrative": "What happens (dream logic, not normal logic)",
+        "key_elements": ["element1", "element2"],
+        "emotional_tone": "The feeling of the scene",
+        "condensations": ["what multiple meanings are condensed here"],
+        "displacements": ["what affects are displaced"],
+        "symbols": ["symbolic elements and their latent meaning"]
+      }
+    ],
+    "overall_narrative": "How the dream flows (with scene transitions)",
+    "dream_logic_elements": ["impossible things that feel normal in the dream"]
+  },
+  "dream_work_trace": {
+    "primary_wish_fulfillment": "What wish the dream fulfills",
+    "anxiety_management": "How the dream manages anxiety",
+    "defensive_operations": ["how the dream-work disguises content"],
+    "return_of_repressed": ["what repressed elements return in distorted form"]
   }
 }
 
-Generate a realistic dream that {{agent_name}} might have had:
+Create a dream that:
+
+Feels genuinely dreamlike (illogical but emotionally coherent)
+Shows clear dream-work mechanisms
+Fulfills wishes while disguising them
+Manages anxiety through transformation
+Includes uncanny/unheimlich elements
+Has that peculiar dream atmosphere where anything can happen

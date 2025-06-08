@@ -1,0 +1,12 @@
+{
+  "agent_name": "Tom",
+  "extraction_date": "20250608_205110",
+  "conscious_status": "completed",
+  "unconscious_status": "failed",
+  "overall_status": "completed",
+  "conscious_stats": {
+    "memories_extracted": 10,
+    "relationships_extracted": 6,
+    "persona_extracted": true
+  }
+}

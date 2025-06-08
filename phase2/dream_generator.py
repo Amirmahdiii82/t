@@ -1,397 +1,585 @@
 import os
 import json
 import random
-import re
-import traceback
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional, Tuple
 from interfaces.llm_interface import LLMInterface
 from interfaces.vlm_interface import VLMInterface
 
 class DreamGenerator:
+    """Generate dreams using Freudian dream-work mechanisms and Lacanian symbolic logic."""
+    
     def __init__(self, agent_name: str, memory_manager, base_path: str = "base_agents"):
-        """Initialize dream generator."""
         self.agent_name = agent_name
         self.memory_manager = memory_manager
         self.base_path = base_path
         self.agent_path = os.path.join(base_path, agent_name)
         
-        # Initialize interfaces
         self.llm = LLMInterface()
         self.vlm = VLMInterface()
         
-        # Dream generation settings
-        self.dream_length_range = (100, 500)  # words
-        self.max_dream_elements = 5
+        # Load unconscious structures
+        self._load_unconscious_structures()
         
         print(f"Dream Generator initialized for {agent_name}")
     
+    def _load_unconscious_structures(self):
+        """Load unconscious structures for dream generation."""
+        try:
+            unconscious = self.memory_manager.unconscious_memory
+            self.signifiers = unconscious.get('signifiers', [])
+            self.chains = unconscious.get('signifying_chains', [])
+            self.object_a = unconscious.get('object_a', {})
+            self.symptom = unconscious.get('symptom', {})
+            self.dream_work_patterns = unconscious.get('dream_work_patterns', {})
+        except:
+            self.signifiers = []
+            self.chains = []
+            self.object_a = {}
+            self.symptom = {}
+            self.dream_work_patterns = {}
+    
     def generate_dream(self, dream_context: str = "sleep") -> Dict[str, Any]:
-        """Generate a dream based on current memory state."""
+        """Generate a dream using proper psychoanalytic dream-work."""
         print(f"Generating dream for {self.agent_name}...")
         
         try:
-            # Get memory context for dream generation
-            memory_context = self._gather_dream_context()
+            # 1. Gather day residue (recent memories)
+            day_residue = self._gather_day_residue()
             
-            # Generate dream narrative
-            dream_narrative = self._generate_dream_narrative(memory_context, dream_context)
+            # 2. Identify latent dream thoughts
+            latent_thoughts = self._identify_latent_thoughts(day_residue)
             
-            # Generate dream imagery
-            dream_images = self._generate_dream_imagery(dream_narrative)
+            # 3. Apply dream-work mechanisms
+            dream_work = self._apply_dream_work(latent_thoughts)
             
-            # Create dream object
+            # 4. Generate manifest dream content
+            manifest_dream = self._generate_manifest_content(dream_work)
+            
+            # 5. Apply secondary revision
+            final_dream = self._apply_secondary_revision(manifest_dream)
+            
+            # 6. Generate dream imagery
+            dream_images = self._generate_dream_imagery(final_dream)
+            
+            # 7. Analyze dream for interpretation
+            dream_analysis = self._analyze_dream(final_dream, latent_thoughts)
+            
+            # Create complete dream object
             dream = {
                 "id": f"dream_{int(datetime.now().timestamp())}",
                 "agent_name": self.agent_name,
                 "timestamp": datetime.now().isoformat(),
                 "context": dream_context,
-                "narrative": dream_narrative,
+                "day_residue": day_residue,
+                "latent_thoughts": latent_thoughts,
+                "dream_work": dream_work,
+                "manifest_content": final_dream,
                 "images": dream_images,
-                "memory_sources": memory_context,
-                "emotional_state": self.memory_manager.get_emotional_state(),
-                "unconscious_elements": self._extract_unconscious_elements(dream_narrative)
+                "analysis": dream_analysis,
+                "emotional_state": self.memory_manager.get_emotional_state()
             }
             
             # Save dream
             self._save_dream(dream)
             
-            print(f"Dream generated and saved: {dream['id']}")
             return dream
             
         except Exception as e:
             print(f"Error generating dream: {e}")
+            import traceback
             traceback.print_exc()
             return None
     
-    def _gather_dream_context(self) -> Dict[str, Any]:
-        """Gather memory context for dream generation."""
-        context = {
-            "recent_memories": [],
-            "emotional_memories": [],
-            "relationships": [],
-            "unconscious_signifiers": [],
-            "current_emotional_state": None
-        }
+    def _gather_day_residue(self) -> List[Dict[str, Any]]:
+        """Gather recent experiences that will form day residue."""
+        day_residue = []
         
-        try:
-            # Get recent short-term memories
-            short_term = self.memory_manager.get_short_term_memory(5)
-            context["recent_memories"] = [mem["content"] for mem in short_term]
-            
-            # Get emotionally significant memories
-            emotional_state = self.memory_manager.get_emotional_state()
-            emotion_category = emotional_state.get("emotion_category", "neutral")
-            
-            # Search for memories related to current emotional state
-            emotional_memories = self.memory_manager.retrieve_memories(emotion_category, 3)
-            context["emotional_memories"] = emotional_memories
-            
-            # Get key relationships
-            relationships = self.memory_manager.retrieve_relationships("important", 3)
-            context["relationships"] = relationships
-            
-            # Get unconscious signifiers
-            signifiers = self.memory_manager.get_unconscious_signifiers(5)
-            context["unconscious_signifiers"] = signifiers
-            
-            # Current emotional state
-            context["current_emotional_state"] = emotional_state
-            
-        except Exception as e:
-            print(f"Error gathering dream context: {e}")
+        # Get recent short-term memories
+        recent_memories = self.memory_manager.get_short_term_memory(10)
         
-        return context
-    
-    def _generate_dream_narrative(self, memory_context: Dict[str, Any], dream_context: str) -> str:
-        """Generate dream narrative using LLM."""
-        try:
-            # Prepare prompt data
-            prompt_data = {
-                "agent_name": self.agent_name,
-                "dream_context": dream_context,
-                "recent_memories": memory_context.get("recent_memories", []),
-                "emotional_memories": memory_context.get("emotional_memories", []),
-                "relationships": memory_context.get("relationships", []),
-                "unconscious_signifiers": memory_context.get("unconscious_signifiers", []),
-                "emotional_state": memory_context.get("current_emotional_state", {}),
-                "dream_length": random.randint(*self.dream_length_range)
+        for memory in recent_memories:
+            # Extract elements that could become day residue
+            residue = {
+                'content': memory.get('content', ''),
+                'context': memory.get('context', ''),
+                'emotional_charge': memory.get('emotional_state', {}).get('emotion_category', 'neutral'),
+                'timestamp': memory.get('timestamp', ''),
+                'signifier_triggers': []
             }
             
-            # Generate dream narrative
-            narrative = self.llm.generate("phase2", "generate_dream", prompt_data)
+            # Check which signifiers this memory might trigger
+            content_lower = residue['content'].lower()
+            for signifier in self.signifiers[:20]:  # Check top signifiers
+                if isinstance(signifier, dict):
+                    sig_name = signifier.get('name', '').lower()
+                    if sig_name in content_lower:
+                        residue['signifier_triggers'].append(sig_name)
             
-            if narrative:
-                return narrative
-            else:
-                return self._generate_fallback_dream(memory_context)
-                
-        except Exception as e:
-            print(f"Error generating dream narrative: {e}")
-            return self._generate_fallback_dream(memory_context)
+            if residue['signifier_triggers'] or residue['emotional_charge'] != 'neutral':
+                day_residue.append(residue)
+        
+        return day_residue
     
-    def _generate_fallback_dream(self, memory_context: Dict[str, Any]) -> str:
-        """Generate a simple fallback dream."""
-        elements = []
+    def _identify_latent_thoughts(self, day_residue: List[Dict]) -> Dict[str, Any]:
+        """Identify latent dream thoughts from day residue and unconscious."""
+        prompt = f"""
+        Identify latent dream thoughts from these elements:
         
-        # Add recent memory elements
-        if memory_context.get("recent_memories"):
-            elements.extend(memory_context["recent_memories"][:2])
+        Day residue: {json.dumps(day_residue, indent=2)}
         
-        # Add relationship elements
-        if memory_context.get("relationships"):
-            for rel in memory_context["relationships"][:2]:
-                if isinstance(rel, dict):
-                    name = rel.get("name", "someone")
-                    elements.append(f"interacting with {name}")
+        Unconscious signifiers: {json.dumps(self.signifiers[:10], indent=2)}
+        Object a: {json.dumps(self.object_a, indent=2)}
+        Symptom: {json.dumps(self.symptom, indent=2)}
         
-        # Add emotional elements
-        emotional_state = memory_context.get("current_emotional_state", {})
-        emotion = emotional_state.get("emotion_category", "neutral")
-        elements.append(f"feeling {emotion}")
+        Following Freud's model, identify:
+        1. Repressed wishes trying to emerge
+        2. Infantile wishes connected to current experiences  
+        3. Forbidden desires seeking expression
+        4. Anxieties requiring dream-work
+        5. Connections between day residue and unconscious material
         
-        # Combine elements into a simple narrative
-        if elements:
-            dream = f"I dreamed about {', '.join(elements[:3])}. "
-            dream += f"The dream felt {emotion} and reflected my recent experiences."
-        else:
-            dream = f"I had a {emotion} dream that I can't quite remember clearly."
+        Return structured latent thoughts.
+        """
         
-        return dream
-    
-    def _generate_dream_imagery(self, dream_narrative: str) -> List[Dict[str, Any]]:
-        """Generate visual imagery for the dream using advanced element extraction."""
-        images = []
+        response = self.llm.generate(None, None, prompt)
         
         try:
-            # Extract visual elements using advanced NLP techniques
-            visual_elements = self._extract_visual_elements_advanced(dream_narrative)
-            
-            # Generate images for key elements
-            for i, element in enumerate(visual_elements[:3]):  # Limit to 3 images
-                try:
-                    # Create more sophisticated image prompt
-                    image_prompt = self._create_image_prompt(element, dream_narrative)
-                    
-                    # Generate image path
-                    image_filename = f"dream_image_{int(datetime.now().timestamp())}_{i+1}"
-                    image_output_path = os.path.join(self.agent_path, "signifier_images", image_filename)
-                    
-                    # Generate image using VLM
-                    image_result = self.vlm.direct_image_generation(image_prompt, image_output_path)
-                    
-                    if image_result and image_result.get("success"):
-                        images.append({
-                            "id": f"dream_image_{i+1}",
-                            "element": element,
-                            "prompt": image_prompt,
-                            "image_path": image_result.get("image_path"),
-                            "thumbnail_path": image_result.get("thumbnail_path"),
-                            "timestamp": datetime.now().isoformat()
-                        })
-                        print(f"Generated dream image for element: {element}")
-                    else:
-                        print(f"Failed to generate image for element: {element}")
-                        
-                except Exception as e:
-                    print(f"Error generating image for element '{element}': {e}")
-                    continue
+            latent = json.loads(response)
+        except:
+            # Structure the response if not JSON
+            latent = {
+                'wishes': ['unconscious wish for recognition', 'desire for maternal comfort'],
+                'anxieties': ['fear of abandonment', 'castration anxiety'],
+                'forbidden_content': ['aggressive impulses', 'incestuous desires'],
+                'connections': day_residue
+            }
         
-        except Exception as e:
-            print(f"Error generating dream imagery: {e}")
+        return latent
+    
+    def _apply_dream_work(self, latent_thoughts: Dict) -> Dict[str, Any]:
+        """Apply Freudian dream-work mechanisms."""
+        dream_work = {
+            'condensation': [],
+            'displacement': [],
+            'representability': [],
+            'symbolization': []
+        }
+        
+        # 1. Condensation (Verdichtung)
+        dream_work['condensation'] = self._apply_condensation(latent_thoughts)
+        
+        # 2. Displacement (Verschiebung)
+        dream_work['displacement'] = self._apply_displacement(latent_thoughts)
+        
+        # 3. Considerations of Representability
+        dream_work['representability'] = self._apply_representability(latent_thoughts)
+        
+        # 4. Symbolization
+        dream_work['symbolization'] = self._apply_symbolization(latent_thoughts)
+        
+        return dream_work
+    
+    def _apply_condensation(self, latent_thoughts: Dict) -> List[Dict]:
+        """Apply condensation - multiple ideas in single image."""
+        condensations = []
+        
+        # Combine related signifiers
+        wishes = latent_thoughts.get('wishes', [])
+        anxieties = latent_thoughts.get('anxieties', [])
+        
+        # Create condensed images
+        if len(wishes) > 1:
+            condensations.append({
+                'type': 'wish_condensation',
+                'elements': wishes[:3],
+                'condensed_image': f"A figure that is both {wishes[0]} and {wishes[1]}",
+                'overdetermination': len(wishes)
+            })
+        
+        # Condense people/figures
+        connections = latent_thoughts.get('connections', [])
+        if len(connections) > 1:
+            figures = [c.get('content', '') for c in connections if 'person' in c.get('content', '').lower()]
+            if len(figures) > 1:
+                condensations.append({
+                    'type': 'person_condensation',
+                    'elements': figures,
+                    'condensed_image': "A composite figure with features of multiple people",
+                    'interpretation': 'Multiple relationships condensed into one'
+                })
+        
+        # Condense signifying chains
+        for chain in self.chains[:3]:
+            if isinstance(chain, dict):
+                signifiers = chain.get('signifiers', [])
+                if len(signifiers) > 2:
+                    condensations.append({
+                        'type': 'chain_condensation',
+                        'chain': chain.get('name', ''),
+                        'condensed_signifiers': signifiers[:3],
+                        'dream_element': f"An object that represents {', '.join(signifiers[:3])}"
+                    })
+        
+        return condensations
+    
+    def _apply_displacement(self, latent_thoughts: Dict) -> List[Dict]:
+        """Apply displacement - shift emphasis and affect."""
+        displacements = []
+        
+        # Displace affect from forbidden to acceptable
+        forbidden = latent_thoughts.get('forbidden_content', [])
+        for content in forbidden:
+            # Find acceptable substitute
+            substitute = self._find_displacement_substitute(content)
+            displacements.append({
+                'original': content,
+                'displaced_to': substitute,
+                'mechanism': 'affect_transfer',
+                'interpretation': f"Intense feeling about {content} displaced onto {substitute}"
+            })
+        
+        # Displace from important to trivial
+        anxieties = latent_thoughts.get('anxieties', [])
+        for anxiety in anxieties[:2]:
+            trivial_element = self._generate_trivial_element()
+            displacements.append({
+                'original': anxiety,
+                'displaced_to': trivial_element,
+                'mechanism': 'significance_reversal',
+                'interpretation': f"Core anxiety about {anxiety} appears as concern about {trivial_element}"
+            })
+        
+        return displacements
+    
+    def _apply_representability(self, latent_thoughts: Dict) -> List[Dict]:
+        """Convert abstract thoughts to concrete visual representations."""
+        representations = []
+        
+        # Convert abstract concepts to visual scenes
+        abstract_concepts = []
+        
+        # Extract abstract elements from wishes and anxieties
+        for wish in latent_thoughts.get('wishes', []):
+            if any(word in str(wish).lower() for word in ['love', 'freedom', 'power', 'death']):
+                abstract_concepts.append(wish)
+        
+        for concept in abstract_concepts:
+            visual = self._convert_to_visual(concept)
+            representations.append({
+                'abstract_thought': concept,
+                'visual_representation': visual,
+                'mechanism': 'concretization'
+            })
+        
+        # Convert relationships to spatial arrangements
+        connections = latent_thoughts.get('connections', [])
+        if connections:
+            representations.append({
+                'abstract_thought': 'relationship dynamics',
+                'visual_representation': 'People positioned at various distances in a room',
+                'mechanism': 'spatial_metaphor'
+            })
+        
+        return representations
+    
+    def _apply_symbolization(self, latent_thoughts: Dict) -> List[Dict]:
+        """Apply symbolic transformations."""
+        symbols = []
+        
+        # Standard Freudian symbols
+        symbol_mappings = {
+            'sexual': ['snake', 'tower', 'tunnel', 'flower'],
+            'death': ['darkness', 'journey', 'farewell', 'winter'],
+            'birth': ['water', 'emergence', 'eggs', 'dawn'],
+            'castration': ['cutting', 'loss of teeth', 'broken objects'],
+            'mother': ['house', 'earth', 'ocean', 'container']
+        }
+        
+        # Apply symbolization based on latent content
+        for category, symbols_list in symbol_mappings.items():
+            if any(category in str(thought).lower() for thought in latent_thoughts.get('wishes', [])):
+                selected_symbol = random.choice(symbols_list)
+                symbols.append({
+                    'latent_content': category,
+                    'symbol': selected_symbol,
+                    'appearance': f"A prominent {selected_symbol} appears in the dream"
+                })
+        
+        # Personal symbols from signifiers
+        for signifier in self.signifiers[:5]:
+            if isinstance(signifier, dict) and signifier.get('associations'):
+                symbols.append({
+                    'latent_content': signifier.get('name', ''),
+                    'symbol': random.choice(signifier['associations']),
+                    'appearance': f"{signifier['name']} appears as {random.choice(signifier['associations'])}"
+                })
+        
+        return symbols
+    
+    def _generate_manifest_content(self, dream_work: Dict) -> Dict[str, Any]:
+        """Generate the manifest dream content from dream-work."""
+        prompt = f"""
+        Create a dream narrative using these dream-work elements:
+        
+        Condensations: {json.dumps(dream_work['condensation'], indent=2)}
+        Displacements: {json.dumps(dream_work['displacement'], indent=2)}
+        Visual representations: {json.dumps(dream_work['representability'], indent=2)}
+        Symbols: {json.dumps(dream_work['symbolization'], indent=2)}
+        
+        Create a surreal but coherent dream narrative that:
+        1. Incorporates the condensed images naturally
+        2. Shows displaced affects and emphasis
+        3. Uses concrete visual scenes
+        4. Includes the symbolic elements
+        5. Maintains dream-like illogic and scene shifts
+        6. Has 2-3 distinct scenes
+        
+        Format as JSON with scenes and narrative.
+        """
+        
+        response = self.llm.generate(None, None, prompt)
+        
+        try:
+            manifest = json.loads(response)
+        except:
+            # Create structured manifest content
+            manifest = self._create_default_manifest(dream_work)
+        
+        return manifest
+    
+    def _apply_secondary_revision(self, manifest_content: Dict) -> Dict[str, Any]:
+        """Apply secondary revision to make dream more coherent."""
+        prompt = f"""
+        Apply secondary revision to this dream content to make it more story-like:
+        
+        {json.dumps(manifest_content, indent=2)}
+        
+        Add:
+        1. Narrative connections between scenes
+        2. Rational explanations for bizarre elements (dream logic)
+        3. Temporal sequence
+        4. Character continuity
+        
+        Keep the surreal quality but add enough coherence to be tellable.
+        """
+        
+        response = self.llm.generate(None, None, prompt)
+        
+        try:
+            revised = json.loads(response)
+            revised['revision_type'] = 'secondary'
+        except:
+            revised = manifest_content
+            revised['revision_type'] = 'minimal'
+        
+        return revised
+    
+    def _generate_dream_imagery(self, dream_content: Dict) -> List[Dict[str, Any]]:
+        """Generate surrealist images for key dream scenes."""
+        images = []
+        scenes = dream_content.get('scenes', [])
+        
+        for i, scene in enumerate(scenes[:3]):  # Limit to 3 images
+            # Extract visual elements from scene
+            visual_prompt = self._create_dream_image_prompt(scene, dream_content)
+            
+            image_filename = f"dream_{datetime.now().strftime('%Y%m%d_%H%M%S')}_scene_{i+1}"
+            output_path = os.path.join(self.agent_path, "dreams", "images", image_filename)
+            
+            result = self.vlm.direct_image_generation(visual_prompt, output_path)
+            
+            if result.get("success"):
+                images.append({
+                    "scene_index": i,
+                    "image_path": result["image_path"],
+                    "prompt": visual_prompt,
+                    "dream_elements": scene.get('key_elements', [])
+                })
         
         return images
     
-    def _extract_visual_elements_advanced(self, narrative: str) -> List[str]:
-        """Extract visual elements from dream narrative using advanced techniques."""
-        visual_elements = []
-        
-        try:
-            # Use LLM to extract visual elements
-            extraction_prompt = f"""
-            Analyze this dream narrative and extract the 3-5 most vivid visual elements that would make compelling surrealist images:
-            
-            Dream: {narrative}
-            
-            Focus on:
-            - Key objects, places, or scenes
-            - Symbolic or metaphorical elements
-            - Emotionally charged imagery
-            - Surreal or impossible elements
-            
-            Return only a simple list of visual elements, one per line.
-            """
-            
-            llm_response = self.llm.generate(None, extraction_prompt)
-            
-            if llm_response:
-                # Parse the response to extract elements
-                lines = llm_response.strip().split('\n')
-                for line in lines:
-                    line = line.strip()
-                    # Remove bullet points, numbers, etc.
-                    line = re.sub(r'^[-*•\d\.\)\s]+', '', line)
-                    if line and len(line) > 3:
-                        visual_elements.append(line)
-                        if len(visual_elements) >= 5:
-                            break
-            
-            # Fallback to regex-based extraction if LLM fails
-            if not visual_elements:
-                visual_elements = self._extract_visual_elements_regex(narrative)
-            
-        except Exception as e:
-            print(f"Error in advanced visual element extraction: {e}")
-            # Fallback to simple extraction
-            visual_elements = self._extract_visual_elements_simple(narrative)
-        
-        return visual_elements[:5]
-    
-    def _extract_visual_elements_regex(self, narrative: str) -> List[str]:
-        """Extract visual elements using regex patterns."""
-        visual_elements = []
-        
-        # Patterns for visual elements
-        patterns = [
-            r'\b(flying|falling|running|walking|swimming|climbing)\b',
-            r'\b(house|building|room|kitchen|bedroom|bathroom|garden|forest|ocean|mountain|city|street)\b',
-            r'\b(car|plane|train|boat|bicycle|horse|animal|dog|cat|bird)\b',
-            r'\b(fire|water|light|darkness|shadow|mirror|window|door|stairs|bridge)\b',
-            r'\b(person|people|man|woman|child|family|friend|stranger)\b',
-            r'\b(red|blue|green|yellow|black|white|bright|dark|colorful)\b.*?\b(object|thing|item)\b'
-        ]
-        
-        for pattern in patterns:
-            matches = re.findall(pattern, narrative, re.IGNORECASE)
-            for match in matches:
-                if isinstance(match, tuple):
-                    match = ' '.join(match)
-                if match and match not in visual_elements:
-                    visual_elements.append(match)
-                    if len(visual_elements) >= 5:
-                        break
-            if len(visual_elements) >= 5:
-                break
-        
-        return visual_elements
-    
-    def _extract_visual_elements_simple(self, narrative: str) -> List[str]:
-        """Simple fallback extraction method."""
-        # Common visual dream elements
-        common_elements = [
-            "flying through clouds", "falling into darkness", "mysterious house",
-            "endless corridor", "flowing water", "bright light", "shadowy figure",
-            "familiar face", "strange landscape", "floating objects"
-        ]
-        
-        narrative_lower = narrative.lower()
-        found_elements = []
-        
-        for element in common_elements:
-            if any(word in narrative_lower for word in element.split()):
-                found_elements.append(element)
-                if len(found_elements) >= 3:
-                    break
-        
-        # If still no elements, use generic ones
-        if not found_elements:
-            found_elements = ["dream landscape", "symbolic imagery", "surreal scene"]
-        
-        return found_elements
-    
-    def _create_image_prompt(self, element: str, full_narrative: str) -> str:
-        """Create a sophisticated image generation prompt."""
-        # Extract emotional tone from narrative
-        emotional_words = re.findall(r'\b(anxious|peaceful|frightening|joyful|sad|angry|confused|excited|calm|disturbing)\b', 
-                                    full_narrative, re.IGNORECASE)
-        emotional_tone = emotional_words[0] if emotional_words else "dreamlike"
-        
-        # Create sophisticated prompt
+    def _analyze_dream(self, dream_content: Dict, latent_thoughts: Dict) -> Dict[str, Any]:
+        """Provide psychoanalytic interpretation of the dream."""
         prompt = f"""
-        Create a surrealist dream image representing "{element}" with a {emotional_tone} atmosphere.
+        Provide a Freudian/Lacanian interpretation of this dream:
         
-        Style: Salvador Dalí meets René Magritte - dreamlike, symbolic, with impossible elements and fluid reality.
+        Manifest content: {json.dumps(dream_content, indent=2)}
+        Latent thoughts: {json.dumps(latent_thoughts, indent=2)}
         
-        Visual elements:
-        - {element} as the central focus
-        - Dreamlike distortions and impossible perspectives
-        - Rich symbolic imagery
-        - {emotional_tone} mood and lighting
-        - Surreal color palette
-        - Floating or morphing elements
+        Analyze:
+        1. How the dream fulfills wishes
+        2. What anxieties it manages
+        3. The role of the dream-work in disguising content
+        4. Symbolic meanings
+        5. Relationship to the subject's symptom and fantasy
+        6. What the dream reveals about desire
         
-        The image should feel like it emerged from the unconscious mind, with symbolic weight and psychoanalytic depth.
+        Provide a concise psychoanalytic interpretation.
+        """
+        
+        interpretation = self.llm.generate(None, None, prompt)
+        
+        return {
+            "interpretation": interpretation,
+            "wish_fulfillment": "The dream fulfills repressed wishes through symbolic satisfaction",
+            "anxiety_management": "Dream-work transforms anxiety into manageable images",
+            "desire_structure": "The dream reveals how desire circulates around object a"
+        }
+    
+    def _find_displacement_substitute(self, forbidden_content: str) -> str:
+        """Find acceptable substitute for forbidden content."""
+        substitutes = {
+            'aggressive': ['competitive sports', 'breaking objects', 'loud arguments'],
+            'sexual': ['dancing', 'eating', 'swimming'],
+            'death': ['travel', 'transformation', 'sleep'],
+            'incest': ['close friendship', 'mentorship', 'admiration']
+        }
+        
+        for key, subs in substitutes.items():
+            if key in forbidden_content.lower():
+                return random.choice(subs)
+        
+        return 'mundane daily activity'
+    
+    def _generate_trivial_element(self) -> str:
+        """Generate trivial element for displacement."""
+        trivial_elements = [
+            'a missing button',
+            'a crooked picture frame',
+            'an untied shoelace',
+            'a spelling error',
+            'a misplaced book',
+            'a wrong turn',
+            'a forgotten name',
+            'a stain on clothing'
+        ]
+        return random.choice(trivial_elements)
+    
+    def _convert_to_visual(self, abstract_concept: str) -> str:
+        """Convert abstract concept to visual representation."""
+        visual_mappings = {
+            'love': 'two trees with intertwined branches',
+            'freedom': 'birds flying from an open cage',
+            'power': 'a towering figure casting long shadows',
+            'death': 'a wilting flower in a vast field',
+            'anxiety': 'a maze with no visible exit',
+            'desire': 'a person reaching for a distant light'
+        }
+        
+        concept_lower = str(abstract_concept).lower()
+        for key, visual in visual_mappings.items():
+            if key in concept_lower:
+                return visual
+        
+        return 'an abstract geometric shape pulsing with energy'
+    
+    def _create_default_manifest(self, dream_work: Dict) -> Dict[str, Any]:
+        """Create default manifest content if parsing fails."""
+        scenes = []
+        
+        # Create scene from condensations
+        if dream_work['condensation']:
+            condensation = dream_work['condensation'][0]
+            scenes.append({
+                'setting': 'A fluid, shifting space',
+                'narrative': f"I see {condensation.get('condensed_image', 'a composite figure')}",
+                'key_elements': condensation.get('elements', []),
+                'emotional_tone': 'uncanny'
+            })
+        
+        # Create scene from displacement
+        if dream_work['displacement']:
+            displacement = dream_work['displacement'][0]
+            scenes.append({
+                'setting': 'An ordinary location that feels significant',
+                'narrative': f"I'm deeply concerned about {displacement.get('displaced_to', 'something trivial')}",
+                'key_elements': [displacement.get('original', ''), displacement.get('displaced_to', '')],
+                'emotional_tone': 'anxious'
+            })
+        
+        return {
+            'title': 'Dream of Hidden Desires',
+            'scenes': scenes,
+            'overall_narrative': 'A dream where meanings shift and nothing is quite what it seems'
+        }
+    
+    def _create_dream_image_prompt(self, scene: Dict, full_dream: Dict) -> str:
+        """Create prompt for dream image generation."""
+        elements = scene.get('key_elements', [])
+        setting = scene.get('setting', 'surreal dreamscape')
+        tone = scene.get('emotional_tone', 'mysterious')
+        
+        prompt = f"""
+        Create a surrealist dream image with these elements:
+        
+        Setting: {setting}
+        Key elements: {', '.join(elements[:5])}
+        Emotional tone: {tone}
+        
+        Style: Combine Salvador Dalí's melting reality with René Magritte's impossible objects and 
+        Remedios Varo's mystical symbolism.
+        
+        The image should:
+        - Feel like a genuine dream - illogical but emotionally coherent
+        - Use visual condensation (multiple meanings in one image)
+        - Include subtle distortions and impossibilities
+        - Have rich symbolic content open to interpretation
+        - Capture the uncanny feeling of dreams
+        
+        Make it detailed, dreamlike, and psychologically evocative.
         """
         
         return prompt
     
-    def _extract_unconscious_elements(self, dream_narrative: str) -> List[Dict[str, Any]]:
-        """Extract unconscious elements from dream narrative."""
-        unconscious_elements = []
-        
-        try:
-            # Get unconscious signifiers
-            signifiers = self.memory_manager.get_unconscious_signifiers(10)
-            
-            # Check which signifiers appear in the dream
-            narrative_lower = dream_narrative.lower()
-            
-            for signifier in signifiers:
-                if isinstance(signifier, dict):
-                    name = signifier.get("name", "").lower()
-                    if name and name in narrative_lower:
-                        unconscious_elements.append({
-                            "signifier": signifier.get("name"),
-                            "significance": signifier.get("significance", ""),
-                            "associations": signifier.get("associations", [])
-                        })
-        
-        except Exception as e:
-            print(f"Error extracting unconscious elements: {e}")
-        
-        return unconscious_elements
-    
     def _save_dream(self, dream: Dict[str, Any]) -> None:
-        """Save dream to file."""
+        """Save dream to file system."""
         try:
-            # Create dreams directory if it doesn't exist
             dreams_dir = os.path.join(self.agent_path, "dreams")
             os.makedirs(dreams_dir, exist_ok=True)
             
-            # Save dream
-            dream_filename = f"{dream['id']}.json"
-            dream_path = os.path.join(dreams_dir, dream_filename)
-            
+            # Save dream data
+            dream_path = os.path.join(dreams_dir, f"{dream['id']}.json")
             with open(dream_path, 'w') as f:
                 json.dump(dream, f, indent=2)
             
             print(f"Dream saved to {dream_path}")
             
+            # Update dream log
+            log_path = os.path.join(dreams_dir, "dream_log.json")
+            try:
+                with open(log_path, 'r') as f:
+                    log = json.load(f)
+            except:
+                log = []
+            
+            log.append({
+                'id': dream['id'],
+                'timestamp': dream['timestamp'],
+                'summary': dream.get('manifest_content', {}).get('overall_narrative', 'A dream')
+            })
+            
+            with open(log_path, 'w') as f:
+                json.dump(log, f, indent=2)
+                
         except Exception as e:
             print(f"Error saving dream: {e}")
     
     def get_recent_dreams(self, limit: int = 5) -> List[Dict[str, Any]]:
-        """Get recent dreams."""
+        """Get recent dreams with full psychoanalytic structure."""
         dreams = []
+        dreams_dir = os.path.join(self.agent_path, "dreams")
         
-        try:
-            dreams_dir = os.path.join(self.agent_path, "dreams")
+        if os.path.exists(dreams_dir):
+            dream_files = [f for f in os.listdir(dreams_dir) 
+                          if f.endswith('.json') and f != 'dream_log.json']
+            dream_files.sort(reverse=True)
             
-            if os.path.exists(dreams_dir):
-                dream_files = [f for f in os.listdir(dreams_dir) if f.endswith('.json')]
-                dream_files.sort(reverse=True)  # Most recent first
-                
-                for dream_file in dream_files[:limit]:
-                    dream_path = os.path.join(dreams_dir, dream_file)
-                    try:
-                        with open(dream_path, 'r') as f:
-                            dream = json.load(f)
-                            dreams.append(dream)
-                    except Exception as e:
-                        print(f"Error loading dream {dream_file}: {e}")
-                        continue
-        
-        except Exception as e:
-            print(f"Error getting recent dreams: {e}")
+            for dream_file in dream_files[:limit]:
+                try:
+                    with open(os.path.join(dreams_dir, dream_file), 'r') as f:
+                        dreams.append(json.load(f))
+                except:
+                    continue
         
         return dreams
