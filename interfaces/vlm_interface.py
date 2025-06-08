@@ -22,10 +22,24 @@ class VLMInterface:
         top_p = kwargs.get('top_p', self.config.top_p)
         top_k = kwargs.get('top_k', self.config.top_k)
         
-        if data:
-            prompt = render_prompt(phase, prompt_name, data)
+        # Handle different prompt input methods
+        if phase and prompt_name and data:
+            # Load from template file
+            try:
+                prompt = render_prompt(phase, prompt_name, data)
+            except Exception as e:
+                print(f"Error loading prompt template: {e}")
+                # Fallback to using prompt_name as direct prompt
+                prompt = str(prompt_name)
+        elif data and not phase and not prompt_name:
+            # Direct prompt passed as data
+            prompt = str(data)
+        elif prompt_name and not phase:
+            # Direct prompt passed as prompt_name
+            prompt = str(prompt_name)
         else:
-            prompt = prompt_name 
+            # Fallback
+            prompt = str(prompt_name) if prompt_name else "Generate a response"
         
         contents = [
             types.Content(
@@ -77,10 +91,19 @@ class VLMInterface:
         top_p = kwargs.get('top_p', self.config.top_p)
         top_k = kwargs.get('top_k', self.config.top_k)
         
-        if data:
-            prompt = render_prompt(phase, prompt_name, data)
+        # Handle different prompt input methods
+        if phase and prompt_name and data:
+            try:
+                prompt = render_prompt(phase, prompt_name, data)
+            except Exception as e:
+                print(f"Error loading prompt template: {e}")
+                prompt = str(prompt_name)
+        elif data and not phase and not prompt_name:
+            prompt = str(data)
+        elif prompt_name and not phase:
+            prompt = str(prompt_name)
         else:
-            prompt = prompt_name
+            prompt = str(prompt_name) if prompt_name else "Generate an image"
         
         ensure_directory(os.path.dirname(output_path))
         
@@ -164,4 +187,4 @@ class VLMInterface:
     
     def direct_image_generation(self, prompt, output_path):
         """Generate an image directly without using a template."""
-        return self.generate_image(None, prompt, None, output_path)
+        return self.generate_image(None, None, prompt, output_path)

@@ -28,8 +28,8 @@ class MemoryManager:
         self.max_short_term_size = 10
         
         print(f"Memory Manager initialized for {agent_name}")
-        # print(f"Loaded conscious memory: {len(self.conscious_memory.get('memories', []))} memories, {len(self.conscious_memory.get('relationships', []))} relationships")
-        # print(f"Loaded unconscious memory: {len(self.unconscious_memory.get('signifiers', []))} signifiers")
+        print(f"Loaded conscious memory: {len(self.conscious_memory.get('memories', []))} memories, {len(self.conscious_memory.get('relationships', []))} relationships")
+        print(f"Loaded unconscious memory: {len(self.unconscious_memory.get('signifiers', []))} signifiers")
     
     def _load_conscious_memory(self) -> Dict[str, Any]:
         """Load conscious memory from file."""
@@ -60,10 +60,28 @@ class MemoryManager:
                 return unconscious_data
             else:
                 print(f"No unconscious_memory.json found at {unconscious_path}")
-                return {"signifiers": [], "signifying_chains": []}
+                return {
+                    "signifiers": [],
+                    "signifying_chains": [],
+                    "object_a": {},
+                    "symptom": {},
+                    "structural_positions": [],
+                    "fantasy_formula": "",
+                    "jouissance_economy": {},
+                    "dream_work_patterns": {}
+                }
         except Exception as e:
             print(f"Error loading unconscious memory: {e}")
-            return {"signifiers": [], "signifying_chains": []}
+            return {
+                "signifiers": [],
+                "signifying_chains": [],
+                "object_a": {},
+                "symptom": {},
+                "structural_positions": [],
+                "fantasy_formula": "",
+                "jouissance_economy": {},
+                "dream_work_patterns": {}
+            }
     
     def add_to_short_term_memory(self, content: str, context: str = "interaction") -> None:
         """Add content to short-term memory."""
@@ -112,6 +130,22 @@ class MemoryManager:
         signifiers = self.unconscious_memory.get("signifiers", [])
         return signifiers[:limit]
     
+    def get_signifying_chains(self) -> List[Dict[str, Any]]:
+        """Get signifying chains."""
+        return self.unconscious_memory.get("signifying_chains", [])
+    
+    def get_object_a(self) -> Dict[str, Any]:
+        """Get object a configuration."""
+        return self.unconscious_memory.get("object_a", {})
+    
+    def get_symptom(self) -> Dict[str, Any]:
+        """Get symptom configuration."""
+        return self.unconscious_memory.get("symptom", {})
+    
+    def get_structural_positions(self) -> List[Dict[str, Any]]:
+        """Get structural positions."""
+        return self.unconscious_memory.get("structural_positions", [])
+    
     def consolidate_short_term_memory(self) -> None:
         """Consolidate short-term memory into long-term memory (for future implementation)."""
         # This would implement the process of moving important short-term memories
@@ -132,6 +166,9 @@ class MemoryManager:
             
             print(f"Memory state saved to {conscious_path}")
             
+            # Save neuroproxy state
+            self.neuroproxy_engine._save_persistent_state()
+            
         except Exception as e:
             print(f"Error saving memory state: {e}")
     
@@ -143,6 +180,7 @@ class MemoryManager:
             "conscious_memories": len(self.conscious_memory.get("memories", [])),
             "conscious_relationships": len(self.conscious_memory.get("relationships", [])),
             "unconscious_signifiers": len(self.unconscious_memory.get("signifiers", [])),
+            "signifying_chains": len(self.unconscious_memory.get("signifying_chains", [])),
             "short_term_entries": len(self.short_term_memory),
             "rag_memories": rag_stats["memories_count"],
             "rag_relationships": rag_stats["relationships_count"],

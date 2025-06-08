@@ -1,8 +1,8 @@
 {
-  "id": "Tom_1749403232",
+  "id": "Tom_1749421019",
   "name": "Tom",
-  "created_at": "20250608_205032",
-  "last_updated": "20250608_205110",
+  "created_at": "20250609_014659",
+  "last_updated": "20250609_014817",
   "extraction_status": "completed",
   "conscious": {
     "persona": {
@@ -14,37 +14,38 @@
         "Outgoing",
         "Social",
         "Curious",
-        "Somewhat careless",
+        "Competitive",
         "Emotionally sensitive"
       ],
       "interests": [
         "Socializing",
         "Meeting new people",
         "Skateboarding",
-        "Parties or gatherings",
-        "Physical appearance and fitness"
+        "Working out",
+        "Partying"
       ],
       "key_relationships": [
-        "Girlfriend (mentioned in dream 02)",
-        "Parents (mentioned in dreams 04, 06, and 10)",
-        "Family friends (mentioned in dream 06)",
-        "Friends (mentioned in dream 08)"
+        "Parents",
+        "Girlfriend (Patty)",
+        "Friends",
+        "Family friends",
+        "A favorite dog (now deceased)"
       ],
       "fears": [
-        "Loss or separation from loved ones",
-        "Failure or inadequacy",
-        "Social rejection or embarrassment",
-        "Loss of control or coordination",
-        "Unhappiness or depression"
+        "Loss of control",
+        "Rejection or disapproval from others",
+        "Failure to achieve goals (e.g., finding a good skateboard)",
+        "Death of loved ones",
+        "Being alone or unappreciated"
       ],
       "desires": [
         "Social connection and acceptance",
-        "Physical attractiveness and fitness",
-        "Freedom and spontaneity",
-        "Fun and enjoyment",
-        "Meaningful relationships"
+        "Freedom and fun",
+        "Physical fitness and self-improvement",
+        "Romantic relationships",
+        "Creative expression (e.g., skateboarding)"
       ],
-      "background": "Tom appears to be a young adult, likely in his late teens or early twenties, who is navigating social relationships, personal interests, and emotional challenges. His dreams suggest a strong desire for social connection, physical attractiveness, and fun, but also reveal underlying fears and anxieties related to loss, failure, and rejection. Tom's background is not extensively detailed, but it is clear that he values his relationships with family and friends, and is seeking to establish his own identity and sense of purpose."
+      "background": "Tom is a young man who values social connections and enjoys meeting new people. He has a close relationship with his parents and has experienced the loss of a beloved pet. His dreams suggest that he is navigating the challenges of adolescence and early adulthood, including forming relationships, exploring his interests, and coping with emotions."
     },
     "relationships": [
       {
@@ -64,7 +65,7 @@
       },
       {
         "name": "high school friend",
-        "relationship_type": "friend",
+        "relationship_type": "acquaintance",
         "emotional_significance": "avoidance and indifference"
       },
       {
@@ -80,132 +81,133 @@
     ],
     "memories": [
       {
-        "title": "Childhood Experience with Family Friends",
-        "description": "Playing with family friends' kids in their backyard, feeling happy and carefree",
+        "title": "Childcare Experience",
+        "description": "Taking care of a young boy in a kindergarten-like setting with many toys and people around, while being distracted by two attractive girls",
+        "emotions": [
+          "curiosity",
+          "distraction",
+          "friendliness"
+        ],
+        "associated_people": [
+          "the young boy",
+          "the two girls"
+        ],
+        "significance": "Indicates a potential desire for social interaction and connection with others, particularly women",
+        "memory_type": "recent"
+      },
+      {
+        "title": "Encounter with an Acquaintance",
+        "description": "Ignoring an acquaintance from high school on the street, then being confronted by her after she transforms into the dreamer's girlfriend",
+        "emotions": [
+          "guilt",
+          "avoidance",
+          "surprise"
+        ],
+        "associated_people": [
+          "the acquaintance",
+          "the girlfriend"
+        ],
+        "significance": "Suggests feelings of guilt or anxiety related to social interactions or relationships",
+        "memory_type": "recent"
+      },
+      {
+        "title": "Misidentification",
+        "description": "Being called by the wrong name by a girl, and not correcting her",
+        "emotions": [
+          "confusion",
+          "indifference"
+        ],
+        "associated_people": [
+          "the girl"
+        ],
+        "significance": "May indicate a sense of disconnection or lack of assertiveness in social interactions",
+        "memory_type": "recent"
+      },
+      {
+        "title": "Parental Influence",
+        "description": "Hearing the dreamer's father talking in his sleep, expressing anger or frustration",
+        "emotions": [
+          "curiosity",
+          "concern"
+        ],
+        "associated_people": [
+          "the father"
+        ],
+        "significance": "Could represent a sense of emotional connection or concern for the father's well-being",
+        "memory_type": "childhood"
+      },
+      {
+        "title": "Weight Loss Disappointment",
+        "description": "Experiencing disappointment and frustration upon discovering a weight loss despite regular exercise",
+        "emotions": [
+          "disappointment",
+          "frustration"
+        ],
+        "associated_people": [],
+        "significance": "Indicates a strong desire for physical fitness and a sense of disappointment when expectations are not met",
+        "memory_type": "recent"
+      },
+      {
+        "title": "Happy Family Gathering",
+        "description": "Enjoying a happy and fun time with family friends and their children",
         "emotions": [
           "happiness",
           "contentment"
         ],
         "associated_people": [
           "family friends",
-          "parents"
+          "their children"
         ],
-        "significance": "represents a happy and secure childhood experience",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Loss of a Pet",
-        "description": "Learning about the death of a beloved dog, feeling extreme sadness and grief",
-        "emotions": [
-          "sadness",
-          "grief",
-          "devastation"
-        ],
-        "associated_people": [
-          "father"
-        ],
-        "significance": "represents a traumatic and emotional experience",
-        "memory_type": "traumatic"
-      },
-      {
-        "title": "Social Anxiety in Public",
-        "description": "Feeling out of control and anxious in an unfamiliar city, trying to interact with others",
-        "emotions": [
-          "anxiety",
-          "embarrassment"
-        ],
-        "associated_people": [
-          "strangers",
-          "friends"
-        ],
-        "significance": "represents social anxiety and feelings of inadequacy",
+        "significance": "Represents a positive and nurturing aspect of the dreamer's life, emphasizing the importance of family and social connections",
         "memory_type": "recent"
       },
       {
-        "title": "Frustration with Personal Goals",
-        "description": "Feeling frustrated with not being able to find a suitable skateboard, representing unmet personal goals",
+        "title": "Frustrating Skateboard Experience",
+        "description": "Being unable to find a suitable skateboard at a perfect ramp, leading to frustration and disappointment",
         "emotions": [
           "frustration",
           "disappointment"
         ],
         "associated_people": [],
-        "significance": "represents unmet personal goals and frustration",
+        "significance": "May symbolize a sense of frustration or disappointment in the dreamer's waking life, particularly in relation to hobbies or leisure activities",
         "memory_type": "recent"
       },
       {
-        "title": "Uncomfortable Social Interactions",
-        "description": "Ignoring an acquaintance and feeling uncomfortable in social situations",
+        "title": "Uncomfortable Social Interaction",
+        "description": "Experiencing discomfort and disapproval after being caught looking down the tops of three fat girls in a car",
         "emotions": [
-          "awkwardness",
-          "discomfort"
+          "embarrassment",
+          "guilt"
         ],
         "associated_people": [
-          "acquaintance",
-          "girlfriend"
+          "the three girls"
         ],
-        "significance": "represents uncomfortable social interactions and relationships",
+        "significance": "Suggests a sense of self-awareness and social anxiety, particularly in relation to interactions with women",
         "memory_type": "recent"
       },
       {
-        "title": "Carefree and Playful Experience",
-        "description": "Playing with a little girl and having fun, feeling carefree and happy",
+        "title": "Careless Accident",
+        "description": "Accidentally knocking glasses into the toilet and being nonchalant about it",
         "emotions": [
-          "happiness",
-          "playfulness"
-        ],
-        "associated_people": [
-          "little girl"
-        ],
-        "significance": "represents a happy and carefree experience",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Disappointment with Personal Progress",
-        "description": "Feeling disappointed with weight loss progress, despite efforts",
-        "emotions": [
-          "disappointment",
-          "frustration"
+          "indifference",
+          "carelessness"
         ],
         "associated_people": [],
-        "significance": "represents disappointment with personal progress",
+        "significance": "May represent a tendency to be careless or indifferent to mistakes or accidents",
         "memory_type": "recent"
       },
       {
-        "title": "Unusual and Confusing Experience",
-        "description": "Having a strange and confusing experience with two girls, feeling interested but also confused",
+        "title": "Loss of a Pet",
+        "description": "Experiencing intense sadness and grief upon learning about the death of a beloved dog",
         "emotions": [
-          "curiosity",
-          "confusion"
+          "sadness",
+          "grief"
         ],
         "associated_people": [
-          "two girls"
+          "the father"
         ],
-        "significance": "represents an unusual and confusing experience",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Family Dynamics and Communication",
-        "description": "Listening to father talking in his sleep, feeling curious but also disconnected",
-        "emotions": [
-          "curiosity",
-          "disconnection"
-        ],
-        "associated_people": [
-          "father"
-        ],
-        "significance": "represents family dynamics and communication",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Nonchalant Attitude towards Mistakes",
-        "description": "Accidentally knocking glasses into the toilet, feeling nonchalant and unaffected",
-        "emotions": [
-          "nonchalance",
-          "indifference"
-        ],
-        "associated_people": [],
-        "significance": "represents a nonchalant attitude towards mistakes",
-        "memory_type": "recent"
+        "significance": "Indicates a deep emotional connection to the pet and a sense of loss, highlighting the importance of emotional relationships in the dreamer's life",
+        "memory_type": "traumatic"
       }
     ],
     "short_term_memory": [],
@@ -213,5 +215,5 @@
   },
   "conscious_extraction_status": "completed",
   "unconscious_extraction_status": "failed",
-  "unconscious_extraction_error": "[Errno 2] No such file or directory: 'None/prompts/None.mustache'"
+  "unconscious_extraction_error": "name 's' is not defined"
 }

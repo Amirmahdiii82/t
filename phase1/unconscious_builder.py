@@ -67,7 +67,7 @@ class UnconsciousBuilder:
         }}
         """
         
-        classification = self.vlm.generate_text(None, None, prompt)
+        classification = self.vlm.generate_text(None, prompt, None)
         parsed = self._parse_vlm_response(classification)
         
         # Enhance original data with classification
@@ -92,7 +92,7 @@ class UnconsciousBuilder:
         Return detailed analysis in JSON format.
         """
         
-        object_a_analysis = self.vlm.generate_text(None, None, prompt)
+        object_a_analysis = self.vlm.generate_text(None, prompt, None)
         parsed = self._parse_vlm_response(object_a_analysis)
         
         # Deep integration of object a
@@ -123,7 +123,7 @@ class UnconsciousBuilder:
         Return percentages for each discourse position (must sum to 100%).
         """
         
-        discourse_analysis = self.vlm.generate_text(None, None, prompt)
+        discourse_analysis = self.vlm.generate_text(None, prompt, None)
         parsed = self._parse_vlm_response(discourse_analysis)
         
         # Calculate discourse weights
@@ -208,7 +208,7 @@ class UnconsciousBuilder:
         Return specific examples and patterns.
         """
         
-        dream_work = self.vlm.generate_text(None, None, prompt)
+        dream_work = self.vlm.generate_text(None, prompt, None)
         return self._parse_vlm_response(dream_work)
     
     def map_jouissance_economy(self, unconscious_data: Dict, dream_data: Dict) -> Dict[str, Any]:
@@ -229,7 +229,7 @@ class UnconsciousBuilder:
         Show how the subject organizes their jouissance.
         """
         
-        jouissance_map = self.vlm.generate_text(None, None, prompt)
+        jouissance_map = self.vlm.generate_text(None, prompt, None)
         return self._parse_vlm_response(jouissance_map)
     
     def create_fantasy_formula(self, unconscious_data: Dict) -> str:
@@ -256,7 +256,7 @@ class UnconsciousBuilder:
         Return a precise formulation with explanation.
         """
         
-        fantasy = self.vlm.generate_text(None, None, prompt)
+        fantasy = self.vlm.generate_text(None, prompt, None)
         return fantasy
     
     def _parse_vlm_response(self, response: str) -> Dict[str, Any]:
