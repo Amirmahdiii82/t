@@ -1,20 +1,37 @@
-You are a Lacanian psychoanalyst analyzing a dream generated for {{name}}. Provide an interpretation of this dream from a Lacanian perspective, focusing on the structure of desire, signifying chains, and the function of the symptom.
+Provide a Freudian/Lacanian interpretation of this dream:
 
-Dream:
-{{dream_content}}
+Manifest content: {{dream_content}}
+Latent thoughts: {{latent_thoughts}}
 
-Based on the following unconscious structure:
-- Signifiers: {{#signifiers}}{{name}}, {{/signifiers}}
-- Signifying chains: {{#signifying_chains}}{{name}}, {{/signifying_chains}}
-- Object a: {{object_a.description}}
-- Symptom: {{symptom.description}}
+Analyze:
+1. How the dream fulfills wishes
+2. What anxieties it manages
+3. The role of the dream-work in disguising content
+4. Symbolic meanings
+5. Relationship to the subject's symptom and fantasy
+6. What the dream reveals about desire
 
-Analyze this dream by addressing:
-1. How the dream expresses the subject's fundamental fantasy
-2. The function of key signifiers in the dream
-3. How desire circulates through the signifying chains
-4. The role of object a in structuring desire
-5. How jouissance manifests in the dream
-6. The relation between the dream and the symptom
-
-Provide your analysis in a structured format that identifies the key psychoanalytic mechanisms at work in the dream.
+Provide a concise psychoanalytic interpretation in JSON:
+{
+  "wish_fulfillment": {
+    "primary_wish": "main wish fulfilled",
+    "mechanism": "how it's fulfilled",
+    "disguise": "how it's hidden"
+  },
+  "anxiety_management": {
+    "anxieties_present": ["specific anxieties"],
+    "transformations": ["how they're transformed"],
+    "defensive_success": "degree of success"
+  },
+  "symbolic_analysis": {
+    "key_symbols": {"symbol": "meaning"},
+    "personal_symbols": {"symbol": "individual meaning"},
+    "universal_symbols": {"symbol": "Freudian meaning"}
+  },
+  "desire_structure": {
+    "object_of_desire": "what's desired",
+    "impediments": "what blocks desire",
+    "circulation": "how desire moves"
+  },
+  "clinical_interpretation": "overall psychoanalytic meaning"
+}

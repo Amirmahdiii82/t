@@ -142,7 +142,12 @@ class DreamGenerator:
         Return structured latent thoughts.
         """
         
-        response = self.llm.generate(None, None, prompt)
+        response = self.llm.generate("phase2", "identify_latent_thoughts", {
+            "day_residue": json.dumps(day_residue, indent=2),
+            "signifiers": json.dumps(self.signifiers[:10], indent=2),
+            "object_a": json.dumps(self.object_a, indent=2),
+            "symptom": json.dumps(self.symptom, indent=2)
+        })
         
         try:
             latent = json.loads(response)
@@ -338,7 +343,7 @@ class DreamGenerator:
         Format as JSON with scenes and narrative.
         """
         
-        response = self.llm.generate(None, None, prompt)
+                    response = self.llm.generate(None, prompt, None)
         
         try:
             manifest = json.loads(response)
@@ -364,7 +369,7 @@ class DreamGenerator:
         Keep the surreal quality but add enough coherence to be tellable.
         """
         
-        response = self.llm.generate(None, None, prompt)
+                    response = self.llm.generate(None, prompt, None)
         
         try:
             revised = json.loads(response)
@@ -401,24 +406,12 @@ class DreamGenerator:
     
     def _analyze_dream(self, dream_content: Dict, latent_thoughts: Dict) -> Dict[str, Any]:
         """Provide psychoanalytic interpretation of the dream."""
-        prompt = f"""
-        Provide a Freudian/Lacanian interpretation of this dream:
+        template_data = {
+            "dream_content": json.dumps(dream_content, indent=2),
+            "latent_thoughts": json.dumps(latent_thoughts, indent=2)
+        }
         
-        Manifest content: {json.dumps(dream_content, indent=2)}
-        Latent thoughts: {json.dumps(latent_thoughts, indent=2)}
-        
-        Analyze:
-        1. How the dream fulfills wishes
-        2. What anxieties it manages
-        3. The role of the dream-work in disguising content
-        4. Symbolic meanings
-        5. Relationship to the subject's symptom and fantasy
-        6. What the dream reveals about desire
-        
-        Provide a concise psychoanalytic interpretation.
-        """
-        
-        interpretation = self.llm.generate(None, None, prompt)
+        interpretation = self.llm.generate("phase2", "analyze_dream", template_data)
         
         return {
             "interpretation": interpretation,

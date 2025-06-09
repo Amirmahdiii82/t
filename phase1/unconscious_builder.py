@@ -1,3 +1,13 @@
+def build_signifier_graph(self, signifiers: List[Dict], chains: List[Dict]) -> 'LacanianSignifierGraph':
+        """Build a proper Lacanian signifier graph with S1/S2 dynamics."""
+        from utils.lacanian_graph import LacanianSignifierGraph
+        
+        graph = LacanianSignifierGraph()
+        
+        # Add all signifiers first
+        for sig in signifiers:
+            if isinstance(sig, dict) and 'name'
+            
 import json
 import re
 import time
@@ -6,6 +16,7 @@ import numpy as np
 from typing import Dict, List, Any, Tuple, Optional
 from interfaces.vlm_interface import VLMInterface
 from utils.file_utils import ensure_directory, save_json
+from utils.prompt_utils import render_prompt
 
 class UnconsciousBuilder:
     """Builds unconscious structure from dreams using Lacanian psychoanalytic principles."""
@@ -15,7 +26,7 @@ class UnconsciousBuilder:
         # Initialize Lacanian structural components
         self.master_signifiers = []  # S1 - anchoring points
         self.knowledge_signifiers = []  # S2 - chain of knowledge
-        self.object_a_manifestations = []  # Cause of desire
+        self.object_a_manifestations = []  # Cause of desire``
         self.jouissance_patterns = []  # Patterns of painful enjoyment
         self.symbolic_positions = {
             "master": 0.0,
@@ -45,29 +56,12 @@ class UnconsciousBuilder:
     
     def _differentiate_signifier_types(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
         """Differentiate between S1 (master signifiers) and S2 (knowledge signifiers)."""
-        prompt = f"""
-        Analyze these signifiers and classify them as either:
-        1. S1 (Master Signifiers): Nonsensical, anchoring points that organize meaning
-        2. S2 (Knowledge Signifiers): Part of the chain of meaning and knowledge
+        template_data = {
+            "signifiers": json.dumps(data.get('signifiers', []), indent=2),
+            "dreams": json.dumps(dream_data, indent=2)[:2000] + "..."
+        }
         
-        Signifiers to analyze:
-        {json.dumps(data.get('signifiers', []), indent=2)}
-        
-        Consider their function in these dreams:
-        {json.dumps(dream_data, indent=2)[:2000]}...
-        
-        Return a JSON with:
-        {{
-            "master_signifiers": [
-                {{"name": "signifier", "anchoring_function": "how it organizes meaning"}}
-            ],
-            "knowledge_signifiers": [
-                {{"name": "signifier", "chain_position": "its role in meaning chain"}}
-            ]
-        }}
-        """
-        
-        classification = self.vlm.generate_text(None, prompt, None)
+        classification = self.vlm.generate_text("phase1", "differentiate_signifiers", template_data)
         parsed = self._parse_vlm_response(classification)
         
         # Enhance original data with classification
@@ -76,23 +70,12 @@ class UnconsciousBuilder:
     
     def _map_object_a_dynamics(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
         """Map object a as cause of desire and identify jouissance patterns."""
-        prompt = f"""
-        Analyze how object a (the object-cause of desire) manifests in these dreams.
-        Remember: object a is NOT what is desired, but what CAUSES desire - the void around which desire circulates.
+        template_data = {
+            "dreams": json.dumps(dream_data, indent=2)[:2000] + "...",
+            "signifiers": json.dumps(data.get('signifiers', []), indent=2)
+        }
         
-        Dreams: {json.dumps(dream_data, indent=2)[:2000]}...
-        Signifiers: {json.dumps(data.get('signifiers', []), indent=2)}
-        
-        Identify:
-        1. What void or lack repeatedly appears?
-        2. What impossible object organizes the subject's desire?
-        3. How does jouissance (painful enjoyment) manifest?
-        4. What symptoms repeat as failed attempts to capture object a?
-        
-        Return detailed analysis in JSON format.
-        """
-        
-        object_a_analysis = self.vlm.generate_text(None, prompt, None)
+        object_a_analysis = self.vlm.generate_text("phase1", "map_object_a", template_data)
         parsed = self._parse_vlm_response(object_a_analysis)
         
         # Deep integration of object a
@@ -105,32 +88,19 @@ class UnconsciousBuilder:
     
     def _analyze_structural_positions(self, data: Dict[str, Any], dream_data: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze the subject's position in the four discourses."""
-        prompt = f"""
-        Analyze the subject's structural position in Lacan's four discourses based on these dreams.
+        template_data = {
+            "dreams": json.dumps(dream_data, indent=2)[:2000] + "..."
+        }
         
-        Dreams: {json.dumps(dream_data, indent=2)[:2000]}...
-        
-        For each discourse, identify:
-        - Master: How does S1 (master signifier) relate to S2 (knowledge)?
-        - University: How does knowledge (S2) function as agent?
-        - Hysteric: How does the divided subject ($) question the master?
-        - Analyst: How does object a function as agent of desire?
-        
-        Consider the positions:
-        Agent → Other
-        Truth // Product
-        
-        Return percentages for each discourse position (must sum to 100%).
-        """
-        
-        discourse_analysis = self.vlm.generate_text(None, prompt, None)
+        discourse_analysis = self.vlm.generate_text("phase1", "analyze_discourse_positions", template_data)
         parsed = self._parse_vlm_response(discourse_analysis)
         
         # Calculate discourse weights
         if 'discourse_percentages' in parsed:
             total = sum(parsed['discourse_percentages'].values())
-            for discourse in parsed['discourse_percentages']:
-                data['structural_positions'][discourse] = parsed['discourse_percentages'][discourse] / total
+            if total > 0:
+                for discourse in parsed['discourse_percentages']:
+                    data['structural_positions'][discourse] = parsed['discourse_percentages'][discourse] / total
         
         return data
     
@@ -140,29 +110,43 @@ class UnconsciousBuilder:
         
         graph = LacanianSignifierGraph()
         
-        # Add master signifiers (S1) first - they anchor the structure
+        # Add all signifiers first
         for sig in signifiers:
-            if self._is_master_signifier(sig):
-                graph.add_master_signifier(
-                    sig['name'],
-                    anchoring_function=sig.get('significance', ''),
-                    primal_repression=sig.get('repressed', False)
-                )
-            else:
-                graph.add_knowledge_signifier(
-                    sig['name'],
-                    sig.get('associations', []),
-                    metaphoric_substitutions=sig.get('substitutions', [])
-                )
+            if isinstance(sig, dict) and 'name' in sig:
+                sig_name = sig['name']
+                
+                # Determine if it's a master signifier
+                if self._is_master_signifier(sig):
+                    graph.add_master_signifier(
+                        sig_name,
+                        anchoring_function=sig.get('significance', ''),
+                        primal_repression=sig.get('repressed', False)
+                    )
+                else:
+                    graph.add_knowledge_signifier(
+                        sig_name,
+                        sig.get('associations', []),
+                        metaphoric_substitutions=sig.get('substitutions', [])
+                    )
         
         # Build signifying chains with proper Lacanian logic
         for chain in chains:
-            graph.create_signifying_chain(
-                chain['name'],
-                chain['signifiers'],
-                chain_type=self._determine_chain_type(chain),
-                retroactive_meaning=True  # Nachträglichkeit
-            )
+            if isinstance(chain, dict) and 'signifiers' in chain:
+                chain_signifiers = chain['signifiers']
+                
+                # Ensure all signifiers in chain exist in graph
+                for sig in chain_signifiers:
+                    if sig not in graph.graph:
+                        # Add missing signifier
+                        graph.add_knowledge_signifier(sig, [], [])
+                
+                # Create the chain
+                graph.create_signifying_chain(
+                    chain.get('name', 'unnamed_chain'),
+                    chain_signifiers,
+                    chain_type=self._determine_chain_type(chain),
+                    retroactive_meaning=True  # Nachträglichkeit
+                )
         
         return graph
     
@@ -193,43 +177,22 @@ class UnconsciousBuilder:
     
     def generate_dream_work_patterns(self, unconscious_data: Dict) -> Dict[str, Any]:
         """Generate patterns of dream-work (condensation, displacement, etc.)."""
-        prompt = f"""
-        Analyze the dream-work mechanisms in this unconscious structure:
+        template_data = {
+            "signifiers": json.dumps(unconscious_data.get('signifiers', []), indent=2),
+            "signifying_chains": json.dumps(unconscious_data.get('signifying_chains', []), indent=2)
+        }
         
-        Signifiers: {json.dumps(unconscious_data.get('signifiers', []), indent=2)}
-        Chains: {json.dumps(unconscious_data.get('signifying_chains', []), indent=2)}
-        
-        Identify:
-        1. Condensation patterns (Verdichtung) - multiple ideas in one image
-        2. Displacement patterns (Verschiebung) - affect shifted between elements
-        3. Considerations of representability - abstract ideas as concrete images
-        4. Secondary revision - rational narrative imposed on dream chaos
-        
-        Return specific examples and patterns.
-        """
-        
-        dream_work = self.vlm.generate_text(None, prompt, None)
+        dream_work = self.vlm.generate_text("phase1", "analyze_dream_work", template_data)
         return self._parse_vlm_response(dream_work)
     
     def map_jouissance_economy(self, unconscious_data: Dict, dream_data: Dict) -> Dict[str, Any]:
         """Map the economy of jouissance in the unconscious structure."""
-        prompt = f"""
-        Analyze the economy of jouissance (painful enjoyment) in these dreams:
+        template_data = {
+            "dreams": json.dumps(dream_data, indent=2)[:1500] + "...",
+            "symptom": json.dumps(unconscious_data.get('symptom', {}), indent=2)
+        }
         
-        Dreams excerpt: {json.dumps(dream_data, indent=2)[:1500]}...
-        Symptom: {json.dumps(unconscious_data.get('symptom', {}), indent=2)}
-        
-        Map:
-        1. Surplus jouissance (plus-de-jouir) - excess beyond pleasure principle
-        2. Phallic jouissance vs Other jouissance
-        3. Repetition compulsion patterns
-        4. Points of anxiety (signal of the Real)
-        5. Sinthome (unique mode of jouissance)
-        
-        Show how the subject organizes their jouissance.
-        """
-        
-        jouissance_map = self.vlm.generate_text(None, prompt, None)
+        jouissance_map = self.vlm.generate_text("phase1", "map_jouissance_economy", template_data)
         return self._parse_vlm_response(jouissance_map)
     
     def create_fantasy_formula(self, unconscious_data: Dict) -> str:
@@ -238,25 +201,13 @@ class UnconsciousBuilder:
         object_a = unconscious_data.get('object_a', {})
         chains = unconscious_data.get('signifying_chains', [])
         
-        prompt = f"""
-        Based on this unconscious structure, formulate the subject's fundamental fantasy.
+        template_data = {
+            "signifiers": json.dumps(signifiers[:5], indent=2),
+            "object_a": json.dumps(object_a, indent=2),
+            "chain_names": json.dumps([c['name'] for c in chains], indent=2)
+        }
         
-        The fantasy formula is: $ ◊ a (divided subject in relation to object a)
-        
-        Signifiers: {json.dumps(signifiers[:5], indent=2)}
-        Object a: {json.dumps(object_a, indent=2)}
-        Chains: {json.dumps([c['name'] for c in chains], indent=2)}
-        
-        Describe:
-        1. How the divided subject ($) positions themselves
-        2. The specific form object a takes for this subject
-        3. The nature of their relation (◊) - could be: <>, ∧, ∨, etc.
-        4. How this fantasy defends against the Real
-        
-        Return a precise formulation with explanation.
-        """
-        
-        fantasy = self.vlm.generate_text(None, prompt, None)
+        fantasy = self.vlm.generate_text("phase1", "create_fantasy_formula", template_data)
         return fantasy
     
     def _parse_vlm_response(self, response: str) -> Dict[str, Any]:
@@ -382,25 +333,16 @@ class UnconsciousBuilder:
             if signifier['name'] in str(unconscious_data['object_a']):
                 object_a_relation = "This signifier circles around the void of object a."
         
-        prompt = f"""
-        Create a surrealist image for the unconscious signifier '{signifier['name']}'.
+        # Prepare template data
+        template_data = {
+            "signifier_name": signifier['name'],
+            "significance": signifier.get('significance', ''),
+            "associations": ', '.join(signifier.get('associations', [])),
+            "object_a_relation": object_a_relation
+        }
         
-        Psychoanalytic significance: {signifier.get('significance', '')}
-        Associations: {', '.join(signifier.get('associations', []))}
-        {object_a_relation}
-        
-        Visual requirements:
-        - Capture the signifier's role as a nodal point in the unconscious
-        - Show traces of repression through visual distortion or absence
-        - Include dreamlike condensation of multiple meanings
-        - Suggest the impossible Real that the signifier attempts to symbolize
-        - Use techniques of Dalí, Magritte, and Remedios Varo
-        - Include subtle references to: {', '.join(s.get('associations', [])[:3])}
-        
-        The image should evoke the uncanny (Unheimlich) - familiar yet strange.
-        """
-        
-        return prompt
+        # Use the template
+        return render_prompt("phase1", "visualize_signifier", template_data)
     
     def build_unconscious_memory(self, dream_data: Dict, agent_name: str, agent_dir: str) -> Dict[str, Any]:
         """Build complete unconscious memory with all psychoanalytic structures."""

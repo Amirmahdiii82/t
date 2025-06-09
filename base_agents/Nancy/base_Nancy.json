@@ -1,28 +1,32 @@
 {
-  "id": "Nancy_1748807395",
+  "id": "Nancy_1749465264",
   "name": "Nancy",
-  "created_at": "20250601_231955",
-  "last_updated": "20250601_232159",
+  "created_at": "20250609_140424",
+  "last_updated": "20250609_140704",
   "extraction_status": "completed",
   "conscious": {
     "persona": {
       "name": "Nancy",
       "age": "Late 20s to early 30s",
       "gender": "Female",
-      "occupation": "Possibly a student or a part-time worker, likely in the medical field",
+      "occupation": "Possibly a medical professional or student",
       "personality_traits": [
         "Caring",
         "Headstrong",
-        "Protective",
-        "Passionate",
-        "Determined"
+        "Emotionally expressive",
+        "Protective of her children",
+        "Possessive and jealous in relationships",
+        "Determined and strong-willed",
+        "Loyal to those she cares about",
+        "Hot-tempered and prone to outbursts"
       ],
       "interests": [
         "Music",
         "Dancing",
-        "Sports",
+        "Sports (particularly softball)",
         "Shopping",
-        "Spending time with family and friends"
+        "Spending time with family and friends",
+        "Helping others (as seen in her medical-related dreams)"
       ],
       "key_relationships": [
         "Zack (boyfriend)",
@@ -30,40 +34,40 @@
         "Carla (daughter)",
         "Alice (Zack's ex-wife)",
         "Mother",
-        "Father",
-        "Sister"
+        "Sister",
+        "Father"
       ],
       "fears": [
-        "Losing Zack to his ex-wife",
+        "Losing Zack to his ex-wife Alice",
         "Not being able to provide for her children",
-        "Being hurt by someone she trusts",
-        "Failing in her relationships",
-        "Losing control of her emotions"
+        "Being alone and unloved",
+        "Losing control and being overwhelmed",
+        "Failing in her pursuits (e.g., failing a test)"
       ],
       "desires": [
         "To be in a stable and loving relationship with Zack",
         "To provide a happy and secure life for her children",
-        "To pursue her interests and hobbies",
-        "To be independent and self-sufficient",
-        "To be loved and respected by those around her"
+        "To succeed in her career or studies",
+        "To be appreciated and valued by those around her",
+        "To overcome her past and move forward"
       ],
-      "background": "Nancy is a caring and headstrong individual who values her relationships and family. She has experienced challenges in her past, including a complicated relationship with her ex-partner and difficulties with her parents. Despite these challenges, she is determined to create a better life for herself and her children."
+      "background": "Nancy is a caring and headstrong individual who is deeply invested in her relationships and her role as a mother. She has a complex and potentially tumultuous relationship with her boyfriend Zack, and is often plagued by fears and anxieties related to their relationship and her ability to provide for her children. Despite these challenges, Nancy is determined and strong-willed, and is working to build a better life for herself and those she loves."
     },
     "relationships": [
       {
         "name": "Zack",
         "relationship_type": "boyfriend",
-        "emotional_significance": "intense love and jealousy"
+        "emotional_significance": "intense emotional investment"
       },
       {
         "name": "Alice",
-        "relationship_type": "Zack's ex-wife",
+        "relationship_type": "boyfriend's ex-wife",
         "emotional_significance": "anger and resentment"
       },
       {
         "name": "Cindy",
         "relationship_type": "daughter",
-        "emotional_significance": "deep love and protectiveness"
+        "emotional_significance": "love and protectiveness"
       },
       {
         "name": "Carla",
@@ -81,24 +85,14 @@
         "emotional_significance": "anger and frustration"
       },
       {
-        "name": "sister",
-        "relationship_type": "sister",
-        "emotional_significance": "concern and frustration"
-      },
-      {
-        "name": "Andrea",
-        "relationship_type": "friend",
-        "emotional_significance": "friendly and competitive"
-      },
-      {
-        "name": "Ann",
-        "relationship_type": "friend",
-        "emotional_significance": "friendly"
+        "name": "Don Evans",
+        "relationship_type": "past acquaintance",
+        "emotional_significance": "nostalgia and attraction"
       },
       {
         "name": "Andy",
         "relationship_type": "friend",
-        "emotional_significance": "friendly and flirtatious"
+        "emotional_significance": "trust and friendship"
       },
       {
         "name": "Wendy",
@@ -106,19 +100,14 @@
         "emotional_significance": "awkwardness and guilt"
       },
       {
-        "name": "Don Evans",
-        "relationship_type": "past interest",
-        "emotional_significance": "romantic and nostalgic"
+        "name": "Ann",
+        "relationship_type": "friend",
+        "emotional_significance": "friendship and camaraderie"
       },
       {
-        "name": "Nina",
-        "relationship_type": "aunt",
-        "emotional_significance": "supportive and caring"
-      },
-      {
-        "name": "Erik",
-        "relationship_type": "cousin",
-        "emotional_significance": "trust and gratitude"
+        "name": "sister",
+        "relationship_type": "sister",
+        "emotional_significance": "love and annoyance"
       },
       {
         "name": "Jack",
@@ -126,24 +115,38 @@
         "emotional_significance": "neutral"
       },
       {
+        "name": "Erik",
+        "relationship_type": "cousin",
+        "emotional_significance": "family bond"
+      },
+      {
+        "name": "Aunt Nina",
+        "relationship_type": "aunt",
+        "emotional_significance": "family bond"
+      },
+      {
         "name": "Wanda",
         "relationship_type": "mother's friend",
         "emotional_significance": "neutral"
       },
       {
-        "name": "Sherry",
-        "relationship_type": "friend",
-        "emotional_significance": "friendly"
+        "name": "Sam",
+        "relationship_type": "neighbor",
+        "emotional_significance": "neutral"
+      },
+      {
+        "name": "Donna",
+        "relationship_type": "neighbor",
+        "emotional_significance": "irritation and annoyance"
       }
     ],
     "memories": [
       {
-        "title": "Mother's House",
-        "description": "Nancy's mother's house, where she spent time with her daughter Cindy and interacted with Alice, Zack's ex-wife",
+        "title": "Mother's House Visit",
+        "description": "Nancy visits her mom's house with her daughter Cindy, and encounters Alice, her boyfriend Zack's ex, who brings a gift for Cindy",
         "emotions": [
-          "love",
-          "anger",
-          "frustration"
+          "apprehension",
+          "curiosity"
         ],
         "associated_people": [
           "Nancy",
@@ -151,120 +154,7 @@
           "Alice",
           "Zack"
         ],
-        "significance": "Important location for family interactions and relationships",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Zack's Infidelity",
-        "description": "Nancy's suspicions and confrontations with Zack about his potential infidelity, including interactions with other women",
-        "emotions": [
-          "anger",
-          "jealousy",
-          "hurt"
-        ],
-        "associated_people": [
-          "Nancy",
-          "Zack",
-          "Alice",
-          "other women"
-        ],
-        "significance": "Strained relationship and trust issues",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Daughter's Birthday Party",
-        "description": "Nancy's planning and stress related to her daughter Carla's birthday party, including interactions with her ex-husband and other family members",
-        "emotions": [
-          "stress",
-          "frustration",
-          "love"
-        ],
-        "associated_people": [
-          "Nancy",
-          "Carla",
-          "ex-husband",
-          "family members"
-        ],
-        "significance": "Important family event and relationship dynamics",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Father's Behavior",
-        "description": "Nancy's father's behavior, including drinking and yelling, and her reactions to it",
-        "emotions": [
-          "anger",
-          "frustration",
-          "concern"
-        ],
-        "associated_people": [
-          "Nancy",
-          "father"
-        ],
-        "significance": "Difficult family relationship and potential trauma",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Relationship with Zack",
-        "description": "Nancy's relationship with Zack, including romantic interactions, conflicts, and concerns about his commitment",
-        "emotions": [
-          "love",
-          "anger",
-          "hurt"
-        ],
-        "associated_people": [
-          "Nancy",
-          "Zack"
-        ],
-        "significance": "Central relationship in Nancy's life, with ups and downs",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Pregnancy and Motherhood",
-        "description": "Nancy's experiences with pregnancy, childbirth, and motherhood, including her love for her daughters and concerns about their well-being",
-        "emotions": [
-          "love",
-          "joy",
-          "concern"
-        ],
-        "associated_people": [
-          "Nancy",
-          "Cindy",
-          "Carla"
-        ],
-        "significance": "Life-changing events and core aspects of Nancy's identity",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Friendships and Social Interactions",
-        "description": "Nancy's interactions with friends, acquaintances, and strangers, including conflicts and positive connections",
-        "emotions": [
-          "anger",
-          "frustration",
-          "joy"
-        ],
-        "associated_people": [
-          "Nancy",
-          "friends",
-          "acquaintances",
-          "strangers"
-        ],
-        "significance": "Social relationships and community, with varying levels of importance",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Work and Education",
-        "description": "Nancy's experiences with work, education, and personal development, including challenges and achievements",
-        "emotions": [
-          "frustration",
-          "pride",
-          "relief"
-        ],
-        "associated_people": [
-          "Nancy",
-          "professors",
-          "colleagues"
-        ],
-        "significance": "Personal growth, skills, and independence",
+        "significance": "Significant because it shows Nancy's relationships with her family and her boyfriend's ex",
         "memory_type": "recent"
       }
     ],
@@ -272,410 +162,6 @@
     "current_state": "dormant"
   },
   "conscious_extraction_status": "completed",
-  "unconscious": {
-    "signifiers": [
-      {
-        "name": "Zack's Indecision",
-        "associations": [
-          "Alice",
-          "marriage",
-          "choice",
-          "abandonment",
-          "the country music nightclub",
-          "alcohol"
-        ],
-        "significance": "Represents the central conflict in Nancy's dreams: Zack's inability to commit fully and his continued connection to Alice. It's a signifier of her perceived lack and the instability of their relationship.",
-        "relation_to_desire": "Functions as both the object of desire (the stable, committed partner) and the barrier to its fulfillment, constantly oscillating and creating anxiety."
-      },
-      {
-        "name": "Alice, The Rival",
-        "associations": [
-          "pregnancy",
-          "gifts",
-          "the 'bitch'",
-          "flashback video",
-          "Zack's car (passenger seat)"
-        ],
-        "significance": "Embodies the threat to Nancy's relationship and her self-esteem. She represents the constant possibility of Zack's betrayal and the fear of not being 'enough'.",
-        "relation_to_desire": "Acts as the obstacle to Nancy's desire for a secure and exclusive relationship with Zack, materializing as competition for his attention and affection."
-      },
-      {
-        "name": "The Unfinished Task",
-        "associations": [
-          "Genetics mid-term",
-          "Band",
-          "Carla getting ready",
-          "The un-starting car",
-          "Contact lenses not going into the container"
-        ],
-        "significance": "Represents Nancy's anxiety regarding a failure in self-mastery and success. It also signifies the inability to fully accomplish a set task, leading to feelings of frustration and inadequacy.",
-        "relation_to_desire": "Indicates the subject's belief she must accomplish every task to be a suitable 'object' for others."
-      },
-      {
-        "name": "Maternal Comfort/Support",
-        "associations": [
-          "mother",
-          "Dairy Queen milkshake",
-          "comforting words",
-          "help with shopping",
-          "advice"
-        ],
-        "significance": "Represents a source of security and reassurance for Nancy, especially in moments of distress and uncertainty related to her relationship with Zack. It highlights her continued dependence on her mother for emotional regulation.",
-        "relation_to_desire": "Functions as a substitute for the desired stability in her relationship with Zack, offering temporary relief from the anxiety and insecurity generated by his indecisiveness."
-      },
-      {
-        "name": "The Drunken/Incapacitated Father",
-        "associations": [
-          "yelling",
-          "unsecured child",
-          "pre-wedding dinner",
-          "arrested (apartment)"
-        ],
-        "significance": "Embodies a figure of unreliable authority and potential danger, particularly in relation to Nancy's children. Represents her fear of abandonment and the disruption of the family structure.",
-        "relation_to_desire": "Represents a negative identification, highlighting what Nancy fears becoming (irresponsible, neglectful) and what she strives to avoid in her own parenting."
-      },
-      {
-        "name": "The Dream Home",
-        "associations": [
-          "nice gray house with white trim",
-          "new home near the beach",
-          "unfurnished apartment",
-          "storage for Zack's belongings"
-        ],
-        "significance": "Represents Nancy's desire for stability, security, and a shared future with Zack. However, its frequent state of incompletion or ambiguity reflects the uncertainty and instability in their relationship.",
-        "relation_to_desire": "Functions as a symbol of the longed-for fulfillment of her desire for a lasting and secure partnership, but simultaneously highlights the obstacles and anxieties that prevent its realization."
-      },
-      {
-        "name": "Violence/Aggression",
-        "associations": [
-          "baseball thrown at Zack",
-          "punching the neighbor",
-          "fighting the 'doll owner'",
-          "struggle with the attacker",
-          "beating up the 'fat chick'"
-        ],
-        "significance": "Represents Nancy's repressed anger and frustration, often directed towards those who threaten her relationship or her sense of self-worth. Suggests a difficulty in expressing her emotions directly and assertively.",
-        "relation_to_desire": "Functions as a defense mechanism against the pain and vulnerability associated with her desire for a stable relationship, allowing her to assert control and regain a sense of power in the face of perceived threats."
-      }
-    ],
-    "signifying_chains": [
-      {
-        "name": "The Chain of Relational Insecurity",
-        "signifiers": [
-          "Zack's Indecision",
-          "Alice, The Rival",
-          "The Dream Home"
-        ],
-        "explanation": "This chain begins with Zack's wavering commitment, symbolized by his continued involvement with Alice (S1). This then threatens Nancy's desire for a secure future, represented by the elusive 'Dream Home' (S2), where her sense of stability is undermined by the instability of the relationship (S3). Metonymically, each element contributes to the feeling of uncertainty and anxiety that permeates her dreams.",
-        "relation_to_fantasy": "Underpins the fantasy of a stable, nuclear family, constantly threatened by the intrusion of the 'other woman' and the unreliability of the male partner. The fantasy revolves around securing the 'Dream Home' as a bulwark against these threats.",
-        "intersections": [
-          {
-            "chain": "The Chain of Maternal Support",
-            "connecting_signifier": "The Dream Home"
-          },
-          {
-            "chain": "The Chain of Female Aggression",
-            "connecting_signifier": "Alice, The Rival"
-          }
-        ]
-      },
-      {
-        "name": "The Chain of Maternal Support",
-        "signifiers": [
-          "Maternal Comfort/Support",
-          "The Drunken/Incapacitated Father",
-          "The Dream Home"
-        ],
-        "explanation": "This chain starts with the reassurance provided by her mother (S1), acting as a substitute for a stable paternal figure (S2). The need for maternal comfort stems from the instability of the Father, ultimately influencing Nancy's desire for the 'Dream Home' (S3) as a means to create the stability she lacked in her childhood. The mother comforts her, because of her lack in 'the father.'",
-        "relation_to_fantasy": "Highlights a fantasy of finding security and stability through maternal dependence, compensating for the perceived failures and inadequacies of the paternal figure. The 'Dream Home' becomes a maternal space, shielded from the disruptive influence of the Father.",
-        "intersections": [
-          {
-            "chain": "The Chain of Relational Insecurity",
-            "connecting_signifier": "The Dream Home"
-          }
-        ]
-      },
-      {
-        "name": "The Chain of Female Aggression",
-        "signifiers": [
-          "Alice, The Rival",
-          "Violence/Aggression",
-          "Zack's Indecision"
-        ],
-        "explanation": "This chain illustrates how Nancy's frustration with Alice (S1) leads to outbursts of violence and aggression (S2). This aggression is a response to Zack's inability to choose her (S3), perpetuating a cycle of anger and insecurity. Metaphorically, each act of violence is a substitute for Zack's affirmation.",
-        "relation_to_fantasy": "Reveals a fantasy of asserting control and dominance through aggressive acts, attempting to eliminate the rival and force Zack's commitment. The fantasy is driven by a fear of passivity and helplessness in the face of relational threats.",
-        "intersections": [
-          {
-            "chain": "The Chain of Relational Insecurity",
-            "connecting_signifier": "Alice, The Rival"
-          }
-        ]
-      },
-      {
-        "name": "The Chain of Performed Femininity",
-        "signifiers": [
-          "Roller Blading",
-          "Lime Green Miniskirt",
-          "Beautiful and better endowed on top",
-          "Don Evans",
-          "The Dream Home"
-        ],
-        "explanation": "This chain starts with Nancy's sense of the performance of a feminine ideal, symbolized by roller blading into a co-ed space, as she puts on a green miniskirt (S1). This is then conflated with her fantasy of a more perfect, \u2018better endowed,\u2019 body, reflecting her own subjective experience and perceived shortcomings (S2). She acts in order to secure male recognition, \u2018Don Evans,\u2019 who she wants to secure in relationship, leading her towards seeking a stable place, \u2018The Dream Home\u2019 (S3). Metaphorically, each element contributes to the anxiety and perceived inadequacy Nancy feels to \u2018win\u2019 her object.",
-        "relation_to_fantasy": "Highlights a fantasy of a performance of an empowered and empowered subjectivity, based upon an imagined ideal self, to secure love and commitment from the other. This fantasy revolves around \u2018bettering\u2019 herself to be a person worthy of love.",
-        "intersections": [
-          {
-            "chain": "The Chain of Relational Insecurity",
-            "connecting_signifier": "Alice, The Rival"
-          }
-        ]
-      }
-    ],
-    "structural_positions": [
-      {
-        "position": "Hysteric's Discourse",
-        "prominence": "Dominant discourse in relation to Zack",
-        "evidence": [
-          "'Zack, you can't marry her, I'm pregnant!'",
-          "'What the hell is this trash of a bitch doing on my machine?'",
-          "'You have to be my friend.'"
-        ],
-        "explanation": "Nancy frequently positions herself as the divided subject ($) questioning the Other (Zack) about their desire. She is constantly demanding answers and certainty from him (the Agent), seeking to expose his lack and force him to confront his desire. This is evident in her confrontational questions and ultimatum about marriage, seeking a confirmation of her own value and place in his desire. This position is unstable; her Product becomes more prominent when Zack can not answer her truthfully and confirm her position as being valuable."
-      },
-      {
-        "position": "Master's Discourse",
-        "prominence": "Emerges in relation to her children and the 'weaker' other women",
-        "evidence": [
-          "'Don't you ever talk to my baby like that again, you asshole.'",
-          "'I got her down and beat the hell out of her.'",
-          "'How can you treat your children like dirt?'"
-        ],
-        "explanation": "In these instances, Nancy takes the position of the Agent, imposing her will and standards on others (the Other). She seeks to enforce her vision of 'proper' behavior and motherhood, asserting her authority and knowledge (the Truth) through direct commands and actions (the Product). This is a defensive position, compensating for her feelings of lack and vulnerability in other areas of her life. This position is unstable, since it is merely a performance to show her value."
-      },
-      {
-        "position": "University Discourse",
-        "prominence": "Aspirational or reactive to feelings of inadequacy",
-        "evidence": [
-          "I showed up to take my Genetics mid-term...",
-          "I was working in the E.R. at a hospital...",
-          "I was saying that I signed up with a doctor to be an assistant..."
-        ],
-        "explanation": "Here, Nancy attempts to place knowledge (S2) as the agent. She attempts to master knowledge in her classes to demonstrate her competence in society, particularly in relation to men. However, her dreams highlight a tension (S1) and instability when there is a failure of the process of demonstration, such as 'failing Big Time.' In a reactive mode, when she is in the hospital, she attempts to assume a position where her knowledge will be able to make a demonstrable affect in an unmanaged world."
-      }
-    ],
-    "analysis": "Nancy's dreams are dominated by anxieties surrounding her relationship with Zack, the perceived threat from Alice, and her own sense of inadequacy. The recurring motifs of Zack's indecision, competition with Alice, and the unfinished tasks all point to a core conflict: her struggle to secure a stable and fulfilling relationship while battling feelings of insecurity and self-doubt. Her oscillation between the Hysteric's and Master's discourses reveals a defensive strategy, attempting to assert control and demand answers in the face of her perceived lack. The presence of maternal comfort underscores her continued reliance on her mother for emotional support, suggesting an unresolved Oedipal dynamic and a difficulty in fully separating and establishing her own sense of autonomy. Overall, the dreams paint a picture of a woman grappling with the challenges of love, motherhood, and the ongoing search for a secure and stable sense of self.",
-    "object_a": {
-      "description": "For Nancy, `object a` takes the form of *the complete, unconditional gaze of the Other*, particularly Zack's. This gaze is not simply about physical attraction, but a recognition and validation of her worth as a woman, a mother, and a partner. It is an ever-elusive ideal, constantly sought and never fully attained, as evidenced by Zack's divided attention and the persistent threat from Alice.",
-      "manifestations": [
-        "Zack's undivided attention",
-        "The absence of Alice",
-        "Unconditional acceptance by Zack's family",
-        "The perfect dream home"
-      ],
-      "relation_to_desire": "Object a functions as the persistent cause and driving force behind Nancy's desire. Her longing for Zack's gaze is what fuels her actions, her insecurities, and her attempts to control the relationship. The impossibility of fully capturing this gaze perpetuates her cycle of desire and anxiety."
-    },
-    "symptom": {
-      "description": "Nancy's primary symptom manifests as a recurring pattern of *violent outbursts and aggressive confrontations*, often directed towards other women perceived as threats to her relationship or her sense of self-worth. These outbursts are a defense mechanism, a way of asserting control in the face of her underlying anxieties and insecurities.",
-      "signifiers_involved": [
-        "Alice, The Rival",
-        "Violence/Aggression",
-        "Zack's Indecision"
-      ],
-      "jouissance_pattern": "The jouissance associated with this symptom lies in the temporary sense of power and control that Nancy experiences during these aggressive episodes. While these outbursts often lead to negative consequences (guilt, shame, further instability in the relationship), they provide a paradoxical form of enjoyment by allowing her to momentarily overcome her feelings of vulnerability and assert her dominance. This 'benefit' reinforces the cycle of aggression as a preferred mode of coping with anxiety and frustration."
-    },
-    "signifier_graph": {
-      "nodes": [
-        {
-          "id": "Zack's Indecision",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.478044"
-        },
-        {
-          "id": "Alice, The Rival",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.481241"
-        },
-        {
-          "id": "The Unfinished Task",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.481290"
-        },
-        {
-          "id": "Maternal Comfort/Support",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.481308"
-        },
-        {
-          "id": "The Drunken/Incapacitated Father",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.481322"
-        },
-        {
-          "id": "The Dream Home",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 0.0,
-          "timestamp": "2025-06-01T23:21:50.481336"
-        },
-        {
-          "id": "Violence/Aggression",
-          "type": "symbolic",
-          "activation": 0.5,
-          "repressed": 1.0,
-          "timestamp": "2025-06-01T23:21:50.481346"
-        }
-      ],
-      "edges": [
-        {
-          "source": "Zack's Indecision",
-          "target": "Alice, The Rival",
-          "weight": 0.4,
-          "type": "neutral",
-          "context": [
-            "This chain begins with Zack's wavering commitment, symbolized by his continued involvement with Alice (S1). This then threatens Nancy's desire for a secure future, represented by the elusive 'Dream Home' (S2), where her sense of stability is undermined by the instability of the relationship (S3). Metonymically, each element contributes to the feeling of uncertainty and anxiety that permeates her dreams."
-          ]
-        },
-        {
-          "source": "Zack's Indecision",
-          "target": "The Dream Home",
-          "weight": 0.19999999999999998,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Zack's Indecision",
-            "Alice, The Rival",
-            "The Dream Home"
-          ]
-        },
-        {
-          "source": "Zack's Indecision",
-          "target": "Violence/Aggression",
-          "weight": 0.15,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Zack's Indecision",
-            "Alice, The Rival",
-            "Violence/Aggression"
-          ]
-        },
-        {
-          "source": "Alice, The Rival",
-          "target": "The Dream Home",
-          "weight": 0.6,
-          "type": "neutral",
-          "context": [
-            "This chain begins with Zack's wavering commitment, symbolized by his continued involvement with Alice (S1). This then threatens Nancy's desire for a secure future, represented by the elusive 'Dream Home' (S2), where her sense of stability is undermined by the instability of the relationship (S3). Metonymically, each element contributes to the feeling of uncertainty and anxiety that permeates her dreams."
-          ]
-        },
-        {
-          "source": "Alice, The Rival",
-          "target": "Violence/Aggression",
-          "weight": 0.5,
-          "type": "neutral",
-          "context": [
-            "This chain illustrates how Nancy's frustration with Alice (S1) leads to outbursts of violence and aggression (S2). This aggression is a response to Zack's inability to choose her (S3), perpetuating a cycle of anger and insecurity. Metaphorically, each act of violence is a substitute for Zack's affirmation."
-          ]
-        },
-        {
-          "source": "Alice, The Rival",
-          "target": "Zack's Indecision",
-          "weight": 0.3,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Alice, The Rival",
-            "Violence/Aggression",
-            "Zack's Indecision"
-          ]
-        },
-        {
-          "source": "Maternal Comfort/Support",
-          "target": "The Drunken/Incapacitated Father",
-          "weight": 0.6,
-          "type": "neutral",
-          "context": [
-            "This chain starts with the reassurance provided by her mother (S1), acting as a substitute for a stable paternal figure (S2). The need for maternal comfort stems from the instability of the Father, ultimately influencing Nancy's desire for the 'Dream Home' (S3) as a means to create the stability she lacked in her childhood. The mother comforts her, because of her lack in 'the father.'"
-          ]
-        },
-        {
-          "source": "Maternal Comfort/Support",
-          "target": "The Dream Home",
-          "weight": 0.3,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Maternal Comfort/Support",
-            "The Drunken/Incapacitated Father",
-            "The Dream Home"
-          ]
-        },
-        {
-          "source": "The Drunken/Incapacitated Father",
-          "target": "The Dream Home",
-          "weight": 0.6,
-          "type": "neutral",
-          "context": [
-            "This chain starts with the reassurance provided by her mother (S1), acting as a substitute for a stable paternal figure (S2). The need for maternal comfort stems from the instability of the Father, ultimately influencing Nancy's desire for the 'Dream Home' (S3) as a means to create the stability she lacked in her childhood. The mother comforts her, because of her lack in 'the father.'"
-          ]
-        },
-        {
-          "source": "Violence/Aggression",
-          "target": "Zack's Indecision",
-          "weight": 0.4,
-          "type": "neutral",
-          "context": [
-            "This chain illustrates how Nancy's frustration with Alice (S1) leads to outbursts of violence and aggression (S2). This aggression is a response to Zack's inability to choose her (S3), perpetuating a cycle of anger and insecurity. Metaphorically, each act of violence is a substitute for Zack's affirmation."
-          ]
-        },
-        {
-          "source": "Violence/Aggression",
-          "target": "Alice, The Rival",
-          "weight": 0.15,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Violence/Aggression",
-            "Zack's Indecision",
-            "Alice, The Rival"
-          ]
-        },
-        {
-          "source": "Violence/Aggression",
-          "target": "The Dream Home",
-          "weight": 0.15,
-          "type": "displacement",
-          "context": [
-            "displaced_path"
-          ],
-          "original_path": [
-            "Violence/Aggression",
-            "Zack's Indecision",
-            "The Dream Home"
-          ]
-        }
-      ]
-    },
-    "visualizations": {}
-  },
-  "unconscious_extraction_status": "completed"
+  "unconscious_extraction_status": "failed",
+  "unconscious_extraction_error": "name 's' is not defined"
 }

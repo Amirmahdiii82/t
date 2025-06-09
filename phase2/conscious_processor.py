@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Dict, List, Any, Optional
 from interfaces.llm_interface import LLMInterface
 
@@ -128,26 +129,31 @@ class ConsciousProcessor:
             defense_guidance = self._get_defense_guidance(defenses)
             template_data['psychological_state'] = defense_guidance
         
-        # Generate response using enhanced template
-        prompt = f"""
-        You are {self.agent_name} responding to: "{user_input}"
+        # Generate response using proper template or direct prompt
+        if os.path.exists("phase2/prompts/agent_response.mustache"):
+            # Use template if available
+            response = self.llm.generate("phase2", "agent_response", template_data)
+        else:
+            # Use direct prompt as fallback
+            prompt = f"""
+You are {self.agent_name} responding to: "{user_input}"
+
+Your psychological state:
+- Emotional: {template_data.get('emotional_description', 'neutral')}
+- Defenses: {defenses.get('primary_defense', 'none')} (intensity: {defenses['intensity']})
+
+Relevant memories: {json.dumps(template_data.get('relevant_memories', [])[:3], indent=2)}
+
+Respond authentically as {self.agent_name}, letting your defenses naturally shape your response:
+- If repressing, avoid certain topics subtly
+- If resisting, redirect or intellectualize
+- If projecting, attribute feelings to others
+- If rationalizing, provide logical explanations for emotional reactions
+
+Keep the defense mechanisms subtle and natural to the conversation.
+"""
+            response = self.llm.generate(None, prompt, None)
         
-        Your psychological state:
-        - Emotional: {template_data.get('emotional_description', 'neutral')}
-        - Defenses: {defenses.get('primary_defense', 'none')} (intensity: {defenses['intensity']})
-        
-        Relevant memories: {json.dumps(template_data.get('relevant_memories', [])[:3], indent=2)}
-        
-        Respond authentically as {self.agent_name}, letting your defenses naturally shape your response:
-        - If repressing, avoid certain topics subtly
-        - If resisting, redirect or intellectualize
-        - If projecting, attribute feelings to others
-        - If rationalizing, provide logical explanations for emotional reactions
-        
-        Keep the defense mechanisms subtle and natural to the conversation.
-        """
-        
-        response = self.llm.generate(None, None, prompt)
         return response if response else self._generate_defensive_response(user_input)
     
     def _integrate_unconscious_influence(self, conscious_response: str, unconscious_influence: Dict) -> str:

@@ -204,6 +204,96 @@
       "memory_type": "traumatic"
     }
   ],
-  "short_term_memory": [],
-  "current_state": "dormant"
+  "short_term_memory": [
+    {
+      "content": "hi",
+      "context": "user_interaction",
+      "timestamp": "2025-06-09T02:57:40.241840",
+      "emotional_state": {
+        "pleasure": 0.255,
+        "arousal": 0.14999999999999997,
+        "dominance": 0.275,
+        "emotion_category": "sad",
+        "response_style": "balanced",
+        "neurochemical_state": {
+          "dopamine": 0.5,
+          "serotonin": 0.5,
+          "norepinephrine": 0.5,
+          "cortisol": 0.3,
+          "oxytocin": 0.4,
+          "gaba": 0.6
+        },
+        "emotional_description": "relatively neutral",
+        "timestamp": "2025-06-09T02:57:37.929648"
+      }
+    },
+    {
+      "content": "I'm not sure I understand what you're getting at.",
+      "context": "agent_response",
+      "timestamp": "2025-06-09T02:57:46.304825",
+      "emotional_state": {
+        "pleasure": 0.255,
+        "arousal": 0.14999999999999997,
+        "dominance": 0.275,
+        "emotion_category": "sad",
+        "response_style": "balanced",
+        "neurochemical_state": {
+          "dopamine": 0.5,
+          "serotonin": 0.5,
+          "norepinephrine": 0.5,
+          "cortisol": 0.3,
+          "oxytocin": 0.4,
+          "gaba": 0.6
+        },
+        "emotional_description": "relatively neutral",
+        "timestamp": "2025-06-09T02:57:44.713051"
+      }
+    },
+    {
+      "content": "what?",
+      "context": "user_interaction",
+      "timestamp": "2025-06-09T02:58:00.373609",
+      "emotional_state": {
+        "pleasure": 0.25255726149784435,
+        "arousal": 0.14709924802869023,
+        "dominance": 0.2717175701377284,
+        "emotion_category": "sad",
+        "response_style": "balanced",
+        "neurochemical_state": {
+          "dopamine": 0.4938931537446109,
+          "serotonin": 0.5,
+          "norepinephrine": 0.49541986530845816,
+          "cortisol": 0.3,
+          "oxytocin": 0.4,
+          "gaba": 0.6
+        },
+        "emotional_description": "relatively neutral",
+        "timestamp": "2025-06-09T02:57:47.402914"
+      }
+    },
+    {
+      "content": "That's... well, I'm not sure how to respond to that.",
+      "context": "agent_response",
+      "timestamp": "2025-06-09T02:58:03.669892",
+      "emotional_state": {
+        "pleasure": 0.25582783779687673,
+        "arousal": 0.15165567559375343,
+        "dominance": 0.276103783729169,
+        "emotion_category": "sad",
+        "response_style": "balanced",
+        "neurochemical_state": {
+          "dopamine": 0.5,
+          "serotonin": 0.5,
+          "norepinephrine": 0.5033113511875069,
+          "cortisol": 0.3,
+          "oxytocin": 0.4055189186458449,
+          "gaba": 0.6
+        },
+        "emotional_description": "relatively neutral",
+        "timestamp": "2025-06-09T02:58:02.266434"
+      }
+    }
+  ],
+  "current_state": "dormant",
+  "last_updated": "2025-06-09T03:03:53.696069"
 }

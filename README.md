@@ -30,3 +30,6 @@ Agent data saved to base_agents/Tom/
 ⚠️ Unconscious memory file not found
 
 🎉 Extraction completed successfully!
+
+
+-2.0-flash:generateContent (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1411d7d40>: Failed to resolve 'generativelanguage.googl

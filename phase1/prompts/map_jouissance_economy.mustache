@@ -1,17 +1,37 @@
-Analyze the economy of jouissance (painful, excessive enjoyment) based on the subject's dreams and primary symptom.
+# map_jouissance_economy.mustache
 
-DREAM EXCERPT:
-{{{ dreams_json }}}
+```mustache
+Analyze the economy of jouissance (painful enjoyment) in these dreams:
 
-PRIMARY SYMPTOM:
-{{{ symptom_json }}}
+Dreams excerpt: {{dreams}}
+Symptom: {{symptom}}
 
-INSTRUCTIONS:
-Map how the subject organizes their jouissance, which operates beyond the pleasure principle. Your analysis should be returned as a single JSON object with the following keys:
+Map:
+1. Surplus jouissance (plus-de-jouir) - excess beyond pleasure principle
+2. Phallic jouissance vs Other jouissance
+3. Repetition compulsion patterns
+4. Points of anxiety (signal of the Real)
+5. Sinthome (unique mode of jouissance)
 
-- "surplus_jouissance": (plus-de-jouir) Where does the subject seem to derive an excess, almost painful enjoyment? Identify the specific scenarios or signifiers.
-- "repetition_compulsion": What patterns or actions are repeated compulsively in the dreams, even if they lead to anxiety or failure? This repetition is a key marker of jouissance.
-- "points_of_anxiety": Identify the moments or symbols in the dreams that signal the intrusion of the Real, causing anxiety. Anxiety is the only affect that is not deceptive.
-- "sinthome_hypothesis": Propose a potential "sinthome" for the subject. The sinthome is the unique, singular way the subject manages to hold their psychic structure together through a particular mode of jouissance. It is a creative, albeit symptomatic, solution.
-
-Return ONLY the complete JSON object.
+Return JSON showing how the subject organizes their jouissance:
+{
+  "surplus_jouissance": [
+    {"manifestation": "specific example", "excess_nature": "what goes beyond pleasure", "drive_aspect": "which drive is involved"}
+  ],
+  "jouissance_types": {
+    "phallic": {"examples": ["specific instances"], "characteristics": "symbolic, competitive, possessive"},
+    "other": {"examples": ["specific instances"], "characteristics": "bodily, ecstatic, unsymbolizable"}
+  },
+  "repetition_patterns": [
+    {"pattern": "what repeats", "jouissance_gained": "what satisfaction from repetition", "cost": "what suffering it causes"}
+  ],
+  "anxiety_points": [
+    {"trigger": "what causes anxiety", "real_encounter": "what Real is touched", "defense": "how subject responds"}
+  ],
+  "sinthome": {
+    "description": "unique way of binding jouissance",
+    "formula": "specific pattern",
+    "function": "what it allows the subject"
+  }
+}
+```

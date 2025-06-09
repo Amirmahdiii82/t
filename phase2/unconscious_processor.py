@@ -176,23 +176,13 @@ class UnconsciousProcessor:
         }
         
         # Analyze who the subject is really addressing
-        prompt = f"""
-        Analyze the transference in this interaction from a Lacanian perspective.
+        template_data = {
+            "user_input": text,
+            "context": context,
+            "symptom": json.dumps(self.symptom, indent=2)
+        }
         
-        User input: "{text}"
-        Context: {context}
-        Active symptom: {json.dumps(self.symptom, indent=2)}
-        
-        Consider:
-        1. Who is the subject really addressing? (The Other, a parental figure, themselves?)
-        2. What unconscious demand is being made?
-        3. Is there positive or negative transference?
-        4. What position is the subject putting the analyst/agent in?
-        
-        Return a brief JSON analysis.
-        """
-        
-        analysis = self.llm.generate(None, None, prompt)
+        analysis = self.llm.generate("phase2", "analyze_transference", template_data)
         try:
             transference_data = json.loads(analysis)
             transference.update(transference_data)
@@ -502,27 +492,14 @@ class UnconsciousProcessor:
                 'fantasy_activation': self._check_fantasy_activation(self.active_signifiers)
             }
             
-            prompt = f"""
-            Apply unconscious influence to this conscious response from a Lacanian perspective.
+            template_data = {
+                "conscious_response": conscious_response,
+                "signifiers": json.dumps([s['signifier'] for s in self.active_signifiers[:5]]),
+                "discourse": self.current_discourse,
+                "fantasy_activated": current_influence['fantasy_activation']['activated']
+            }
             
-            Conscious response: "{conscious_response}"
-            
-            Unconscious state:
-            - Active signifiers: {json.dumps([s['signifier'] for s in self.active_signifiers[:5]])}
-            - Current discourse position: {self.current_discourse}
-            - Fantasy activated: {current_influence['fantasy_activation']['activated']}
-            
-            Modify the response to include:
-            1. Subtle references to active signifiers (not obvious)
-            2. Speech patterns reflecting the current discourse position
-            3. Potential slips or ambiguities
-            4. Defensive formations if resistance is present
-            
-            The modification should be subtle - the unconscious speaks between the lines.
-            Return only the modified response.
-            """
-            
-            influenced_response = self.llm.generate(None, None, prompt)
+            influenced_response = self.llm.generate("phase2", "unconscious_influence", template_data)
             
             # Add parapraxes if highly activated
             if len(self.active_signifiers) > 4 and random.random() < 0.3:
