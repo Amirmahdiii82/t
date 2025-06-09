@@ -372,23 +372,72 @@ Keep the defense mechanisms subtle and natural to the conversation.
         # Extract neurochemical data
         neurochemical = emotional_state.get('neurochemical_state', {})
         
-        return {
+        # Add high/low flags for template conditionals
+        template_data = {
             'agent_name': self.agent_name,
             'user_message': user_input,
+            
+            # Persona
             'persona_name': persona.get('name', self.agent_name),
+            'persona_age': persona.get('age'),
+            'persona_occupation': persona.get('occupation'),
             'personality_traits': persona.get('personality_traits', []),
+            'background': persona.get('background'),
+            
+            # Emotional state
             'emotional_description': emotional_state.get('emotional_description', 'neutral'),
-            'emotional_pleasure': emotional_state.get('pleasure', 0.0),
-            'emotional_arousal': emotional_state.get('arousal', 0.0),
-            'emotional_dominance': emotional_state.get('dominance', 0.0),
-            'neurochemical_dopamine': neurochemical.get('dopamine', 0.5),
-            'neurochemical_serotonin': neurochemical.get('serotonin', 0.5),
-            'neurochemical_oxytocin': neurochemical.get('oxytocin', 0.5),
-            'neurochemical_cortisol': neurochemical.get('cortisol', 0.3),
+            'emotional_pleasure': f"{emotional_state.get('pleasure', 0.0):.2f}",
+            'emotional_arousal': f"{emotional_state.get('arousal', 0.0):.2f}",
+            'emotional_dominance': f"{emotional_state.get('dominance', 0.0):.2f}",
+            
+            # Neurochemicals with values
+            'neurochemical_dopamine': f"{neurochemical.get('dopamine', 0.5):.2f}",
+            'neurochemical_serotonin': f"{neurochemical.get('serotonin', 0.5):.2f}",
+            'neurochemical_oxytocin': f"{neurochemical.get('oxytocin', 0.5):.2f}",
+            'neurochemical_cortisol': f"{neurochemical.get('cortisol', 0.3):.2f}",
+            
+            # High/low flags for template conditionals
+            'neurochemical_dopamine_high': neurochemical.get('dopamine', 0.5) > 0.6,
+            'neurochemical_serotonin_high': neurochemical.get('serotonin', 0.5) > 0.6,
+            'neurochemical_oxytocin_high': neurochemical.get('oxytocin', 0.5) > 0.6,
+            'neurochemical_cortisol_high': neurochemical.get('cortisol', 0.3) > 0.5,
+            
+            # Memories and relationships
+            'has_memories': len(memories) > 0,
+            'memory_count': len(memories),
             'relevant_memories': [self._format_memory(m) for m in memories[:5]],
-            'relevant_relationships': [self._format_relationship(r) for r in relationships[:3]]
+            
+            'has_relationships': len(relationships) > 0,
+            'relationship_count': len(relationships),
+            'relevant_relationships': [self._format_relationship(r) for r in relationships[:3]],
+            
+            # Conversation history
+            'conversation_history': self._format_conversation_history(context.get('recent_interactions', []))
         }
-    
+        
+        return template_data
+
+    def _format_conversation_history(self, recent_interactions: List[Dict]) -> List[Dict]:
+        """Format conversation history for template."""
+        formatted = []
+        
+        # Get last 3 user-agent exchanges
+        user_msg = None
+        for entry in recent_interactions[-6:]:  # Last 6 entries = 3 exchanges
+            content = entry.get('content', '')
+            context = entry.get('context', '')
+            
+            if context == 'user_interaction':
+                user_msg = content
+            elif context == 'agent_response' and user_msg:
+                formatted.append({
+                    "user": user_msg,
+                    "agent": content
+                })
+                user_msg = None
+        
+        return formatted[-2:] if formatted else []  # Return last 2 exchanges
+        
     def _format_memory(self, memory: Dict) -> str:
         """Format memory for display."""
         if isinstance(memory, dict):

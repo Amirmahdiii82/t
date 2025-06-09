@@ -113,7 +113,7 @@ class DreamGenerator:
             for signifier in self.signifiers[:20]:  # Check top signifiers
                 if isinstance(signifier, dict):
                     sig_name = signifier.get('name', '').lower()
-                    if sig_name in content_lower:
+                    if sig_name and sig_name in content_lower:
                         residue['signifier_triggers'].append(sig_name)
             
             if residue['signifier_triggers'] or residue['emotional_charge'] != 'neutral':
@@ -343,7 +343,7 @@ class DreamGenerator:
         Format as JSON with scenes and narrative.
         """
         
-                    response = self.llm.generate(None, prompt, None)
+        response = self.llm.generate(None, prompt, None)
         
         try:
             manifest = json.loads(response)
@@ -369,7 +369,7 @@ class DreamGenerator:
         Keep the surreal quality but add enough coherence to be tellable.
         """
         
-                    response = self.llm.generate(None, prompt, None)
+        response = self.llm.generate(None, prompt, None)
         
         try:
             revised = json.loads(response)
@@ -576,3 +576,4 @@ class DreamGenerator:
                     continue
         
         return dreams
+

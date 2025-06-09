@@ -134,34 +134,38 @@ class NeuroProxyEngine:
     def _derive_affective_state(self) -> Dict[str, Any]:
         """Derive affective state (PAD values and emotion category) from neurochemical levels."""
         try:
-            # Enhanced PAD calculation with more nuanced neurochemical interactions
+            # More balanced PAD calculation
             
-            # Pleasure: dopamine and serotonin positive, cortisol negative, oxytocin mildly positive
+            # Pleasure: balanced positive and negative influences
             pleasure = (
-                (self.neurochemical_state["dopamine"] * 0.4) + 
-                (self.neurochemical_state["serotonin"] * 0.35) + 
-                (self.neurochemical_state["oxytocin"] * 0.15) -
-                (self.neurochemical_state["cortisol"] * 0.6)
+                (self.neurochemical_state["dopamine"] * 0.35) +     # Reduced from 0.4
+                (self.neurochemical_state["serotonin"] * 0.35) +    # Same
+                (self.neurochemical_state["oxytocin"] * 0.2) -      # Increased from 0.15
+                (self.neurochemical_state["cortisol"] * 0.4)        # Reduced from 0.6
             )
             
-            # Arousal: norepinephrine and cortisol positive, GABA negative
+            # Arousal: more balanced calculation
             arousal = (
-                (self.neurochemical_state["norepinephrine"] * 0.5) + 
-                (self.neurochemical_state["cortisol"] * 0.3) + 
-                (self.neurochemical_state["dopamine"] * 0.1) -
-                (self.neurochemical_state["gaba"] * 0.4)
+                (self.neurochemical_state["norepinephrine"] * 0.4) +  # Reduced from 0.5
+                (self.neurochemical_state["cortisol"] * 0.2) +        # Reduced from 0.3
+                (self.neurochemical_state["dopamine"] * 0.2) -        # Increased from 0.1
+                (self.neurochemical_state["gaba"] * 0.3)              # Reduced from 0.4
             )
             
-            # Dominance: dopamine and norepinephrine positive, cortisol negative, serotonin stabilizing
+            # Dominance: more responsive to positive neurochemicals
             dominance = (
-                (self.neurochemical_state["dopamine"] * 0.35) + 
-                (self.neurochemical_state["norepinephrine"] * 0.25) + 
-                (self.neurochemical_state["serotonin"] * 0.15) -
-                (self.neurochemical_state["cortisol"] * 0.4) +
-                (self.neurochemical_state["oxytocin"] * 0.05)
+                (self.neurochemical_state["dopamine"] * 0.3) +        # Reduced from 0.35
+                (self.neurochemical_state["norepinephrine"] * 0.25) + # Same
+                (self.neurochemical_state["serotonin"] * 0.2) +       # Increased from 0.15
+                (self.neurochemical_state["cortisol"] * -0.3) +       # Reduced penalty
+                (self.neurochemical_state["oxytocin"] * 0.1)          # Increased from 0.05
             )
             
-            # Normalize to [-1, 1] range with smooth clamping
+            # Add baseline to prevent always negative values
+            pleasure += 0.1   # Small positive baseline
+            dominance += 0.05 # Small positive baseline
+            
+            # Normalize to [-1, 1] range
             self.pad_state["pleasure"] = max(-1.0, min(1.0, pleasure))
             self.pad_state["arousal"] = max(-1.0, min(1.0, arousal))
             self.pad_state["dominance"] = max(-1.0, min(1.0, dominance))
@@ -273,8 +277,6 @@ class NeuroProxyEngine:
     def _determine_response_style(self, pleasure: float, arousal: float, dominance: float) -> str:
         """Determine response style based on PAD values."""
         # Primary style based on most extreme dimension
-        styles = []
-        
         if abs(dominance) > abs(pleasure) and abs(dominance) > abs(arousal):
             if dominance > 0.6:
                 return "assertive"
@@ -367,7 +369,6 @@ class NeuroProxyEngine:
             }
             
             # Adaptive decay rate based on distance from baseline
-            # Faster decay when far from baseline, slower when close
             for neurotransmitter, baseline in baselines.items():
                 current = self.neurochemical_state[neurotransmitter]
                 distance = abs(current - baseline)

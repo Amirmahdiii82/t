@@ -228,12 +228,38 @@ def interactive_mode(agent_name):
                             dream = dream_generator.generate_dream("sleep")
                             if dream:
                                 print(f"\n✨ Dream Generated: {dream['id']}")
-                                print(f"📝 Narrative: {dream['narrative'][:200]}...")
+                                
+                                # Fix: Access narrative from manifest_content
+                                manifest = dream.get('manifest_content', {})
+                                if isinstance(manifest, dict):
+                                    narrative = manifest.get('overall_narrative', 'No narrative available')
+                                else:
+                                    narrative = str(manifest)[:200] if manifest else 'No narrative available'
+                                
+                                print(f"📝 Narrative: {narrative[:200]}...")
+                                
                                 if dream.get('images'):
                                     print(f"🖼️ Images: {len(dream['images'])} generated")
-                                if dream.get('unconscious_elements'):
-                                    print(f"🧠 Unconscious elements: {len(dream['unconscious_elements'])} detected")
-                                print(f"💾 Dream saved to: base_agents/{agent_name}/dreams/{dream['id']}.json")
+                                    
+                                # Show dream scenes if available
+                                if isinstance(manifest, dict) and manifest.get('scenes'):
+                                    print(f"\n🎬 Dream Scenes:")
+                                    for i, scene in enumerate(manifest['scenes'][:3]):
+                                        print(f"  Scene {i+1}: {scene.get('setting', 'Unknown setting')}")
+                                        print(f"    {scene.get('narrative', 'No description')[:100]}...")
+                                
+                                # Show analysis if available
+                                if dream.get('analysis'):
+                                    analysis = dream['analysis']
+                                    if isinstance(analysis, dict):
+                                        interp = analysis.get('interpretation', analysis.get('clinical_interpretation', ''))
+                                    else:
+                                        interp = str(analysis)
+                                    
+                                    if interp:
+                                        print(f"\n🔍 Analysis: {interp[:200]}...")
+                                
+                                print(f"\n💾 Dream saved to: base_agents/{agent_name}/dreams/{dream['id']}.json")
                             else:
                                 print("❌ Failed to generate dream")
                         except Exception as e:
