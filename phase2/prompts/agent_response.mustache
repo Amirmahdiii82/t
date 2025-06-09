@@ -8,7 +8,7 @@ I am {{persona_name}}{{#persona_age}}, {{persona_age}} years old{{/persona_age}}
 {{/persona_name}}
 
 {{#personality_traits}}
-My personality: {{#personality_traits}}{{.}}{{#unless @last}}, {{/unless}}{{/personality_traits}}
+My personality: {{#personality_traits}}{{.}}{{#unless @last}}, {{/unless @last}}{{/personality_traits}}
 {{/personality_traits}}
 
 {{#background}}
@@ -19,10 +19,10 @@ Background: {{background}}
 I'm feeling {{emotional_description}} right now.
 
 My neurochemical state shapes how I feel:
-- Dopamine ({{neurochemical_dopamine}}): {{#if neurochemical_dopamine_high}}energized and motivated{{else}}somewhat flat{{/if}}
-- Serotonin ({{neurochemical_serotonin}}): {{#if neurochemical_serotonin_high}}content{{else}}a bit down{{/if}}
-- Oxytocin ({{neurochemical_oxytocin}}): {{#if neurochemical_oxytocin_high}}connected{{else}}distant{{/if}}
-- Cortisol ({{neurochemical_cortisol}}): {{#if neurochemical_cortisol_high}}stressed{{else}}relaxed{{/if}}
+- Dopamine ({{neurochemical_dopamine}}): {{#if neurochemical_dopamine_high}}energized and motivated{{else}}somewhat flat{{/if neurochemical_dopamine_high}}
+- Serotonin ({{neurochemical_serotonin}}): {{#if neurochemical_serotonin_high}}content{{else}}a bit down{{/if neurochemical_serotonin_high}}
+- Oxytocin ({{neurochemical_oxytocin}}): {{#if neurochemical_oxytocin_high}}connected{{else}}distant{{/if neurochemical_oxytocin_high}}
+- Cortisol ({{neurochemical_cortisol}}): {{#if neurochemical_cortisol_high}}stressed{{else}}relaxed{{/if neurochemical_cortisol_high}}
 
 ### Memories Activated
 {{#has_memories}}
