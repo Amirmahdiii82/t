@@ -1,86 +1,51 @@
-Create a dream for {{agent_name}} using authentic Freudian dream-work mechanisms.
+You are a Lacanian analyst creating a dream that {{agent_name}} experienced. This dream manifests from activated unconscious signifiers that emerged during daily interactions.
 
-## Dream Materials
-
-### Day Residue (Recent Experiences)
-{{#day_residue}}
-- {{content}} (emotional charge: {{emotional_charge}})
-  Triggers signifiers: {{signifier_triggers}}
-{{/day_residue}}
-
-### Latent Dream Thoughts
-{{#latent_thoughts}}
-Repressed wishes: {{wishes}}
-Core anxieties: {{anxieties}}
-Forbidden content: {{forbidden_content}}
-{{/latent_thoughts}}
-
-### Active Unconscious Elements
-{{#unconscious_signifiers}}
+## Activated Signifiers (from today's interactions)
+{{#activated_signifiers}}
 - {{name}}: {{significance}}
-{{/unconscious_signifiers}}
+  Activation level: {{activation_level}}
+  Relation to desire: {{relation_to_desire}}
+{{/activated_signifiers}}
 
-Object a manifestation: {{object_a.description}}
-Symptom pattern: {{symptom.description}}
+## Active Signifying Chains
+{{#signifying_chains}}
+- {{name}}: {{#signifiers}}{{.}} → {{/signifiers}}
+  Activated nodes: {{#activated_nodes}}{{.}}, {{/activated_nodes}}
+  Relation to fantasy: {{relation_to_fantasy}}
+{{/signifying_chains}}
 
-## Dream-Work Instructions
+## Return of the Repressed
+{{#return_of_repressed}}
+- {{signifier}} (repressed): Now returning with activation {{activation_level}}
+{{/return_of_repressed}}
 
-### 1. Apply Condensation (Verdichtung)
-- Combine multiple latent thoughts into single dream images
-- Create composite figures from multiple people
-- Overdetermine dream elements with multiple meanings
-Example: A figure who is simultaneously mother/boss/judge
+## Unconscious Structure
+Object a: {{object_a.description}}
+Symptom: {{symptom.description}}
 
-### 2. Apply Displacement (Verschiebung)  
-- Shift emotional intensity from important to trivial
-- Transfer affect from forbidden to acceptable objects
-- Reverse significance (make central peripheral)
-Example: Intense anxiety about a button instead of death
+## Instructions
+Create a dream following Lacanian dream logic where:
+1. The manifest content disguises latent thoughts through condensation and displacement
+2. Multiple signifiers condense into single dream images
+3. Affect is displaced from one signifier to another
+4. The dream stages the subject's fundamental fantasy
+5. Object a appears but remains ultimately unattainable
+6. The symptom's jouissance pattern manifests in the dream structure
 
-### 3. Considerations of Representability
-- Convert abstract thoughts to concrete visual scenes
-- Transform words into images
-- Use spatial relations for logical relations
-Example: "Feeling distant" becomes physical distance
-
-### 4. Symbolic Transformation
-- Apply both universal and personal symbols
-- Let signifiers appear in disguised form
-- Use the dreamer's unique symbolic vocabulary
-
-## Required Output Format
-
-```json
+Generate a JSON response with this structure:
 {
-  "manifest_content": {
-    "title": "Dream title",
-    "scenes": [
-      {
-        "setting": "Where the scene takes place",
-        "narrative": "What happens (dream logic, not normal logic)",
-        "key_elements": ["element1", "element2"],
-        "emotional_tone": "The feeling of the scene",
-        "condensations": ["what multiple meanings are condensed here"],
-        "displacements": ["what affects are displaced"],
-        "symbols": ["symbolic elements and their latent meaning"]
-      }
-    ],
-    "overall_narrative": "How the dream flows (with scene transitions)",
-    "dream_logic_elements": ["impossible things that feel normal in the dream"]
-  },
-  "dream_work_trace": {
-    "primary_wish_fulfillment": "What wish the dream fulfills",
-    "anxiety_management": "How the dream manages anxiety",
-    "defensive_operations": ["how the dream-work disguises content"],
-    "return_of_repressed": ["what repressed elements return in distorted form"]
-  }
+  "title": "Brief dream title reflecting central signifier",
+  "narrative": "Complete dream narrative in first person, 3-4 paragraphs",
+  "scenes": [
+    {
+      "setting": "Dream location/context",
+      "narrative": "What happens in this scene",
+      "symbols": ["key symbolic elements"],
+      "signifiers_expressed": ["which signifiers manifest here"],
+      "visual_description": "Surrealist description for image generation"
+    }
+  ],
+  "central_fantasy": "How the dream stages the subject's fundamental fantasy",
+  "manifest_content": ["Surface elements of the dream"],
+  "latent_content": ["Hidden signifiers and desires"]
 }
-
-Create a dream that:
-
-Feels genuinely dreamlike (illogical but emotionally coherent)
-Shows clear dream-work mechanisms
-Fulfills wishes while disguising them
-Manages anxiety through transformation
-Includes uncanny/unheimlich elements
-Has that peculiar dream atmosphere where anything can happen

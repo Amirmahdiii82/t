@@ -23,11 +23,18 @@ class MemoryManager:
         self.conscious_memory = self._load_conscious_memory()
         self.unconscious_memory = self._load_unconscious_memory()
         
-        # Initialize short-term memory
-        self.short_term_memory = []
+        # --- FIX: Load short-term memory from the file where it was saved ---
+        # Instead of self.short_term_memory = [], we now load the data that 
+        # the save_state() function stored in conscious_memory.json.
+        self.short_term_memory = self.conscious_memory.get("short_term_memory", [])
+        # --- END FIX ---
+
         self.max_short_term_size = 10
         
         print(f"Memory Manager initialized for {agent_name}")
+        # Add a more informative startup message
+        if self.short_term_memory:
+            print(f"✅ Loaded {len(self.short_term_memory)} entries from persistent short-term memory.")
         print(f"Loaded conscious memory: {len(self.conscious_memory.get('memories', []))} memories, {len(self.conscious_memory.get('relationships', []))} relationships")
         print(f"Loaded unconscious memory: {len(self.unconscious_memory.get('signifiers', []))} signifiers")
     
@@ -61,26 +68,14 @@ class MemoryManager:
             else:
                 print(f"No unconscious_memory.json found at {unconscious_path}")
                 return {
-                    "signifiers": [],
-                    "signifying_chains": [],
-                    "object_a": {},
-                    "symptom": {},
-                    "structural_positions": [],
-                    "fantasy_formula": "",
-                    "jouissance_economy": {},
-                    "dream_work_patterns": {}
+                    "signifiers": [], "signifying_chains": [], "object_a": {}, "symptom": {},
+                    "structural_positions": [], "fantasy_formula": "", "jouissance_economy": {}, "dream_work_patterns": {}
                 }
         except Exception as e:
             print(f"Error loading unconscious memory: {e}")
             return {
-                "signifiers": [],
-                "signifying_chains": [],
-                "object_a": {},
-                "symptom": {},
-                "structural_positions": [],
-                "fantasy_formula": "",
-                "jouissance_economy": {},
-                "dream_work_patterns": {}
+                "signifiers": [], "signifying_chains": [], "object_a": {}, "symptom": {},
+                "structural_positions": [], "fantasy_formula": "", "jouissance_economy": {}, "dream_work_patterns": {}
             }
     
     def add_to_short_term_memory(self, content: str, context: str = "interaction") -> None:
@@ -94,11 +89,9 @@ class MemoryManager:
         
         self.short_term_memory.append(memory_entry)
         
-        # Limit short-term memory size
         if len(self.short_term_memory) > self.max_short_term_size:
             self.short_term_memory = self.short_term_memory[-self.max_short_term_size:]
         
-        # Update emotional state based on new content
         self.neuroproxy_engine.update_emotional_state(content, context)
     
     def retrieve_memories(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
@@ -148,25 +141,20 @@ class MemoryManager:
     
     def consolidate_short_term_memory(self) -> None:
         """Consolidate short-term memory into long-term memory (for future implementation)."""
-        # This would implement the process of moving important short-term memories
-        # to long-term storage and updating the RAG system
         pass
     
     def save_state(self) -> None:
         """Save current memory state."""
         try:
-            # Update conscious memory with current short-term memory
             self.conscious_memory["short_term_memory"] = self.short_term_memory
             self.conscious_memory["last_updated"] = datetime.now().isoformat()
             
-            # Save conscious memory
             conscious_path = os.path.join(self.agent_path, "conscious_memory.json")
             with open(conscious_path, 'w') as f:
                 json.dump(self.conscious_memory, f, indent=2)
             
             print(f"Memory state saved to {conscious_path}")
             
-            # Save neuroproxy state
             self.neuroproxy_engine._save_persistent_state()
             
         except Exception as e:
