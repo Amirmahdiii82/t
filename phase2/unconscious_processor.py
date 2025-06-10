@@ -1,33 +1,29 @@
 import json
-import random
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any
 from datetime import datetime
-from interfaces.llm_interface import LLMInterface
 from utils.lacanian_graph import LacanianSignifierGraph
 
 class UnconsciousProcessor:
-    """Process interactions through genuine Lacanian unconscious dynamics."""
+    """
+    Processes input through unconscious signifier networks and Lacanian dynamics.
     
-    def __init__(self, agent_name: str, memory_manager, dream_generator):
+    Activates signifiers based on memory content and traces their influence
+    through signifying chains to model unconscious associations.
+    """
+    
+    def __init__(self, agent_name: str, memory_manager):
         self.agent_name = agent_name
         self.memory_manager = memory_manager
-        self.dream_generator = dream_generator
-        self.llm = LLMInterface()
         
         # Load unconscious structures
         self._load_unconscious_structures()
         
-        # Initialize psychoanalytic components
+        # Track current unconscious state
         self.active_signifiers = []
-        self.repressed_content = {}
-        self.transference_patterns = {}
-        self.resistance_points = []
         self.current_discourse = "hysteric"  # Default position
         
-        print(f"Unconscious Processor initialized for {agent_name}")
-    
     def _load_unconscious_structures(self):
-        """Load the agent's unconscious structures."""
+        """Load agent's unconscious structures from memory."""
         try:
             unconscious_data = self.memory_manager.unconscious_memory
             
@@ -42,11 +38,8 @@ class UnconsciousProcessor:
             self.chains = unconscious_data.get('signifying_chains', [])
             self.object_a = unconscious_data.get('object_a', {})
             self.symptom = unconscious_data.get('symptom', {})
-            self.jouissance_economy = unconscious_data.get('jouissance_economy', {})
-            self.fantasy_formula = unconscious_data.get('fundamental_fantasy', '')
             
         except Exception as e:
-            print(f"Error loading unconscious structures: {e}")
             self._initialize_empty_structures()
     
     def _reconstruct_graph(self, graph_data: Dict) -> LacanianSignifierGraph:
@@ -62,50 +55,46 @@ class UnconsciousProcessor:
         for edge in graph_data.get('edges', []):
             graph.graph.add_edge(edge['source'], edge['target'], **edge)
         
-        # Restore other structures
+        # Restore structures
         graph.master_signifiers = graph_data.get('master_signifiers', {})
         graph.signifying_chains = graph_data.get('signifying_chains', {})
         graph.object_a_positions = graph_data.get('object_a_positions', [])
-        graph.quilting_points = graph_data.get('quilting_points', [])
-        graph.retroactive_effects = graph_data.get('retroactive_effects', {})
         
         return graph
     
     def process_input(self, user_input: str, context: str = "dialogue") -> Dict[str, Any]:
-        """Process input through unconscious mechanisms."""
+        """
+        Process input through unconscious mechanisms.
+        
+        Args:
+            user_input: User's message
+            context: Interaction context
+            
+        Returns:
+            Dictionary containing unconscious analysis results
+        """
         try:
-            # 1. Identify active signifiers in the input
-            active_signifiers = self._identify_active_signifiers(user_input)
+            # 1. Identify signifiers activated by memories
+            active_signifiers = self._identify_signifiers_from_memories(user_input)
             
-            # 2. Check for transference patterns
-            transference = self._analyze_transference(user_input, context)
-            
-            # 3. Detect resistance
-            resistance = self._detect_resistance(user_input, active_signifiers)
-            
-            # 4. Process through signifying chains
+            # 2. Process through signifying chains
             chain_effects = self._process_through_chains(active_signifiers)
             
-            # 5. Check for return of repressed
-            repressed_returns = self._check_return_of_repressed(active_signifiers)
+            # 3. Analyze discourse position
+            discourse_position = self.signifier_graph.analyze_discourse_position(
+                [s['signifier'] for s in active_signifiers]
+            )
             
-            # 6. Analyze discourse position
-            discourse_position = self.signifier_graph.analyze_discourse_position(active_signifiers)
+            # 4. Calculate jouissance dynamics
+            jouissance_effects = self._calculate_jouissance_effects(active_signifiers)
             
-            # 7. Calculate jouissance dynamics
-            jouissance_effects = self._calculate_jouissance_effects(active_signifiers, user_input)
-            
-            # 8. Generate unconscious influence
+            # Create unconscious influence object
             unconscious_influence = {
                 "active_signifiers": active_signifiers,
                 "chain_activations": chain_effects,
-                "transference": transference,
-                "resistance": resistance,
-                "repressed_returns": repressed_returns,
                 "discourse_position": discourse_position,
                 "jouissance_effects": jouissance_effects,
-                "fantasy_activation": self._check_fantasy_activation(active_signifiers),
-                "slips_and_parapraxes": self._generate_parapraxes(user_input, active_signifiers)
+                "timestamp": datetime.now().isoformat()
             }
             
             # Update internal state
@@ -114,142 +103,152 @@ class UnconsciousProcessor:
             return unconscious_influence
             
         except Exception as e:
-            print(f"Error in unconscious processing: {e}")
             return self._minimal_unconscious_response()
     
-    def _identify_active_signifiers(self, text: str) -> List[Dict[str, Any]]:
-        """Identify which unconscious signifiers are activated by the input."""
-        active = []
-        text_lower = text.lower()
+    def _identify_signifiers_from_memories(self, user_input: str) -> List[Dict[str, Any]]:
+        """
+        Identify active signifiers based on memory retrieval results.
         
-        # Check each signifier in the graph
-        for node in self.signifier_graph.graph.nodes():
-            node_data = self.signifier_graph.graph.nodes[node]
-            
-            # Direct matching
-            if node.lower() in text_lower:
-                active.append({
-                    'signifier': node,
-                    'activation_type': 'direct',
-                    'strength': 1.0,
-                    'node_type': node_data.get('node_type', 'S2')
-                })
-                continue
-            
-            # Check associations
-            associations = node_data.get('associations', [])
-            for assoc in associations:
-                if isinstance(assoc, str) and assoc.lower() in text_lower:
-                    active.append({
-                        'signifier': node,
-                        'activation_type': 'associative',
-                        'strength': 0.7,
-                        'triggered_by': assoc,
-                        'node_type': node_data.get('node_type', 'S2')
+        This is the core innovation: signifiers activate based on actual
+        memory content rather than simple text matching.
+        """
+        active_signifiers = []
+        
+        # Get memories triggered by user input
+        relevant_memories = self.memory_manager.retrieve_memories(user_input, 10)
+        relevant_relationships = self.memory_manager.retrieve_relationships(user_input, 5)
+        
+        # Extract signifiers from memory content
+        for memory in relevant_memories:
+            memory_signifiers = self._extract_signifiers_from_memory(memory)
+            active_signifiers.extend(memory_signifiers)
+        
+        # Extract signifiers from relationship content
+        for relationship in relevant_relationships:
+            rel_signifiers = self._extract_signifiers_from_relationship(relationship)
+            active_signifiers.extend(rel_signifiers)
+        
+        # Remove duplicates and calculate activation strength
+        unique_signifiers = {}
+        for sig in active_signifiers:
+            name = sig['signifier']
+            if name in unique_signifiers:
+                # Increase activation if signifier appears multiple times
+                unique_signifiers[name]['activation_strength'] += 0.2
+            else:
+                unique_signifiers[name] = sig
+        
+        # Apply resonance through signifier graph
+        final_signifiers = list(unique_signifiers.values())
+        if final_signifiers:
+            resonance_signifiers = self._apply_signifier_resonance(final_signifiers)
+            final_signifiers.extend(resonance_signifiers)
+        
+        return final_signifiers[:10]  # Limit to most relevant
+    
+    def _extract_signifiers_from_memory(self, memory: Dict) -> List[Dict[str, Any]]:
+        """Extract signifiers that might be present in memory content."""
+        signifiers = []
+        
+        # Get memory text content
+        memory_text = ""
+        if isinstance(memory, dict):
+            memory_text += memory.get('title', '') + " "
+            memory_text += memory.get('description', '') + " "
+            memory_text += " ".join(memory.get('associated_people', []))
+        
+        memory_text = memory_text.lower()
+        
+        # Check against known signifiers
+        for signifier_data in self.signifiers:
+            if isinstance(signifier_data, dict):
+                signifier_name = signifier_data.get('name', '').lower()
+                
+                # Direct match
+                if signifier_name in memory_text:
+                    signifiers.append({
+                        'signifier': signifier_data.get('name'),
+                        'activation_type': 'memory_content',
+                        'activation_strength': 0.8,
+                        'source_memory': memory.get('title', 'untitled'),
+                        'significance': signifier_data.get('significance', '')
                     })
-                    break
-            
-            # Check for phonetic similarities (signifier slippage)
-            if self._check_phonetic_similarity(node, text):
-                active.append({
-                    'signifier': node,
-                    'activation_type': 'phonetic_slippage',
-                    'strength': 0.5,
-                    'node_type': node_data.get('node_type', 'S2')
-                })
+                
+                # Association match
+                associations = signifier_data.get('associations', [])
+                for assoc in associations:
+                    if isinstance(assoc, str) and assoc.lower() in memory_text:
+                        signifiers.append({
+                            'signifier': signifier_data.get('name'),
+                            'activation_type': 'memory_association',
+                            'activation_strength': 0.6,
+                            'source_memory': memory.get('title', 'untitled'),
+                            'triggered_by': assoc,
+                            'significance': signifier_data.get('significance', '')
+                        })
+                        break
         
-        # Calculate resonance effects
-        for activation in active:
-            signifier = activation['signifier']
-            resonance = self.signifier_graph.get_signifier_resonance(signifier, depth=2)
-            activation['resonance'] = resonance
-        
-        return active
+        return signifiers
     
-    def _analyze_transference(self, text: str, context: str) -> Dict[str, Any]:
-        """Analyze transference patterns in the interaction."""
-        transference = {
-            'type': 'neutral',
-            'intensity': 0.0,
-            'projected_figures': [],
-            'unconscious_address': None
-        }
+    def _extract_signifiers_from_relationship(self, relationship: Dict) -> List[Dict[str, Any]]:
+        """Extract signifiers from relationship content."""
+        signifiers = []
         
-        # Analyze who the subject is really addressing
-        template_data = {
-            "user_input": text,
-            "context": context,
-            "symptom": json.dumps(self.symptom, indent=2)
-        }
+        if not isinstance(relationship, dict):
+            return signifiers
         
-        analysis = self.llm.generate("phase2", "analyze_transference", template_data)
-        try:
-            transference_data = json.loads(analysis)
-            transference.update(transference_data)
-        except:
-            # Extract key patterns manually
-            if any(word in text.lower() for word in ['you always', 'you never', 'why don\'t you']):
-                transference['type'] = 'negative'
-                transference['intensity'] = 0.7
-                transference['projected_figures'].append('critical parent')
-            elif any(word in text.lower() for word in ['help me', 'tell me', 'i need']):
-                transference['type'] = 'positive'
-                transference['intensity'] = 0.6
-                transference['projected_figures'].append('idealized helper')
+        # Get relationship content
+        rel_text = (
+            relationship.get('name', '') + " " +
+            relationship.get('relationship_type', '') + " " +
+            relationship.get('emotional_significance', '')
+        ).lower()
         
-        return transference
+        # Check against known signifiers
+        for signifier_data in self.signifiers:
+            if isinstance(signifier_data, dict):
+                signifier_name = signifier_data.get('name', '').lower()
+                
+                if signifier_name in rel_text:
+                    signifiers.append({
+                        'signifier': signifier_data.get('name'),
+                        'activation_type': 'relationship_content',
+                        'activation_strength': 0.7,
+                        'source_relationship': relationship.get('name', 'unknown'),
+                        'significance': signifier_data.get('significance', '')
+                    })
+        
+        return signifiers
     
-    def _detect_resistance(self, text: str, active_signifiers: List[Dict]) -> Dict[str, Any]:
-        """Detect resistance to unconscious material."""
-        resistance = {
-            'present': False,
-            'type': None,
-            'intensity': 0.0,
-            'defensive_operations': []
-        }
+    def _apply_signifier_resonance(self, primary_signifiers: List[Dict]) -> List[Dict[str, Any]]:
+        """Apply resonance through signifier network to activate related signifiers."""
+        resonance_signifiers = []
         
-        # Check if any active signifiers are repressed
-        for sig_data in active_signifiers:
+        for sig_data in primary_signifiers[:3]:  # Use top 3 for resonance
             signifier = sig_data['signifier']
+            
             if signifier in self.signifier_graph.graph:
-                node_data = self.signifier_graph.graph.nodes[signifier]
-                if node_data.get('repressed', False):
-                    resistance['present'] = True
-                    resistance['intensity'] = max(resistance['intensity'], 0.8)
-                    resistance['defensive_operations'].append({
-                        'type': 'repression',
-                        'signifier': signifier
-                    })
+                # Get resonance map
+                resonance = self.signifier_graph.get_signifier_resonance(signifier, depth=2)
+                
+                # Add resonated signifiers with lower activation
+                for resonated_sig, strength in resonance.items():
+                    if resonated_sig != signifier and strength > 0.3:
+                        resonance_signifiers.append({
+                            'signifier': resonated_sig,
+                            'activation_type': 'resonance',
+                            'activation_strength': strength * 0.5,
+                            'resonated_from': signifier,
+                            'significance': f'Resonance from {signifier}'
+                        })
         
-        # Check for common resistance patterns
-        resistance_phrases = [
-            "i don't want to talk about",
-            "that's not important",
-            "let's change the subject",
-            "i don't remember",
-            "that's irrelevant"
-        ]
-        
-        text_lower = text.lower()
-        for phrase in resistance_phrases:
-            if phrase in text_lower:
-                resistance['present'] = True
-                resistance['type'] = 'avoidance'
-                resistance['intensity'] = max(resistance['intensity'], 0.6)
-                resistance['defensive_operations'].append({
-                    'type': 'verbal_avoidance',
-                    'indicator': phrase
-                })
-        
-        return resistance
+        return resonance_signifiers[:5]  # Limit resonance additions
     
     def _process_through_chains(self, active_signifiers: List[Dict]) -> Dict[str, Any]:
         """Process active signifiers through signifying chains."""
         chain_effects = {
             'activated_chains': [],
-            'meaning_effects': [],
-            'retroactive_determinations': [],
-            'slippage_points': []
+            'retroactive_determinations': []
         }
         
         # Find which chains are activated
@@ -266,64 +265,22 @@ class UnconsciousProcessor:
                     'active_signifiers': active_in_chain
                 })
                 
-                # Check for retroactive effects
+                # Check for retroactive effects (Nachträglichkeit)
                 if chain_data.get('retroactive', False) and chain_signifiers:
                     last_sig = chain_signifiers[-1]
                     if last_sig in active_in_chain:
                         chain_effects['retroactive_determinations'].append({
                             'determining_signifier': last_sig,
-                            'retroactive_meaning': f"{last_sig} determines meaning of {chain_name}",
-                            'affected_signifiers': [s for s in chain_signifiers if s != last_sig]
+                            'affected_signifiers': [s for s in chain_signifiers if s != last_sig],
+                            'retroactive_meaning': f"{last_sig} determines meaning of {chain_name}"
                         })
-        
-        # Detect slippage points
-        slippage = self.signifier_graph.detect_slippage_points()
-        for point in slippage:
-            # Check if slippage point is near active signifiers
-            if any(s['signifier'] in point.get('position', '') for s in active_signifiers):
-                chain_effects['slippage_points'].append(point)
         
         return chain_effects
     
-    def _check_return_of_repressed(self, active_signifiers: List[Dict]) -> List[Dict[str, Any]]:
-        """Check if repressed signifiers are returning in distorted form."""
-        returns = []
-        
-        for sig_data in active_signifiers:
-            signifier = sig_data['signifier']
-            if signifier in self.signifier_graph.graph:
-                node_data = self.signifier_graph.graph.nodes[signifier]
-                
-                # Check if this is a return formation
-                if node_data.get('return_of_repressed', False):
-                    original = node_data.get('original_signifier', 'unknown')
-                    returns.append({
-                        'return_formation': signifier,
-                        'repressed_signifier': original,
-                        'return_type': sig_data['activation_type'],
-                        'interpretation': f"{original} returns as {signifier}"
-                    })
-                
-                # Check for metaphoric substitutions that might be returns
-                substitutions = node_data.get('metaphoric_substitutions', [])
-                for sub in substitutions:
-                    if sub in self.signifier_graph.graph:
-                        sub_data = self.signifier_graph.graph.nodes[sub]
-                        if sub_data.get('repressed', False):
-                            returns.append({
-                                'return_formation': signifier,
-                                'repressed_signifier': sub,
-                                'return_type': 'metaphoric_substitution',
-                                'interpretation': f"Repressed {sub} returns through {signifier}"
-                            })
-        
-        return returns
-    
-    def _calculate_jouissance_effects(self, active_signifiers: List[Dict], text: str) -> Dict[str, Any]:
-        """Calculate jouissance dynamics in the current interaction."""
+    def _calculate_jouissance_effects(self, active_signifiers: List[Dict]) -> Dict[str, Any]:
+        """Calculate jouissance dynamics based on signifier activation."""
         jouissance = {
             'level': 0.0,
-            'type': 'neutral',
             'patterns': [],
             'symptom_activation': False
         }
@@ -339,25 +296,18 @@ class UnconsciousProcessor:
                 jouissance['level'] += 0.4
                 jouissance['patterns'].append({
                     'type': 'symptomatic_jouissance',
-                    'description': 'Subject derives jouissance from symptom'
+                    'description': 'Symptom signifiers activated'
                 })
         
-        # Check for repetition compulsion
-        jouissance_points = self.signifier_graph.identify_jouissance_points()
-        for point in jouissance_points:
-            if point['signifier'] in [s['signifier'] for s in active_signifiers]:
-                jouissance['level'] += 0.2
-                jouissance['patterns'].append(point)
-        
-        # Analyze proximity to object a
+        # Check for proximity to object a
         for sig_data in active_signifiers:
             signifier = sig_data['signifier']
             if signifier in self.signifier_graph.graph:
-                if self.signifier_graph.graph.nodes[signifier].get('object_a_proximity', False):
+                node_data = self.signifier_graph.graph.nodes[signifier]
+                if node_data.get('object_a_proximity', False):
                     jouissance['level'] += 0.3
-                    jouissance['type'] = 'object_a_circulation'
                     jouissance['patterns'].append({
-                        'type': 'desire_around_void',
+                        'type': 'object_a_circulation',
                         'signifier': signifier,
                         'description': f"{signifier} circles the void of object a"
                     })
@@ -367,158 +317,15 @@ class UnconsciousProcessor:
         
         return jouissance
     
-    def _check_fantasy_activation(self, active_signifiers: List[Dict]) -> Dict[str, Any]:
-        """Check if the fundamental fantasy is activated."""
-        fantasy_activation = {
-            'activated': False,
-            'strength': 0.0,
-            'elements': []
-        }
-        
-        # Get fantasy structure
-        fantasy = self.signifier_graph.find_fantasy_structure()
-        
-        # Check if divided subject positions are active
-        active_names = [s['signifier'] for s in active_signifiers]
-        for subject in fantasy.get('divided_subjects', []):
-            if subject['signifier'] in active_names:
-                fantasy_activation['activated'] = True
-                fantasy_activation['strength'] += 0.3
-                fantasy_activation['elements'].append({
-                    'type': 'divided_subject',
-                    'signifier': subject['signifier']
-                })
-        
-        # Check if object a positions are referenced
-        for obj_a in fantasy.get('object_a_manifestations', []):
-            surrounding = obj_a.get('surrounding_signifiers', [])
-            if any(sig in active_names for sig in surrounding):
-                fantasy_activation['activated'] = True
-                fantasy_activation['strength'] += 0.4
-                fantasy_activation['elements'].append({
-                    'type': 'object_a_proximity',
-                    'position': obj_a['position']
-                })
-        
-        return fantasy_activation
-    
-    def _generate_parapraxes(self, text: str, active_signifiers: List[Dict]) -> List[Dict[str, Any]]:
-        """Generate potential slips and parapraxes based on unconscious activity."""
-        parapraxes = []
-        
-        # High unconscious activation can cause slips
-        if len(active_signifiers) > 3:
-            # Potential for substitution
-            for sig_data in active_signifiers[:2]:  # Limit to avoid too many slips
-                signifier = sig_data['signifier']
-                if random.random() < 0.3:  # 30% chance
-                    # Find a related signifier for substitution
-                    if signifier in self.signifier_graph.graph:
-                        neighbors = list(self.signifier_graph.graph.neighbors(signifier))
-                        if neighbors:
-                            substitute = random.choice(neighbors)
-                            parapraxes.append({
-                                'type': 'substitution',
-                                'intended': signifier,
-                                'slip': substitute,
-                                'interpretation': f"Unconscious substitution revealing connection"
-                            })
-        
-        # Repressed content trying to emerge
-        repressed_returns = self._check_return_of_repressed(active_signifiers)
-        if repressed_returns:
-            parapraxes.append({
-                'type': 'return_of_repressed',
-                'content': repressed_returns[0],
-                'interpretation': 'Repressed content breaking through'
-            })
-        
-        return parapraxes
-    
-    def _check_phonetic_similarity(self, signifier: str, text: str) -> bool:
-        """Check for phonetic similarities that might trigger signifiers."""
-        # Simple phonetic matching - could be enhanced with proper phonetic algorithms
-        words = text.lower().split()
-        sig_lower = signifier.lower()
-        
-        for word in words:
-            # Check for rhymes
-            if len(word) > 2 and len(sig_lower) > 2:
-                if word[-2:] == sig_lower[-2:]:
-                    return True
-            # Check for alliteration
-            if word[0] == sig_lower[0] and len(word) > 3:
-                return True
-        
-        return False
-    
     def _update_unconscious_state(self, influence: Dict[str, Any]) -> None:
-        """Update the unconscious processor's state based on current processing."""
-        # Update active signifiers list
+        """Update unconscious processor's internal state."""
+        # Update active signifiers
         self.active_signifiers = influence.get('active_signifiers', [])
         
         # Update discourse position
         discourse_scores = influence.get('discourse_position', {})
         if discourse_scores:
             self.current_discourse = max(discourse_scores.items(), key=lambda x: x[1])[0]
-        
-        # Track resistance patterns
-        resistance = influence.get('resistance', {})
-        if resistance.get('present', False):
-            self.resistance_points.append({
-                'timestamp': datetime.now(),
-                'resistance': resistance
-            })
-            # Keep only recent resistance
-            self.resistance_points = self.resistance_points[-10:]
-        
-        # Update transference patterns
-        transference = influence.get('transference', {})
-        if transference.get('intensity', 0) > 0.5:
-            session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
-            self.transference_patterns[session_id] = transference
-    
-    def generate_unconscious_response_influence(self, conscious_response: str) -> str:
-        """Apply unconscious influence to the conscious response."""
-        if not self.active_signifiers:
-            return conscious_response
-        
-        try:
-            # Get current unconscious state
-            current_influence = {
-                'active_signifiers': self.active_signifiers,
-                'discourse': self.current_discourse,
-                'resistance': self.resistance_points[-1] if self.resistance_points else None,
-                'fantasy_activation': self._check_fantasy_activation(self.active_signifiers)
-            }
-            
-            template_data = {
-                "conscious_response": conscious_response,
-                "signifiers": json.dumps([s['signifier'] for s in self.active_signifiers[:5]]),
-                "discourse": self.current_discourse,
-                "fantasy_activated": current_influence['fantasy_activation']['activated']
-            }
-            
-            influenced_response = self.llm.generate("phase2", "unconscious_influence", template_data)
-            
-            # Add parapraxes if highly activated
-            if len(self.active_signifiers) > 4 and random.random() < 0.3:
-                parapraxes = self._generate_parapraxes(conscious_response, self.active_signifiers)
-                if parapraxes:
-                    # Insert a slip
-                    slip = parapraxes[0]
-                    if slip['type'] == 'substitution':
-                        influenced_response = influenced_response.replace(
-                            slip['intended'], 
-                            f"{slip['slip']}... I mean, {slip['intended']}", 
-                            1
-                        )
-            
-            return influenced_response if influenced_response else conscious_response
-            
-        except Exception as e:
-            print(f"Error generating unconscious influence: {e}")
-            return conscious_response
     
     def _initialize_empty_structures(self):
         """Initialize empty structures if loading fails."""
@@ -527,19 +334,13 @@ class UnconsciousProcessor:
         self.chains = []
         self.object_a = {}
         self.symptom = {}
-        self.jouissance_economy = {}
-        self.fantasy_formula = ""
     
     def _minimal_unconscious_response(self) -> Dict[str, Any]:
         """Provide minimal response when processing fails."""
         return {
             "active_signifiers": [],
             "chain_activations": {"activated_chains": []},
-            "transference": {"type": "neutral", "intensity": 0.0},
-            "resistance": {"present": False},
-            "repressed_returns": [],
-            "discourse_position": {"hysteric": 0.25, "master": 0.25, "university": 0.25, "analyst": 0.25},
+            "discourse_position": {"hysteric": 0.5, "master": 0.2, "university": 0.2, "analyst": 0.1},
             "jouissance_effects": {"level": 0.0, "patterns": []},
-            "fantasy_activation": {"activated": False},
-            "slips_and_parapraxes": []
+            "timestamp": datetime.now().isoformat()
         }

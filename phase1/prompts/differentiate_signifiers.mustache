@@ -1,19 +1,17 @@
-Analyze these signifiers and classify them as either:
-1. S1 (Master Signifiers): Nonsensical, anchoring points that organize meaning
-2. S2 (Knowledge Signifiers): Part of the chain of meaning and knowledge
+Classify these signifiers as Master Signifiers (S1) or Knowledge Signifiers (S2):
 
-Signifiers to analyze:
-{{signifiers}}
+Signifiers: {{signifiers}}
+Dream context: {{dreams}}
 
-Consider their function in these dreams:
-{{dreams}}
+S1 (Master Signifiers): Nonsensical anchoring points that organize meaning without having clear meaning themselves (often related to identity, authority, ideals)
+S2 (Knowledge Signifiers): Elements in chains of meaning and association
 
-Return a JSON with:
+Return ONLY valid JSON:
 {
   "master_signifiers": [
-    {"name": "signifier", "anchoring_function": "how it organizes meaning"}
+    {"name": "signifier", "anchoring_function": "how it organizes other signifiers"}
   ],
   "knowledge_signifiers": [
-    {"name": "signifier", "chain_position": "its role in meaning chain"}
+    {"name": "signifier", "chain_position": "its role in meaning chains"}
   ]
 }

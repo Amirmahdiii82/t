@@ -1,51 +1,45 @@
-You are a Lacanian analyst creating a dream that {{agent_name}} experienced. This dream manifests from activated unconscious signifiers that emerged during daily interactions.
+Generate a psychoanalytically authentic dream for {{agent_name}} based on activated unconscious signifiers.
 
-## Activated Signifiers (from today's interactions)
+## Activated Signifiers from Recent Interactions
 {{#activated_signifiers}}
-- {{name}}: {{significance}}
-  Activation level: {{activation_level}}
-  Relation to desire: {{relation_to_desire}}
+- {{signifier}}: {{significance}}
+  Activation strength: {{activation_strength}}
+  {{#triggered_by}}Triggered by: {{triggered_by}}{{/triggered_by}}
 {{/activated_signifiers}}
 
-## Active Signifying Chains
+## Active Signifying Chains  
 {{#signifying_chains}}
 - {{name}}: {{#signifiers}}{{.}} → {{/signifiers}}
   Activated nodes: {{#activated_nodes}}{{.}}, {{/activated_nodes}}
-  Relation to fantasy: {{relation_to_fantasy}}
 {{/signifying_chains}}
 
-## Return of the Repressed
-{{#return_of_repressed}}
-- {{signifier}} (repressed): Now returning with activation {{activation_level}}
-{{/return_of_repressed}}
-
-## Unconscious Structure
+## Unconscious Context
 Object a: {{object_a.description}}
 Symptom: {{symptom.description}}
 
-## Instructions
-Create a dream following Lacanian dream logic where:
-1. The manifest content disguises latent thoughts through condensation and displacement
-2. Multiple signifiers condense into single dream images
-3. Affect is displaced from one signifier to another
-4. The dream stages the subject's fundamental fantasy
-5. Object a appears but remains ultimately unattainable
-6. The symptom's jouissance pattern manifests in the dream structure
+## Dream Generation Instructions
+Create a dream following psychoanalytic dream-work principles:
 
-Generate a JSON response with this structure:
+1. **Condensation**: Multiple signifiers merge into single dream images
+2. **Displacement**: Emotional charge shifts from one element to another  
+3. **Symbolization**: Abstract thoughts become concrete visual images
+4. **Primary Process**: Dream logic overrides rational thought
+
+The dream should manifest the activated signifiers through symbolic imagery while following dream-work mechanisms.
+
+Return ONLY valid JSON:
 {
-  "title": "Brief dream title reflecting central signifier",
-  "narrative": "Complete dream narrative in first person, 3-4 paragraphs",
+  "title": "Brief dream title reflecting primary signifier",
+  "narrative": "Complete dream narrative in first person, 2-3 paragraphs showing dream logic",
   "scenes": [
     {
-      "setting": "Dream location/context",
+      "setting": "Dream location/environment", 
       "narrative": "What happens in this scene",
       "symbols": ["key symbolic elements"],
-      "signifiers_expressed": ["which signifiers manifest here"],
-      "visual_description": "Surrealist description for image generation"
+      "signifiers_expressed": ["which activated signifiers appear here"],
+      "visual_description": "Detailed surrealist description for image generation"
     }
   ],
-  "central_fantasy": "How the dream stages the subject's fundamental fantasy",
-  "manifest_content": ["Surface elements of the dream"],
-  "latent_content": ["Hidden signifiers and desires"]
+  "manifest_content": ["Surface elements visible in the dream"],
+  "latent_content": ["Hidden signifiers and unconscious meanings"]
 }

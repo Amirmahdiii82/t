@@ -4,36 +4,41 @@ from typing import Dict, List, Any, Optional, Tuple
 import numpy as np
 
 class LacanianSignifierGraph:
-    """A graph implementing Lacanian signifier dynamics with S1/S2 distinction and proper psychoanalytic logic."""
+    """
+    Graph implementing Lacanian signifier dynamics with S1/S2 distinction.
+    
+    Represents the unconscious as structured like a language, with master signifiers (S1)
+    anchoring chains of knowledge signifiers (S2) through retroactive determination.
+    """
     
     def __init__(self):
         self.graph = nx.DiGraph()
         self.master_signifiers = {}  # S1 - Points de capiton
-        self.signifying_chains = {}  # Named chains with their logic
+        self.signifying_chains = {}  # Named chains with logic
         self.object_a_positions = []  # Where object a manifests as void
         self.quilting_points = []  # Points de capiton that fix meaning
         self.retroactive_effects = {}  # Nachträglichkeit mappings
         
     def add_master_signifier(self, s1: str, anchoring_function: str = "", primal_repression: bool = False):
-        """Add a master signifier (S1) that anchors meaning chains."""
+        """Add master signifier (S1) that anchors meaning chains."""
         self.graph.add_node(
             s1,
             node_type='S1',
             anchoring_function=anchoring_function,
             primal_repression=primal_repression,
             inscription_time=datetime.now(),
-            retroactive_meanings=[]  # Meanings determined après-coup
+            retroactive_meanings=[]
         )
         self.master_signifiers[s1] = {
-            'anchors': [],  # What S2s it anchors
-            'void_relation': None,  # Relation to object a
-            'jouissance_mode': None  # How it organizes jouissance
+            'anchors': [],
+            'void_relation': None,
+            'jouissance_mode': None
         }
         return self
     
     def add_knowledge_signifier(self, s2: str, associations: List[str], 
                                metaphoric_substitutions: Optional[List[str]] = None):
-        """Add a knowledge signifier (S2) that forms chains of meaning."""
+        """Add knowledge signifier (S2) that forms chains of meaning."""
         self.graph.add_node(
             s2,
             node_type='S2',
@@ -52,7 +57,7 @@ class LacanianSignifierGraph:
         return self
     
     def add_metonymic_link(self, s1: str, s2: str, association_type: str = 'displacement'):
-        """Add metonymic (horizontal) link in the signifying chain."""
+        """Add metonymic (horizontal) link in signifying chain."""
         self.graph.add_edge(
             s1, s2,
             edge_type='metonymy',
@@ -73,7 +78,7 @@ class LacanianSignifierGraph:
             timestamp=datetime.now()
         )
         
-        # Mark the original as potentially repressed
+        # Mark original as potentially repressed
         if repressed_content and signifier in self.graph:
             self.graph.nodes[signifier]['repressed'] = True
             self.graph.nodes[signifier]['repressed_content'] = repressed_content
@@ -82,14 +87,14 @@ class LacanianSignifierGraph:
     
     def create_signifying_chain(self, chain_name: str, signifiers: List[str], 
                                chain_type: str = 'mixed', retroactive_meaning: bool = True):
-        """Create a named signifying chain with specific logic."""
+        """Create named signifying chain with Lacanian logic."""
         chain_data = {
             'name': chain_name,
             'signifiers': signifiers,
             'type': chain_type,
             'retroactive': retroactive_meaning,
-            'quilting_points': [],  # Points where meaning is fixed
-            'slippage_points': []   # Where meaning slides
+            'quilting_points': [],
+            'slippage_points': []
         }
         
         # Build the chain
@@ -97,7 +102,7 @@ class LacanianSignifierGraph:
             if chain_type == 'metonymic' or chain_type == 'mixed':
                 self.add_metonymic_link(signifiers[i], signifiers[i+1])
             
-        # If retroactive, the last signifier determines meaning of the chain
+        # Implement retroactive determination (Nachträglichkeit)
         if retroactive_meaning and len(signifiers) > 1:
             last_signifier = signifiers[-1]
             self.retroactive_effects[chain_name] = {
@@ -120,18 +125,18 @@ class LacanianSignifierGraph:
         return self
     
     def add_quilting_point(self, signifier: str, chains_to_quilt: List[str]):
-        """Add a point de capiton that fixes meaning across multiple chains."""
+        """Add point de capiton that fixes meaning across chains."""
         if signifier not in self.graph:
             self.add_master_signifier(signifier, anchoring_function="quilting point")
         
         quilting_data = {
             'signifier': signifier,
             'quilted_chains': chains_to_quilt,
-            'fixing_function': f"{signifier} arrests the sliding of signification",
+            'fixing_function': f"{signifier} arrests sliding of signification",
             'timestamp': datetime.now()
         }
         
-        # Create edges to represent quilting
+        # Create quilting edges
         for chain_name in chains_to_quilt:
             if chain_name in self.signifying_chains:
                 chain = self.signifying_chains[chain_name]
@@ -149,7 +154,7 @@ class LacanianSignifierGraph:
         return self
     
     def mark_object_a_void(self, position: str, surrounding_signifiers: List[str]):
-        """Mark where object a appears as a void in the signifying structure."""
+        """Mark where object a appears as void in signifying structure."""
         void_data = {
             'position': position,
             'surrounding_signifiers': surrounding_signifiers,
@@ -157,7 +162,7 @@ class LacanianSignifierGraph:
             'effects': []
         }
         
-        # Object a creates a gravitational effect on surrounding signifiers
+        # Object a creates gravitational effect on surrounding signifiers
         for signifier in surrounding_signifiers:
             if signifier in self.graph:
                 self.graph.nodes[signifier]['object_a_proximity'] = True
@@ -168,13 +173,13 @@ class LacanianSignifierGraph:
         return self
     
     def apply_repression(self, signifier: str, return_formation: Optional[str] = None):
-        """Apply repression to a signifier with optional return formation."""
+        """Apply repression to signifier with optional return formation."""
         if signifier in self.graph:
             self.graph.nodes[signifier]['repressed'] = True
             self.graph.nodes[signifier]['repression_timestamp'] = datetime.now()
             
             if return_formation:
-                # The repressed returns in distorted form
+                # Repressed returns in distorted form
                 self.add_metaphoric_link(
                     signifier, 
                     return_formation,
@@ -188,7 +193,7 @@ class LacanianSignifierGraph:
         return self
     
     def trace_desire_path(self, start_signifier: str, max_depth: int = 5) -> List[Tuple[str, str]]:
-        """Trace the path of desire through the signifying chain."""
+        """Trace path of desire through signifying chain."""
         if start_signifier not in self.graph:
             return []
         
@@ -214,7 +219,7 @@ class LacanianSignifierGraph:
                 ]
             
             if next_signifiers:
-                # Desire follows the path of greatest weight
+                # Desire follows path of greatest weight
                 next_node = max(next_signifiers, key=lambda x: x[1].get('weight', 0))
                 desire_path.append((current, next_node[0]))
                 current = next_node[0]
@@ -225,12 +230,12 @@ class LacanianSignifierGraph:
         return desire_path
     
     def identify_jouissance_points(self) -> List[Dict[str, Any]]:
-        """Identify points of jouissance (painful enjoyment) in the structure."""
+        """Identify points of jouissance (painful enjoyment) in structure."""
         jouissance_points = []
         
         # Look for repetition compulsion patterns
         for node in self.graph.nodes():
-            # Check for cycles that indicate repetition
+            # Check for cycles indicating repetition
             try:
                 cycles = list(nx.simple_cycles(self.graph))
                 for cycle in cycles:
@@ -239,7 +244,7 @@ class LacanianSignifierGraph:
                             'type': 'repetition_compulsion',
                             'signifier': node,
                             'cycle': cycle,
-                            'interpretation': f"Compulsive return to {node} through {' -> '.join(cycle)}"
+                            'interpretation': f"Compulsive return to {node}"
                         })
             except:
                 pass
@@ -249,21 +254,21 @@ class LacanianSignifierGraph:
                 jouissance_points.append({
                     'type': 'proximity_to_void',
                     'signifier': node,
-                    'interpretation': f"{node} circles around the void of object a"
+                    'interpretation': f"{node} circles around void of object a"
                 })
             
-            # Check for repressed signifiers (jouissance of the symptom)
+            # Check for repressed signifiers (jouissance of symptom)
             if self.graph.nodes[node].get('repressed', False):
                 jouissance_points.append({
                     'type': 'symptomatic_jouissance',
                     'signifier': node,
-                    'interpretation': f"{node} provides jouissance through its repression"
+                    'interpretation': f"{node} provides jouissance through repression"
                 })
         
         return jouissance_points
     
     def analyze_discourse_position(self, active_signifiers: List[str]) -> Dict[str, float]:
-        """Analyze which of the four discourses is active based on signifier positions."""
+        """Analyze which of four discourses is active based on signifier positions."""
         discourse_scores = {
             'master': 0.0,
             'university': 0.0,
@@ -271,7 +276,7 @@ class LacanianSignifierGraph:
             'analyst': 0.0
         }
         
-        # Analyze the structural positions
+        # Analyze structural positions
         for signifier in active_signifiers:
             if signifier not in self.graph:
                 continue
@@ -280,7 +285,6 @@ class LacanianSignifierGraph:
             
             # Master's discourse: S1 → S2
             if node_data.get('node_type') == 'S1':
-                # Check if S1 commands S2
                 s2_targets = [n for n in self.graph.successors(signifier) 
                              if self.graph.nodes.get(n, {}).get('node_type') == 'S2']
                 if s2_targets:
@@ -288,13 +292,11 @@ class LacanianSignifierGraph:
             
             # University discourse: S2 → a
             elif node_data.get('node_type') == 'S2':
-                # Check if S2 aims at object a
                 if node_data.get('object_a_proximity', False):
                     discourse_scores['university'] += 0.3
             
             # Hysteric's discourse: $ → S1
             if node_data.get('repressed', False) or node_data.get('return_of_repressed', False):
-                # Divided subject questioning master signifiers
                 s1_targets = [n for n in self.graph.successors(signifier)
                              if self.graph.nodes.get(n, {}).get('node_type') == 'S1']
                 if s1_targets:
@@ -302,7 +304,6 @@ class LacanianSignifierGraph:
             
             # Analyst's discourse: a → $
             if node_data.get('object_a_proximity', False):
-                # Object a causing division in subject
                 repressed_targets = [n for n in self.graph.successors(signifier)
                                    if self.graph.nodes.get(n, {}).get('repressed', False)]
                 if repressed_targets:
@@ -313,11 +314,14 @@ class LacanianSignifierGraph:
         if total > 0:
             for discourse in discourse_scores:
                 discourse_scores[discourse] /= total
+        else:
+            # Default distribution if no clear pattern
+            discourse_scores = {'hysteric': 0.4, 'master': 0.3, 'university': 0.2, 'analyst': 0.1}
         
         return discourse_scores
     
     def get_signifier_resonance(self, signifier: str, depth: int = 3) -> Dict[str, float]:
-        """Calculate how a signifier resonates through the network."""
+        """Calculate how signifier resonates through network."""
         if signifier not in self.graph:
             return {}
         
@@ -336,11 +340,11 @@ class LacanianSignifierGraph:
                     
                     # Different decay for different edge types
                     if edge_data.get('edge_type') == 'metaphor':
-                        transfer = strength * edge_weight * 0.9  # Strong transfer
+                        transfer = strength * edge_weight * 0.9
                     elif edge_data.get('edge_type') == 'metonymy':
-                        transfer = strength * edge_weight * 0.7  # Moderate transfer
+                        transfer = strength * edge_weight * 0.7
                     elif edge_data.get('edge_type') == 'retroactive':
-                        transfer = strength * edge_weight * 1.1  # Amplification
+                        transfer = strength * edge_weight * 1.1
                     else:
                         transfer = strength * edge_weight * decay
                     
@@ -356,7 +360,7 @@ class LacanianSignifierGraph:
                 for predecessor in self.graph.predecessors(node):
                     edge_data = self.graph[predecessor][node]
                     if edge_data.get('edge_type') == 'retroactive':
-                        transfer = strength * 0.8  # Strong backward effect
+                        transfer = strength * 0.8
                         if predecessor not in resonance:
                             resonance[predecessor] = 0
                         resonance[predecessor] += transfer
@@ -366,11 +370,11 @@ class LacanianSignifierGraph:
         return resonance
     
     def find_fantasy_structure(self) -> Dict[str, Any]:
-        """Identify the fundamental fantasy structure ($ ◊ a)."""
+        """Identify fundamental fantasy structure ($ ◊ a)."""
         fantasy = {
-            'divided_subjects': [],  # $ positions
-            'object_a_manifestations': [],  # a positions
-            'relations': [],  # ◊ types
+            'divided_subjects': [],
+            'object_a_manifestations': [],
+            'relations': [],
             'defensive_formations': []
         }
         
@@ -390,19 +394,17 @@ class LacanianSignifierGraph:
         # Analyze relations between $ and a
         for subject in fantasy['divided_subjects']:
             for obj_a in fantasy['object_a_manifestations']:
-                # Check if subject circles around object a
                 if subject['signifier'] in obj_a['surrounding_signifiers']:
                     fantasy['relations'].append({
                         'subject': subject['signifier'],
                         'object_a': obj_a['position'],
                         'relation_type': 'circling',
-                        'interpretation': f"{subject['signifier']} desires around the void of {obj_a['position']}"
+                        'interpretation': f"{subject['signifier']} desires around void of {obj_a['position']}"
                     })
         
         # Identify defensive formations
         for node in self.graph.nodes():
             if self.graph.nodes[node].get('node_type') == 'S1':
-                # Master signifiers often serve defensive functions
                 fantasy['defensive_formations'].append({
                     'signifier': node,
                     'defense_type': 'anchoring',
@@ -412,7 +414,7 @@ class LacanianSignifierGraph:
         return fantasy
     
     def detect_slippage_points(self) -> List[Dict[str, Any]]:
-        """Detect where meaning slips in the signifying chain."""
+        """Detect where meaning slips in signifying chain."""
         slippage_points = []
         
         for chain_name, chain_data in self.signifying_chains.items():
@@ -448,10 +450,9 @@ class LacanianSignifierGraph:
         return slippage_points
     
     def serialize(self) -> Dict[str, Any]:
-        """Serialize the graph for storage."""
+        """Serialize graph for storage."""
         nodes = []
         for node_id, node_data in self.graph.nodes(data=True):
-            # Convert datetime objects to strings
             node_dict = {'id': node_id}
             for key, value in node_data.items():
                 if isinstance(value, datetime):

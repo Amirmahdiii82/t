@@ -1,31 +1,194 @@
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-from datetime import datetime
 import numpy as np
-from matplotlib.patches import Rectangle, Circle, FancyBboxPatch
-import matplotlib.patches as mpatches
-import matplotlib.path as mpath
-from matplotlib.collections import LineCollection
+from datetime import datetime
 import os
+from matplotlib.patches import Circle
+import matplotlib.patches as mpatches
+from matplotlib.collections import LineCollection
 
-# Set publication-quality style
-plt.style.use('seaborn-v0_8-whitegrid')
-sns.set_palette("husl")
-plt.rcParams['figure.dpi'] = 300
-plt.rcParams['savefig.dpi'] = 300
-plt.rcParams['font.size'] = 10
-plt.rcParams['font.family'] = 'serif'
-
-def load_emotional_data(file_path):
-    """Load emotional state data from JSON file."""
-    with open(file_path, 'r') as f:
-        data = json.load(f)
-    return data
+def create_publication_ready_pad_journey(file_path):
+    """Create a clean, publication-ready emotional journey visualization."""
+    
+    # Create output directory
+    output_dir = os.path.join(os.path.dirname(file_path), 'visualizations')
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, 'emotional_journey.png')
+    
+    try:
+        # Load data
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        # Extract PAD history
+        df = extract_pad_history(data)
+        
+        if df.empty or len(df) < 2:
+            print("Insufficient data for visualization")
+            return False
+        
+        # Create figure with white background
+        fig, ax = plt.subplots(figsize=(12, 10), facecolor='white')
+        ax.set_facecolor('white')
+        
+        # Define emotion colors (PAD octants)
+        emotion_colors = {
+            'elated': '#FFD700',      # Gold - high pleasure, high arousal, high dominance
+            'excited': '#FF6B6B',     # Light red - high pleasure, high arousal, low dominance
+            'content': '#4ECDC4',     # Teal - high pleasure, low arousal, high dominance
+            'relaxed': '#95E1D3',     # Mint - high pleasure, low arousal, low dominance
+            'angry': '#E74C3C',       # Red - low pleasure, high arousal, high dominance
+            'anxious': '#FF7979',     # Pink - low pleasure, high arousal, low dominance
+            'bored': '#74B9FF',       # Light blue - low pleasure, low arousal, high dominance
+            'sad': '#A29BFE',         # Purple - low pleasure, low arousal, low dominance
+            'neutral': '#BDC3C7',     # Gray
+            'alert': '#F39C12',       # Orange
+            'tired': '#5F9EA0'        # Cadet blue
+        }
+        
+        # Create the journey path with gradient
+        points = np.array([[row['pleasure'], row['arousal']] for _, row in df.iterrows()])
+        
+        # Create line segments
+        segments = []
+        colors_for_gradient = []
+        
+        for i in range(len(points) - 1):
+            segments.append([points[i], points[i + 1]])
+            # Color based on emotional state at that point
+            emotion = df.iloc[i]['emotion_category']
+            colors_for_gradient.append(emotion_colors.get(emotion, '#BDC3C7'))
+        
+        # Create LineCollection with varying colors
+        lc = LineCollection(segments, colors=colors_for_gradient, linewidths=3, alpha=0.7)
+        ax.add_collection(lc)
+        
+        # Plot points with emotion colors
+        for i, row in df.iterrows():
+            color = emotion_colors.get(row['emotion_category'], '#BDC3C7')
+            
+            # Size based on dominance (third dimension)
+            size = 100 + 200 * (row['dominance'] + 1) / 2  # Scale from 100 to 300
+            
+            # Plot point
+            ax.scatter(row['pleasure'], row['arousal'], c=color, s=size, 
+                      edgecolors='black', linewidth=1.5, alpha=0.8, zorder=10)
+        
+        # Mark start and end points
+        start_point = df.iloc[0]
+        end_point = df.iloc[-1]
+        
+        # Start marker
+        ax.scatter(start_point['pleasure'], start_point['arousal'], 
+                  marker='o', s=400, c='none', edgecolors='green', 
+                  linewidth=3, zorder=15, label='Start')
+        
+        # End marker
+        ax.scatter(end_point['pleasure'], end_point['arousal'], 
+                  marker='s', s=400, c='none', edgecolors='red', 
+                  linewidth=3, zorder=15, label='End')
+        
+        # Add PAD space quadrant labels
+        ax.text(0.5, 0.5, 'Happy\nEnergetic', ha='center', va='center', 
+               fontsize=12, alpha=0.3, weight='bold')
+        ax.text(-0.5, 0.5, 'Stressed\nAgitated', ha='center', va='center', 
+               fontsize=12, alpha=0.3, weight='bold')
+        ax.text(0.5, -0.5, 'Calm\nPeaceful', ha='center', va='center', 
+               fontsize=12, alpha=0.3, weight='bold')
+        ax.text(-0.5, -0.5, 'Sad\nDepressed', ha='center', va='center', 
+               fontsize=12, alpha=0.3, weight='bold')
+        
+        # Set axis properties
+        ax.set_xlim(-1.2, 1.2)
+        ax.set_ylim(-1.2, 1.2)
+        ax.set_xlabel('Pleasure (Valence)', fontsize=14, weight='bold')
+        ax.set_ylabel('Arousal (Activation)', fontsize=14, weight='bold')
+        
+        # Add grid
+        ax.grid(True, alpha=0.3, linestyle='--')
+        ax.axhline(0, color='black', linewidth=0.5, alpha=0.5)
+        ax.axvline(0, color='black', linewidth=0.5, alpha=0.5)
+        
+        # Title
+        agent_name = data.get('agent_name', 'Agent')
+        ax.set_title(f"{agent_name}'s Emotional Journey During Interaction", 
+                    fontsize=18, weight='bold', pad=20)
+        
+        # Create custom legend
+        legend_elements = [
+            plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='none',
+                      markeredgecolor='green', markersize=12, markeredgewidth=2,
+                      label='Conversation Start'),
+            plt.Line2D([0], [0], marker='s', color='w', markerfacecolor='none',
+                      markeredgecolor='red', markersize=12, markeredgewidth=2,
+                      label='Conversation End'),
+            plt.Line2D([0], [0], color='gray', linewidth=3, alpha=0.7,
+                      label='Emotional Trajectory')
+        ]
+        
+        # Add size legend for dominance
+        legend_elements.extend([
+            plt.scatter([], [], s=100, c='gray', alpha=0.6, edgecolors='black',
+                       label='Low Dominance'),
+            plt.scatter([], [], s=300, c='gray', alpha=0.6, edgecolors='black',
+                       label='High Dominance')
+        ])
+        
+        # Add emotion color samples to legend
+        sample_emotions = ['excited', 'content', 'anxious', 'sad']
+        for emotion in sample_emotions:
+            legend_elements.append(
+                plt.Circle((0, 0), 0.1, facecolor=emotion_colors[emotion],
+                          edgecolor='black', label=emotion.capitalize())
+            )
+        
+        ax.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(1.02, 1),
+                 fontsize=10, frameon=True, fancybox=False, edgecolor='black')
+        
+        # Add timestamp annotations for key emotional shifts
+        # Find significant emotional shifts
+        significant_shifts = find_significant_shifts(df)
+        
+        for shift in significant_shifts[:3]:  # Show top 3 shifts
+            idx = shift['index']
+            point = df.iloc[idx]
+            ax.annotate(f"{shift['from']}→{shift['to']}", 
+                       xy=(point['pleasure'], point['arousal']),
+                       xytext=(10, 10), textcoords='offset points',
+                       bbox=dict(boxstyle="round,pad=0.3", facecolor='white', 
+                                edgecolor='black', alpha=0.8),
+                       fontsize=9, ha='left',
+                       arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.3'))
+        
+        # Add statistics box
+        stats_text = generate_journey_statistics(df)
+        ax.text(0.02, 0.02, stats_text, transform=ax.transAxes,
+               fontsize=10, verticalalignment='bottom',
+               bbox=dict(boxstyle='round,pad=0.5', facecolor='white', 
+                        edgecolor='black', alpha=0.9))
+        
+        # Adjust layout and save
+        plt.tight_layout()
+        plt.savefig(output_path, dpi=300, bbox_inches='tight', 
+                   facecolor='white', edgecolor='none')
+        plt.close()
+        
+        print(f"✅ Publication-ready emotional journey saved to {output_path}")
+        
+        # Also create a neurochemical influence diagram
+        create_neurochemical_diagram(data, output_dir)
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error creating emotional journey: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 def extract_pad_history(data):
-    """Extract PAD states with psychoanalytic context."""
+    """Extract PAD states and timestamps from emotional history."""
     history = data.get('emotional_history', [])
     pad_data = []
     
@@ -35,20 +198,13 @@ def extract_pad_history(data):
         emotion_category = entry.get('resulting_emotion', 'unknown')
         context = entry.get('context', 'unknown')
         
-        # Extract psychoanalytic context if available
-        input_summary = entry.get('input_summary', '')
-        emotional_analysis = entry.get('emotional_analysis', {})
-        
         pad_data.append({
             'timestamp': pd.to_datetime(timestamp),
             'pleasure': pad_state.get('pleasure', 0),
             'arousal': pad_state.get('arousal', 0),
             'dominance': pad_state.get('dominance', 0),
             'emotion_category': emotion_category,
-            'context': context,
-            'input_summary': input_summary,
-            'dominant_emotion': emotional_analysis.get('dominant_emotion', 'neutral'),
-            'intensity': emotional_analysis.get('intensity', 0.5)
+            'context': context
         })
     
     # Add current state
@@ -63,439 +219,186 @@ def extract_pad_history(data):
             'arousal': current_pad_state.get('arousal', 0),
             'dominance': current_pad_state.get('dominance', 0),
             'emotion_category': current_emotion_category,
-            'context': 'current_state',
-            'input_summary': 'Current emotional state',
-            'dominant_emotion': current_emotion_category,
-            'intensity': 0.8
+            'context': 'current_state'
         })
     
     return pd.DataFrame(pad_data)
 
-def plot_psychoanalytic_pad_journey(df, output_file='pad_journey_psychoanalytic.png'):
-    """Create a sophisticated PAD journey visualization with psychoanalytic interpretation."""
-    if df.empty or len(df) < 2:
-        print(f"Skipping {output_file}: Insufficient data")
+def find_significant_shifts(df):
+    """Find significant emotional shifts in the journey."""
+    shifts = []
+    
+    for i in range(1, len(df)):
+        prev_emotion = df.iloc[i-1]['emotion_category']
+        curr_emotion = df.iloc[i]['emotion_category']
+        
+        if prev_emotion != curr_emotion:
+            # Calculate magnitude of PAD change
+            pad_change = np.sqrt(
+                (df.iloc[i]['pleasure'] - df.iloc[i-1]['pleasure'])**2 +
+                (df.iloc[i]['arousal'] - df.iloc[i-1]['arousal'])**2 +
+                (df.iloc[i]['dominance'] - df.iloc[i-1]['dominance'])**2
+            )
+            
+            shifts.append({
+                'index': i,
+                'from': prev_emotion,
+                'to': curr_emotion,
+                'magnitude': pad_change
+            })
+    
+    # Sort by magnitude and return
+    return sorted(shifts, key=lambda x: x['magnitude'], reverse=True)
+
+def generate_journey_statistics(df):
+    """Generate statistics about the emotional journey."""
+    # Calculate total distance traveled in PAD space
+    total_distance = 0
+    for i in range(1, len(df)):
+        dist = np.sqrt(
+            (df.iloc[i]['pleasure'] - df.iloc[i-1]['pleasure'])**2 +
+            (df.iloc[i]['arousal'] - df.iloc[i-1]['arousal'])**2 +
+            (df.iloc[i]['dominance'] - df.iloc[i-1]['dominance'])**2
+        )
+        total_distance += dist
+    
+    # Calculate average PAD values
+    avg_pleasure = df['pleasure'].mean()
+    avg_arousal = df['arousal'].mean()
+    avg_dominance = df['dominance'].mean()
+    
+    # Count emotion categories
+    emotion_counts = df['emotion_category'].value_counts()
+    dominant_emotion = emotion_counts.idxmax()
+    
+    stats_text = f"Journey Statistics:\n"
+    stats_text += f"Total emotional distance: {total_distance:.2f}\n"
+    stats_text += f"Average valence: {avg_pleasure:.2f}\n"
+    stats_text += f"Average arousal: {avg_arousal:.2f}\n"
+    stats_text += f"Dominant emotion: {dominant_emotion}\n"
+    stats_text += f"Emotional states: {len(emotion_counts)}"
+    
+    return stats_text
+
+def create_neurochemical_diagram(data, output_dir):
+    """Create a supplementary diagram showing neurochemical influences."""
+    output_path = os.path.join(output_dir, 'neurochemical_influence.png')
+    
+    neurochemicals = data.get('neurochemical_state', {})
+    if not neurochemicals:
         return
     
-    fig = plt.figure(figsize=(16, 12))
-    gs = fig.add_gridspec(3, 2, height_ratios=[2, 1, 1], width_ratios=[2, 1])
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), facecolor='white')
     
-    # Main PAD space plot
-    ax_main = fig.add_subplot(gs[0, :])
+    # Left panel: Neurochemical levels
+    neurotransmitters = list(neurochemicals.keys())
+    levels = list(neurochemicals.values())
     
-    # Create the journey path with varying line properties
-    points = df[['pleasure', 'arousal']].values
-    segments = []
-    colors = []
-    linewidths = []
-    
-    for i in range(len(points) - 1):
-        segments.append([points[i], points[i + 1]])
-        # Color based on dominance
-        colors.append(plt.cm.coolwarm((df.iloc[i]['dominance'] + 1) / 2))
-        # Width based on intensity
-        linewidths.append(1 + df.iloc[i]['intensity'] * 3)
-    
-    lc = LineCollection(segments, colors=colors, linewidths=linewidths, alpha=0.8)
-    ax_main.add_collection(lc)
-    
-    # Add emotion category labels with sophisticated styling
-    emotion_colors = {
-        'joy': '#FFD700', 'elated': '#FF69B4', 'excited': '#FF4500',
-        'content': '#98FB98', 'relaxed': '#87CEEB', 'calm': '#E0E0E0',
-        'sad': '#4682B4', 'anxious': '#FF6B6B', 'angry': '#DC143C',
-        'bored': '#708090', 'neutral': '#C0C0C0'
+    # Define colors based on function
+    colors = {
+        'dopamine': '#E74C3C',      # Red - reward
+        'serotonin': '#3498DB',     # Blue - mood
+        'oxytocin': '#E91E63',      # Pink - bonding
+        'cortisol': '#F39C12',      # Orange - stress
+        'norepinephrine': '#27AE60', # Green - alertness
+        'gaba': '#9B59B6'           # Purple - relaxation
     }
     
-    # Plot points with emotion-specific styling
-    for idx, row in df.iterrows():
-        emotion = row['emotion_category']
-        color = emotion_colors.get(emotion, '#808080')
-        
-        # Size based on intensity
-        size = 100 + row['intensity'] * 200
-        
-        # Add glow effect for high intensity
-        if row['intensity'] > 0.7:
-            ax_main.scatter(row['pleasure'], row['arousal'], 
-                          s=size*2, c=color, alpha=0.2, zorder=1)
-        
-        ax_main.scatter(row['pleasure'], row['arousal'], 
-                      s=size, c=color, edgecolors='black', 
-                      linewidth=1, zorder=2, alpha=0.9)
+    bar_colors = [colors.get(nt.lower(), '#95A5A6') for nt in neurotransmitters]
     
-    # Add psychoanalytic quadrant labels
-    ax_main.text(0.5, 0.5, 'Manic Defense', fontsize=12, alpha=0.3, 
-                ha='center', va='center', style='italic')
-    ax_main.text(-0.5, 0.5, 'Anxiety/\nActing Out', fontsize=12, alpha=0.3, 
-                ha='center', va='center', style='italic')
-    ax_main.text(-0.5, -0.5, 'Depression/\nWithdrawal', fontsize=12, alpha=0.3, 
-                ha='center', va='center', style='italic')
-    ax_main.text(0.5, -0.5, 'Sublimation', fontsize=12, alpha=0.3, 
-                ha='center', va='center', style='italic')
+    bars = ax1.bar(neurotransmitters, levels, color=bar_colors, alpha=0.8, 
+                   edgecolor='black', linewidth=1.5)
     
-    # Add start and end markers with psychoanalytic significance
-    ax_main.annotate('Session Start\n(Initial Defense)', 
-                    xy=(df.iloc[0]['pleasure'], df.iloc[0]['arousal']),
-                    xytext=(10, 10), textcoords='offset points',
-                    bbox=dict(boxstyle="round,pad=0.3", facecolor='lightgreen', alpha=0.7),
-                    fontsize=10, fontweight='bold',
-                    arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.3'))
+    # Add value labels
+    for bar in bars:
+        height = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+                f'{height:.2f}', ha='center', va='bottom', fontweight='bold')
     
-    ax_main.annotate('Current State\n(Working Through)', 
-                    xy=(df.iloc[-1]['pleasure'], df.iloc[-1]['arousal']),
-                    xytext=(10, -10), textcoords='offset points',
-                    bbox=dict(boxstyle="round,pad=0.3", facecolor='salmon', alpha=0.7),
-                    fontsize=10, fontweight='bold',
-                    arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=-0.3'))
+    ax1.axhline(y=0.5, color='black', linestyle='--', alpha=0.5, linewidth=2)
+    ax1.set_ylim(0, 1.1)
+    ax1.set_ylabel('Level', fontsize=12, weight='bold')
+    ax1.set_title('Current Neurochemical State', fontsize=14, weight='bold')
+    ax1.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # Identify and mark significant transitions
-    for i in range(1, len(df) - 1):
-        pleasure_change = abs(df.iloc[i]['pleasure'] - df.iloc[i-1]['pleasure'])
-        arousal_change = abs(df.iloc[i]['arousal'] - df.iloc[i-1]['arousal'])
-        
-        if pleasure_change > 0.3 or arousal_change > 0.3:
-            ax_main.plot(df.iloc[i]['pleasure'], df.iloc[i]['arousal'], 
-                       'k*', markersize=15, alpha=0.6)
-            ax_main.text(df.iloc[i]['pleasure'] + 0.05, df.iloc[i]['arousal'] + 0.05,
-                       'Defensive\nShift', fontsize=8, alpha=0.6)
+    # Rotate x-axis labels
+    ax1.set_xticklabels(neurotransmitters, rotation=45, ha='right')
     
-    # Configure main plot
-    ax_main.set_xlim(-1.2, 1.2)
-    ax_main.set_ylim(-1.2, 1.2)
-    ax_main.set_xlabel('Pleasure (Libidinal Economy)', fontsize=12, fontweight='bold')
-    ax_main.set_ylabel('Arousal (Psychic Energy)', fontsize=12, fontweight='bold')
-    ax_main.set_title('Psychoanalytic Journey Through Affective Space', fontsize=16, fontweight='bold')
-    ax_main.grid(True, alpha=0.3)
-    ax_main.axhline(0, color='black', linewidth=0.5)
-    ax_main.axvline(0, color='black', linewidth=0.5)
+    # Right panel: PAD derivation diagram
+    ax2.set_xlim(-0.5, 2.5)
+    ax2.set_ylim(-0.5, 3.5)
+    ax2.axis('off')
     
-    # Dominance timeline
-    ax_dom = fig.add_subplot(gs[1, 0])
-    time_points = range(len(df))
-    ax_dom.plot(time_points, df['dominance'], 'b-', linewidth=2, alpha=0.8)
-    ax_dom.fill_between(time_points, df['dominance'], alpha=0.3)
-    ax_dom.set_ylabel('Dominance\n(Ego Strength)', fontsize=10, fontweight='bold')
-    ax_dom.set_ylim(-1.1, 1.1)
-    ax_dom.axhline(0, color='black', linewidth=0.5, linestyle='--')
-    ax_dom.grid(True, alpha=0.3)
-    
-    # Intensity timeline
-    ax_int = fig.add_subplot(gs[2, 0])
-    ax_int.plot(time_points, df['intensity'], 'r-', linewidth=2, alpha=0.8)
-    ax_int.fill_between(time_points, df['intensity'], alpha=0.3, color='red')
-    ax_int.set_ylabel('Affect\nIntensity', fontsize=10, fontweight='bold')
-    ax_int.set_xlabel('Time Points', fontsize=10)
-    ax_int.set_ylim(0, 1.1)
-    ax_int.grid(True, alpha=0.3)
-    
-    # Emotion distribution (psychoanalytic interpretation)
-    ax_dist = fig.add_subplot(gs[1:, 1])
-    emotion_counts = df['emotion_category'].value_counts()
-    colors_list = [emotion_colors.get(e, '#808080') for e in emotion_counts.index]
-    
-    wedges, texts, autotexts = ax_dist.pie(emotion_counts.values, 
-                                           labels=emotion_counts.index,
-                                           colors=colors_list,
-                                           autopct='%1.1f%%',
-                                           startangle=90)
-    ax_dist.set_title('Emotional State Distribution\n(Defensive Positions)', fontsize=12, fontweight='bold')
-    
-    # Add legend for line colors (dominance)
-    dom_legend = [
-        plt.Line2D([0], [0], color=plt.cm.coolwarm(0), lw=4, label='Low Dominance\n(Submissive)'),
-        plt.Line2D([0], [0], color=plt.cm.coolwarm(0.5), lw=4, label='Neutral\nDominance'),
-        plt.Line2D([0], [0], color=plt.cm.coolwarm(1), lw=4, label='High Dominance\n(Assertive)')
+    # Draw connections from neurochemicals to PAD
+    connections = [
+        # Pleasure connections
+        ('Dopamine\nSerotonin\nOxytocin', 0.3, 2.5, 'Pleasure', 1.5, 2.5, '#4ECDC4'),
+        ('Cortisol', 0.3, 2.2, 'Pleasure', 1.5, 2.5, '#E74C3C'),
+        # Arousal connections
+        ('Norepinephrine\nCortisol\nDopamine', 0.3, 1.5, 'Arousal', 1.5, 1.5, '#FFD700'),
+        ('GABA', 0.3, 1.2, 'Arousal', 1.5, 1.5, '#9B59B6'),
+        # Dominance connections
+        ('Dopamine\nNorepinephrine', 0.3, 0.5, 'Dominance', 1.5, 0.5, '#27AE60'),
+        ('Cortisol', 0.3, 0.2, 'Dominance', 1.5, 0.5, '#E74C3C')
     ]
-    ax_main.legend(handles=dom_legend, loc='upper left', bbox_to_anchor=(1.02, 1))
+    
+    for source, sx, sy, target, tx, ty, color in connections:
+        # Draw arrow
+        ax2.annotate('', xy=(tx-0.1, ty), xytext=(sx+0.4, sy),
+                    arrowprops=dict(arrowstyle='->', color=color, lw=2))
+        # Add source label
+        ax2.text(sx, sy, source, fontsize=10, va='center')
+    
+    # Draw PAD boxes
+    pad_values = data.get('derived_pad_state', {})
+    pad_labels = ['Pleasure', 'Arousal', 'Dominance']
+    pad_y_positions = [2.5, 1.5, 0.5]
+    
+    for label, y_pos in zip(pad_labels, pad_y_positions):
+        value = pad_values.get(label.lower(), 0)
+        # Draw box
+        box = plt.Rectangle((1.3, y_pos-0.15), 0.6, 0.3, 
+                           facecolor='lightblue', edgecolor='black', linewidth=2)
+        ax2.add_patch(box)
+        # Add text
+        ax2.text(1.6, y_pos, f'{label}\n{value:.2f}', ha='center', va='center',
+                fontsize=11, weight='bold')
+    
+    ax2.set_title('Neurochemical → PAD Mapping', fontsize=14, weight='bold')
+    
+    # Add description
+    description = ("Neurochemical levels modulate emotional experience through PAD dimensions:\n"
+                  "• Positive contributors shown with colored arrows\n"
+                  "• Negative contributors shown with red arrows")
+    ax2.text(0.5, -0.3, description, transform=ax2.transAxes, 
+            fontsize=10, ha='center', style='italic')
     
     plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', 
+               facecolor='white', edgecolor='none')
     plt.close()
     
-    print(f"✅ Psychoanalytic PAD journey saved to {output_file}")
-
-def plot_defensive_patterns(df, output_file='defensive_patterns.png'):
-    """Visualize defensive patterns in emotional transitions."""
-    if df.empty or len(df) < 3:
-        print(f"Skipping {output_file}: Insufficient data")
-        return
-    
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 10))
-    
-    # Calculate defensive shifts
-    df['pleasure_change'] = df['pleasure'].diff()
-    df['arousal_change'] = df['arousal'].diff()
-    df['defensive_shift'] = np.sqrt(df['pleasure_change']**2 + df['arousal_change']**2)
-    
-    # Plot 1: Defensive shift intensity over time
-    time_points = range(len(df))
-    ax1.plot(time_points[1:], df['defensive_shift'][1:], 'k-', linewidth=2, alpha=0.8)
-    ax1.fill_between(time_points[1:], df['defensive_shift'][1:], alpha=0.3, color='gray')
-    
-    # Mark significant defensive maneuvers
-    threshold = df['defensive_shift'].quantile(0.75)
-    significant_shifts = df[df['defensive_shift'] > threshold]
-    
-    for idx, row in significant_shifts.iterrows():
-        if idx > 0:  # Skip first row
-            ax1.axvline(idx, color='red', alpha=0.5, linestyle='--')
-            ax1.text(idx, row['defensive_shift'] + 0.05, 
-                    f"{df.iloc[idx-1]['emotion_category']}→\n{row['emotion_category']}", 
-                    fontsize=8, rotation=45, va='bottom')
-    
-    ax1.set_title('Defensive Shift Intensity (Psychic Mobility)', fontsize=14, fontweight='bold')
-    ax1.set_ylabel('Shift Magnitude', fontsize=12)
-    ax1.set_xlabel('Time Points', fontsize=12)
-    ax1.grid(True, alpha=0.3)
-    
-    # Plot 2: Defense mechanism patterns
-    ax2.set_title('Defensive Trajectory Patterns', fontsize=14, fontweight='bold')
-    
-    # Create vector field showing defensive movements
-    for i in range(1, len(df)):
-        p1 = df.iloc[i-1]
-        p2 = df.iloc[i]
-        
-        # Color based on type of shift
-        if p2['pleasure'] > p1['pleasure'] and p2['arousal'] > p1['arousal']:
-            color = 'green'  # Manic defense
-            label = 'Manic'
-        elif p2['pleasure'] < p1['pleasure'] and p2['arousal'] > p1['arousal']:
-            color = 'orange'  # Anxious defense
-            label = 'Anxious'
-        elif p2['pleasure'] < p1['pleasure'] and p2['arousal'] < p1['arousal']:
-            color = 'blue'  # Depressive defense
-            label = 'Depressive'
-        else:
-            color = 'purple'  # Sublimation
-            label = 'Sublimation'
-        
-        ax2.annotate('', xy=(p2['pleasure'], p2['arousal']), 
-                    xytext=(p1['pleasure'], p1['arousal']),
-                    arrowprops=dict(arrowstyle='->', color=color, alpha=0.6, lw=2))
-        
-        # Add label at midpoint
-        mid_x = (p1['pleasure'] + p2['pleasure']) / 2
-        mid_y = (p1['arousal'] + p2['arousal']) / 2
-        ax2.text(mid_x, mid_y, label[0], fontsize=8, color=color, fontweight='bold')
-    
-    # Add quadrant labels
-    ax2.text(0.7, 0.7, 'Manic\nDefense', fontsize=12, alpha=0.5, ha='center')
-    ax2.text(-0.7, 0.7, 'Anxious\nDefense', fontsize=12, alpha=0.5, ha='center')
-    ax2.text(-0.7, -0.7, 'Depressive\nDefense', fontsize=12, alpha=0.5, ha='center')
-    ax2.text(0.7, -0.7, 'Sublimation', fontsize=12, alpha=0.5, ha='center')
-    
-    ax2.set_xlim(-1.2, 1.2)
-    ax2.set_ylim(-1.2, 1.2)
-    ax2.set_xlabel('Pleasure', fontsize=12)
-    ax2.set_ylabel('Arousal', fontsize=12)
-    ax2.grid(True, alpha=0.3)
-    ax2.axhline(0, color='black', linewidth=0.5)
-    ax2.axvline(0, color='black', linewidth=0.5)
-    
-    plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    print(f"✅ Defensive patterns saved to {output_file}")
-
-def plot_transference_heat_map(df, data, output_file='transference_heatmap.png'):
-    """Create a heat map showing transference patterns."""
-    if df.empty:
-        print(f"Skipping {output_file}: No data")
-        return
-    
-    fig, ax = plt.subplots(figsize=(12, 8))
-    
-    # Create a 2D histogram of PAD positions
-    H, xedges, yedges = np.histogram2d(df['pleasure'], df['arousal'], bins=20, 
-                                       range=[[-1, 1], [-1, 1]])
-    
-    # Apply Gaussian smoothing
-    from scipy.ndimage import gaussian_filter
-    H_smooth = gaussian_filter(H.T, sigma=1.5)
-    
-    # Create heat map
-    im = ax.imshow(H_smooth, extent=[-1, 1, -1, 1], origin='lower', 
-                   cmap='YlOrRd', alpha=0.8, interpolation='bilinear')
-    
-    # Add trajectory on top
-    ax.plot(df['pleasure'], df['arousal'], 'k-', alpha=0.5, linewidth=1)
-    ax.scatter(df['pleasure'], df['arousal'], c='black', s=30, alpha=0.6, zorder=5)
-    
-    # Add psychoanalytic interpretation
-    ax.text(0, 1.15, 'Transference Heat Map: Where Psychic Energy Accumulates', 
-            fontsize=16, fontweight='bold', ha='center')
-    
-    # Mark areas of high concentration
-    max_indices = np.where(H_smooth > H_smooth.max() * 0.7)
-    for i in range(len(max_indices[0])):
-        y_idx = max_indices[0][i]
-        x_idx = max_indices[1][i]
-        x_pos = xedges[x_idx] + (xedges[x_idx + 1] - xedges[x_idx]) / 2
-        y_pos = yedges[y_idx] + (yedges[y_idx + 1] - yedges[y_idx]) / 2
-        
-        circle = Circle((x_pos, y_pos), 0.15, fill=False, edgecolor='white', 
-                       linewidth=2, linestyle='--')
-        ax.add_patch(circle)
-    
-    # Add colorbar with psychoanalytic label
-    cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label('Libidinal Investment\n(Transference Intensity)', fontsize=12)
-    
-    ax.set_xlabel('Pleasure (Object Relation)', fontsize=12)
-    ax.set_ylabel('Arousal (Psychic Activation)', fontsize=12)
-    ax.set_xlim(-1, 1)
-    ax.set_ylim(-1, 1)
-    ax.grid(True, alpha=0.3)
-    ax.axhline(0, color='black', linewidth=0.5)
-    ax.axvline(0, color='black', linewidth=0.5)
-    
-    plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    print(f"✅ Transference heat map saved to {output_file}")
+    print(f"✅ Neurochemical influence diagram saved to {output_path}")
 
 def main(file_path):
-    """Main function to generate psychoanalytic visualizations."""
-    # Load and process data
-    data = load_emotional_data(file_path)
-    df = extract_pad_history(data)
+    """Main function to create publication-ready visualizations."""
+    print(f"Creating publication-ready emotional journey visualization...")
     
-    if df.empty:
-        print("No data to plot. Exiting.")
+    if not os.path.exists(file_path):
+        print(f"Error: File not found at '{file_path}'")
         return
     
-    # Create output directory
-    output_dir = os.path.join(os.path.dirname(file_path), 'psychoanalytic_visualizations')
-    os.makedirs(output_dir, exist_ok=True)
+    success = create_publication_ready_pad_journey(file_path)
     
-    # Generate all visualizations
-    plot_psychoanalytic_pad_journey(df, os.path.join(output_dir, 'pad_journey_psychoanalytic.png'))
-    plot_defensive_patterns(df, os.path.join(output_dir, 'defensive_patterns.png'))
-    plot_transference_heat_map(df, data, os.path.join(output_dir, 'transference_heatmap.png'))
-    
-    # Also generate the original visualizations with enhanced styling
-    plot_pad_timeline(df, os.path.join(output_dir, 'pad_timeline_enhanced.png'))
-    plot_emotion_heatmap(df, os.path.join(output_dir, 'emotion_heatmap_enhanced.png'))
-    
-    print("\n✨ Psychoanalytic visualizations complete!")
-    print(f"📊 Generated files in {output_dir}:")
-    print("  - pad_journey_psychoanalytic.png: Complete affective journey with defenses")
-    print("  - defensive_patterns.png: Analysis of defensive shifts")
-    print("  - transference_heatmap.png: Where psychic energy accumulates")
-    print("  - pad_timeline_enhanced.png: Enhanced timeline view")
-    print("  - emotion_heatmap_enhanced.png: Enhanced emotion patterns")
-
-# Keep original functions but enhance them
-def plot_pad_timeline(df, output_file='pad_timeline_enhanced.png'):
-    """Enhanced PAD timeline with psychoanalytic annotations."""
-    if df.empty:
-        print(f"Skipping {output_file}: DataFrame is empty.")
-        return
-    
-    fig, axes = plt.subplots(3, 1, figsize=(15, 10), sharex=True)
-    
-    time_points = range(len(df))
-    
-    # Pleasure timeline with gradient background
-    ax1 = axes[0]
-    ax1.plot(time_points, df['pleasure'], 'b-', linewidth=2.5, alpha=0.8, label='Pleasure')
-    ax1.fill_between(time_points, df['pleasure'], alpha=0.3, color='blue')
-    ax1.axhline(0, color='black', linewidth=0.5, linestyle='--', alpha=0.5)
-    ax1.set_ylabel('Pleasure\n(Libido)', fontsize=11, fontweight='bold')
-    ax1.set_ylim(-1.1, 1.1)
-    ax1.grid(True, alpha=0.3)
-    
-    # Add shaded regions for positive/negative
-    ax1.axhspan(0, 1.1, alpha=0.1, color='green', label='Positive')
-    ax1.axhspan(-1.1, 0, alpha=0.1, color='red', label='Negative')
-    
-    # Arousal timeline
-    ax2 = axes[1]
-    ax2.plot(time_points, df['arousal'], 'r-', linewidth=2.5, alpha=0.8, label='Arousal')
-    ax2.fill_between(time_points, df['arousal'], alpha=0.3, color='red')
-    ax2.axhline(0, color='black', linewidth=0.5, linestyle='--', alpha=0.5)
-    ax2.set_ylabel('Arousal\n(Activation)', fontsize=11, fontweight='bold')
-    ax2.set_ylim(-1.1, 1.1)
-    ax2.grid(True, alpha=0.3)
-    
-    # Dominance timeline
-    ax3 = axes[2]
-    ax3.plot(time_points, df['dominance'], 'g-', linewidth=2.5, alpha=0.8, label='Dominance')
-    ax3.fill_between(time_points, df['dominance'], alpha=0.3, color='green')
-    ax3.axhline(0, color='black', linewidth=0.5, linestyle='--', alpha=0.5)
-    ax3.set_ylabel('Dominance\n(Control)', fontsize=11, fontweight='bold')
-    ax3.set_xlabel('Session Progress', fontsize=12, fontweight='bold')
-    ax3.set_ylim(-1.1, 1.1)
-    ax3.grid(True, alpha=0.3)
-    
-    # Add emotion category annotations
-    for i, (idx, row) in enumerate(df.iterrows()):
-        if i % max(1, len(df) // 10) == 0:  # Show every 10th or so
-            ax1.annotate(row['emotion_category'][:3], 
-                        (i, row['pleasure']), 
-                        fontsize=8, alpha=0.6,
-                        rotation=45)
-    
-    plt.suptitle('PAD Dimensions Over Time: Tracking Psychic Energy', 
-                fontsize=16, fontweight='bold')
-    plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    print(f"✅ Enhanced PAD timeline saved to {output_file}")
-
-def plot_emotion_heatmap(df, output_file='emotion_heatmap_enhanced.png'):
-    """Enhanced emotion heatmap with psychoanalytic interpretation."""
-    if df.empty or len(df) < 2:
-        print(f"Skipping {output_file}: Insufficient data.")
-        return
-    
-    # Prepare data for heatmap
-    pad_values = df[['pleasure', 'arousal', 'dominance']].T
-    
-    fig, ax = plt.subplots(figsize=(16, 6))
-    
-    # Create custom colormap
-    cmap = sns.diverging_palette(250, 10, as_cmap=True)
-    
-    # Plot heatmap
-    sns.heatmap(pad_values, 
-                cmap=cmap, 
-                center=0,
-                annot=False, 
-                fmt='.2f',
-                cbar_kws={'label': 'Intensity'},
-                xticklabels=False,
-                yticklabels=['Pleasure\n(Libido)', 'Arousal\n(Energy)', 'Dominance\n(Control)'],
-                linewidths=0.5,
-                linecolor='gray',
-                ax=ax)
-    
-    # Add emotion categories as text above
-    for i, emotion in enumerate(df['emotion_category']):
-        if i % max(1, len(df) // 20) == 0:  # Show subset
-            ax.text(i, -0.5, emotion, rotation=45, fontsize=8, ha='right')
-    
-    ax.set_title('Psychic Energy Distribution Across PAD Dimensions', 
-                fontsize=16, fontweight='bold')
-    ax.set_xlabel('Time Progression →', fontsize=12)
-    
-    plt.tight_layout()
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    print(f"✅ Enhanced emotion heatmap saved to {output_file}")
+    if success:
+        output_dir = os.path.join(os.path.dirname(file_path), 'visualizations')
+        print(f"\n📊 Visualizations created successfully in {output_dir}:")
+        print("  - emotional_journey.png: Agent's emotional trajectory in PAD space")
+        print("  - neurochemical_influence.png: Neurochemical-to-PAD mapping")
+        print("\nThese visualizations demonstrate the psychoanalytic architecture's")
+        print("ability to track and model complex emotional dynamics during interaction.")
 
 if __name__ == '__main__':
     import sys
-    default_file = 'base_agents/Nancy/neuroproxy_state.json'
-    file_to_process = sys.argv[1] if len(sys.argv) > 1 else default_file
-    
-    if os.path.exists(file_to_process):
-        main(file_to_process)
-    else:
-        print(f"Error: File not found at '{file_to_process}'.")
+    file_to_process = sys.argv[1] if len(sys.argv) > 1 else 'base_agents/Nancy/neuroproxy_state.json'
+    main(file_to_process)

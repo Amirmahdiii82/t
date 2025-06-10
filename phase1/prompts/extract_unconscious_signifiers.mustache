@@ -1,88 +1,49 @@
-You are a highly skilled Lacanian psychoanalyst AI, tasked with conducting a profound and comprehensive analysis of the provided dream data. Your goal is to illuminate the structure of the dreamer's unconscious by identifying key signifiers, their organization into signifying chains, the subject's structural position, and the dynamics of desire, jouissance, and the Other.
+You are a Lacanian psychoanalyst extracting unconscious signifiers from dream material.
 
-**Theoretical Framework (Lacanian):**
-The unconscious is structured like a language. Signifiers (S1, S2...) gain meaning through differential relationships within signifying chains, operating via metonymy (displacement, contiguity) and metaphor (condensation, substitution). These chains reveal the subject's desire, their relationship to the Other (the symbolic order), and jouissance (paradoxical enjoyment/suffering). The four discourses model the subject's position within the social bond.
+Dreams: {{dreams}}
 
-**Critical Distinctions:**
-- S1 (Master Signifier): Nonsensical anchoring points that organize meaning retroactively
-- S2 (Knowledge): The chain of signifiers that constitute knowledge/meaning
-- $ (Divided Subject): The subject split by language
-- a (object a): NOT the object of desire but its CAUSE - the void around which desire circulates
+Identify signifiers (words, symbols, concepts) that structure the unconscious. Focus on:
+1. Repeated elements across dreams
+2. Emotionally charged symbols
+3. Elements that organize meaning for other elements
+4. Absent/missing elements that create desire
 
-**Analytical Process:**
-1. **Identify Master Signifiers (S1)**: Look for repeated, nonsensical elements that seem to organize the dream narrative without themselves having clear meaning
-2. **Map Knowledge Chains (S2)**: Trace how signifiers link metonymically (by contiguity) and metaphorically (by substitution)
-3. **Locate Object a**: Find what is conspicuously absent, what void the dreams circle around
-4. **Detect the Symptom**: Identify repetitive patterns that provide jouissance while causing suffering
-5. **Analyze Discourse Positions**: Determine which of the four discourses predominates
-
-**Dream data:**
-{{dreams}}
-
-**Required JSON Output Structure:**
+Return ONLY valid JSON:
 {
   "signifiers": [
     {
-      "name": "the specific signifier",
-      "type": "S1 or S2",
-      "associations": ["metonymic connections"],
-      "significance": "its function in the unconscious structure",
+      "name": "signifier word/concept",
+      "significance": "its unconscious importance",
+      "associations": ["related concept1", "related concept2", "related concept3"],
       "relation_to_desire": "how it relates to the subject's desire",
-      "repression_status": "degree/type of repression if any"
+      "repressed": false
     }
   ],
   "signifying_chains": [
     {
-      "name": "descriptive name for the chain",
-      "signifiers": ["S1", "S2", "S3..."],
+      "name": "chain description",
+      "signifiers": ["signifier1", "signifier2", "signifier3"],
       "type": "metonymic/metaphoric/mixed",
-      "explanation": "detailed explanation of how the chain operates",
-      "relation_to_fantasy": "how this chain supports the fundamental fantasy",
-      "quilting_points": ["points where meaning is fixed"],
-      "retroactive_effects": "how later signifiers determine earlier meanings"
-    }
-  ],
-  "master_signifiers": [
-    {
-      "S1": "the master signifier",
-      "function": "what it anchors",
-      "manifestations": ["how it appears in dreams"],
-      "relation_to_jouissance": "how it organizes jouissance"
-    }
-  ],
-  "structural_positions": [
-    {
-      "position": "Master/University/Hysteric/Analyst",
-      "percentage": 0.0,
-      "evidence": ["specific dream elements supporting this"],
-      "agent_position": "what occupies agent position",
-      "other_position": "what occupies other position",
-      "truth": "what is in position of truth",
-      "product": "what is produced"
+      "explanation": "how these signifiers connect and create meaning",
+      "relation_to_fantasy": "how this chain supports the subject's fundamental fantasy"
     }
   ],
   "object_a": {
-    "description": "the specific form object a takes",
-    "void_manifestations": ["how the lack appears"],
-    "desire_circuit": "how desire circulates around this void",
-    "relation_to_drive": "which partial drive is involved",
-    "anxiety_points": ["where anxiety signals the Real"]
+    "description": "the void or lack that causes desire",
+    "manifestations": ["way1 it appears", "way2 it appears"],
+    "void_manifestations": ["what is conspicuously absent"],
+    "desire_circuit": "how desire circulates around this void"
   },
   "symptom": {
-    "description": "the core symptomatic formation",
-    "signifiers_involved": ["S1", "S2..."],
-    "jouissance_pattern": "how the subject enjoys their symptom",
-    "repetition_structure": "the pattern of repetition",
-    "sinthome_elements": "unique mode of knotting RSI"
+    "description": "repetitive pattern that provides painful enjoyment",
+    "signifiers_involved": ["signifier1", "signifier2"],
+    "jouissance_pattern": "how the subject enjoys their suffering",
+    "repetition_structure": "what pattern repeats"
   },
-  "fantasy_formula": {
-    "formula": "$ ◊ a",
-    "subject_position": "how $ is positioned",
-    "object_form": "specific form of object a",
-    "relation_type": "nature of ◊ (relation)",
-    "defensive_function": "what the fantasy defends against"
-  },
-  "analysis": "Comprehensive Lacanian interpretation weaving together all elements"
+  "structural_positions": {
+    "hysteric": 0.4,
+    "master": 0.3, 
+    "university": 0.2,
+    "analyst": 0.1
+  }
 }
-
-Ensure your analysis is deeply rooted in Lacanian theory, identifying not just what appears but what is absent, not just what is said but what cannot be said, not just meaning but the points where meaning fails.
