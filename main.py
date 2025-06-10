@@ -62,7 +62,7 @@ def list_available_agents():
 
 def interactive_mode(agent_name):
     """Run interactive session with agent (Phase 2)."""
-    print("=== PsyAgent Interactive Mode ===")
+    print("=== DreamerAgent Interactive Mode ===")
     
     available_agents = list_available_agents()
     if not available_agents:
@@ -198,8 +198,8 @@ def interactive_mode(agent_name):
         print(f"❌ Error initializing agent: {e}")
 
 def main():
-    """Main entry point for PsyAgent system."""
-    print("🧠 PsyAgent - Psychoanalytic AI System")
+    """Main entry point for DreamerAgent system."""
+    print("🧠 DreamerAgent - Psychoanalytic AI System")
     print("=" * 40)
     
     # Load environment variables
@@ -217,7 +217,7 @@ def main():
     setup_project_structure()
     
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="PsyAgent - Psychoanalytic AI")
+    parser = argparse.ArgumentParser(description="DreamerAgent - Psychoanalytic AI")
     parser.add_argument("--extract", metavar="DREAM_FILE", 
                        help="Extract agent from dream file (Phase 1)")
     parser.add_argument("--interactive", action="store_true", 

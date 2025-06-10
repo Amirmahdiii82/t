@@ -1,22 +1,22 @@
 {
   "agent_name": "Nancy",
   "neurochemical_state": {
-    "dopamine": 0.6471823697809196,
-    "serotonin": 0.5752860477865717,
-    "norepinephrine": 0.5401525588195049,
-    "cortisol": 0.3,
+    "dopamine": 0.44256259729988184,
+    "serotonin": 0.3770901245948578,
+    "norepinephrine": 0.5602288382292573,
+    "cortisol": 0.44861824317154114,
     "oxytocin": 0.4,
-    "gaba": 0.6
+    "gaba": 0.5330790686341584
   },
   "derived_pad_state": {
-    "pleasure": 0.48786394614862183,
-    "arousal": 0.2254974974839859,
-    "dominance": 0.44425006019646646
+    "pleasure": 0.28743115539454245,
+    "arousal": 0.24240398279574002,
+    "dominance": 0.3036585407147881
   },
-  "current_emotion": "content",
+  "current_emotion": "bored",
   "emotional_history": [
     {
-      "timestamp": "2025-06-10T15:57:53.297700",
+      "timestamp": "2025-06-10T19:51:56.924796",
       "context": "dialogue",
       "input_summary": "hi",
       "emotional_analysis": {
@@ -32,470 +32,118 @@
       "resulting_emotion": "content"
     },
     {
-      "timestamp": "2025-06-10T15:58:12.793561",
+      "timestamp": "2025-06-10T19:52:06.129680",
       "context": "agent_response",
-      "input_summary": "I'm not sure what you're referring to, as this is the beginning of our conversation. Could you provi...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.430419998989626,
-        "arousal": 0.16454702779163438,
-        "dominance": 0.3860378372916898
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T15:58:55.958922",
-      "context": "dialogue",
-      "input_summary": "hiiii girl",
-      "emotional_analysis": {
-        "dominant_emotion": "excited",
-        "intensity": 0.8,
-        "valence": 0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.4779247453363291,
-        "arousal": 0.2495977686204752,
-        "dominance": 0.44158632670901227
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T15:59:06.451623",
-      "context": "agent_response",
-      "input_summary": "I'm not sure what you're referring to, as this conversation just started.If you could provide more c...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.491338454962958,
-        "arousal": 0.22543401209041802,
-        "dominance": 0.4452212006246607
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T15:59:26.475675",
-      "context": "dialogue",
-      "input_summary": "who are you",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.46922638873178235,
-        "arousal": 0.21290882901909267,
-        "dominance": 0.4252019468069696
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T15:59:31.390511",
-      "context": "agent_response",
-      "input_summary": "I don't see a question or prompt to respond to. Could you please provide more context or information...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.48504017447854464,
-        "arousal": 0.19454823126683607,
-        "dominance": 0.4318886632386815
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:00:45.858685",
-      "context": "dialogue",
-      "input_summary": "hiii",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.4432209236604848,
-        "arousal": 0.18941200318305473,
-        "dominance": 0.4028049230162773
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:00:51.477108",
-      "context": "agent_response",
-      "input_summary": "Hiii, how's it going? I just got back from a long day at school and work, but I'm feeling pretty goo...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.4,
-        "valence": 0.6
-      },
-      "resulting_pad": {
-        "pleasure": 0.47810913221090334,
-        "arousal": 0.19272078699566553,
-        "dominance": 0.4306354527790091
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:11:19.392301",
-      "context": "dialogue",
-      "input_summary": "whi is",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.0,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.41000000000000003,
-        "arousal": 0.18,
-        "dominance": 0.37500000000000006
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:11:24.717226",
-      "context": "agent_response",
-      "input_summary": "I think you meant to ask \"who is\" something, but your message got cut off. Could you please finish w...",
-      "emotional_analysis": {
-        "dominant_emotion": "helpful",
-        "intensity": 0.6,
-        "valence": 0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.47592234875013817,
-        "arousal": 0.19063263689518362,
-        "dominance": 0.4278973685535384
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:11:43.558808",
-      "context": "dialogue",
-      "input_summary": "who is clara",
-      "emotional_analysis": {
-        "dominant_emotion": "curious",
-        "intensity": 0.2,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.45797498003883974,
-        "arousal": 0.18449500996110318,
-        "dominance": 0.4110580101964884
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:11:53.491479",
-      "context": "agent_response",
-      "input_summary": "Clara? I'm not sure who that is. We don't really know anyone by that name, do we? Is she a friend of...",
-      "emotional_analysis": {
-        "dominant_emotion": "curious",
-        "intensity": 0.6,
-        "valence": 0.2
-      },
-      "resulting_pad": {
-        "pleasure": 0.4575059926501902,
-        "arousal": 0.2005615037724246,
-        "dominance": 0.41929754948475434
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:12:11.984731",
-      "context": "dialogue",
-      "input_summary": "Clara you dont know her ?",
-      "emotional_analysis": {
-        "dominant_emotion": "surprised",
-        "intensity": 0.7,
-        "valence": 0.2
-      },
-      "resulting_pad": {
-        "pleasure": 0.44495643346308145,
-        "arousal": 0.2154615363489809,
-        "dominance": 0.41791218590830953
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:12:17.761386",
-      "context": "agent_response",
-      "input_summary": "No, I don't think I know a Clara. At least, the name doesn't ring a bell right now. I've been pretty...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.43951342437892327,
-        "arousal": 0.19836949064778014,
-        "dominance": 0.40848858425646845
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:12:53.605216",
-      "context": "dialogue",
-      "input_summary": "i am sorry i meant carla",
-      "emotional_analysis": {
-        "dominant_emotion": "regret",
-        "intensity": 0.6,
-        "valence": -0.4
-      },
-      "resulting_pad": {
-        "pleasure": 0.40190492681625767,
-        "arousal": 0.17653180744710906,
-        "dominance": 0.3679873952954333
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:13:03.336534",
-      "context": "agent_response",
-      "input_summary": "It's okay, I know you didn't mean to confuse the names. Carla is my baby, and I'm always a little se...",
-      "emotional_analysis": {
-        "dominant_emotion": "concerned",
-        "intensity": 0.6,
-        "valence": 0.2
-      },
-      "resulting_pad": {
-        "pleasure": 0.40854834857104905,
-        "arousal": 0.17554716760202987,
-        "dominance": 0.37090878238122754
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:18:59.587160",
-      "context": "dialogue",
-      "input_summary": "hey wake up wake up wake up zack and cindy get into car accident !!",
-      "emotional_analysis": {
-        "dominant_emotion": "anxious",
-        "intensity": 0.8,
-        "valence": -0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.3163106960878219,
-        "arousal": 0.24892855930681682,
-        "dominance": 0.3303302783133008
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:19:07.932029",
-      "context": "agent_response",
-      "input_summary": "Oh my god, what... what happened? Is everyone okay? Zack and Cindy, are they... are they hurt? How b...",
-      "emotional_analysis": {
-        "dominant_emotion": "anxious",
-        "intensity": 0.9,
-        "valence": -0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.2206151593824178,
-        "arousal": 0.3111246820256418,
-        "dominance": 0.27933284487589777
-      },
-      "resulting_emotion": "anxious"
-    },
-    {
-      "timestamp": "2025-06-10T16:20:19.462424",
-      "context": "dialogue",
-      "input_summary": "i was just kididng ( he he he",
-      "emotional_analysis": {
-        "dominant_emotion": "amused",
-        "intensity": 0.8,
-        "valence": 0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.3761360623815452,
-        "arousal": 0.2853186130294493,
-        "dominance": 0.3831560746282248
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:20:25.424676",
-      "context": "agent_response",
-      "input_summary": "I was worried for a second there. You can be so silly sometimes. What were you kidding about, anyway...",
-      "emotional_analysis": {
-        "dominant_emotion": "relief",
-        "intensity": 0.6,
-        "valence": 0.4
-      },
-      "resulting_pad": {
-        "pleasure": 0.4220289722488656,
-        "arousal": 0.28206601661752645,
-        "dominance": 0.41924690114442015
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:21:22.343316",
-      "context": "dialogue",
-      "input_summary": "yes maam",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.1,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.41547455424336055,
-        "arousal": 0.20831154788108583,
-        "dominance": 0.3942871453137015
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:21:35.239199",
-      "context": "agent_response",
-      "input_summary": "That's very polite of you. Is there something I can help you with or are you just being courteous?",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.4361861592048123,
-        "arousal": 0.18870208621779624,
-        "dominance": 0.403170102570612
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:22:44.537573",
-      "context": "dialogue",
-      "input_summary": "what does it mean",
-      "emotional_analysis": {
-        "dominant_emotion": "curious",
-        "intensity": 0.2,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.41000000000000003,
-        "arousal": 0.18132454047500274,
-        "dominance": 0.37582783779687673
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:22:55.594283",
-      "context": "agent_response",
-      "input_summary": "You know, I've been thinking about that a lot lately. What does it mean, right? It's like, everythin...",
-      "emotional_analysis": {
-        "dominant_emotion": "reflective",
-        "intensity": 0.7,
-        "valence": 0.2
-      },
-      "resulting_pad": {
-        "pleasure": 0.4173672347371705,
-        "arousal": 0.17338452390947962,
-        "dominance": 0.37454894481201
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:24:04.831964",
-      "context": "dialogue",
-      "input_summary": "can you tell me a story from your childhood or your mother from that time ?",
-      "emotional_analysis": {
-        "dominant_emotion": "curious",
-        "intensity": 0.3,
-        "valence": 0.5
-      },
-      "resulting_pad": {
-        "pleasure": 0.4382441639311745,
-        "arousal": 0.1829007519713099,
-        "dominance": 0.3982823513486709
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:24:12.045645",
-      "context": "agent_response",
-      "input_summary": ".. where do I even start? (smiling) You know, I have so many memories from my childhood, and my mom ...",
-      "emotional_analysis": {
-        "dominant_emotion": "happy",
-        "intensity": 0.7,
-        "valence": 0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.4929936884710815,
-        "arousal": 0.21797972552572803,
-        "dominance": 0.44764459734410494
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:27:30.590271",
-      "context": "dialogue",
-      "input_summary": "you know my mother is addicted to flowers , she know name of all flowers she apent a lot of time in ...",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.2,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.41000000000000003,
-        "arousal": 0.1773509190499945,
-        "dominance": 0.3733443244062466
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:27:39.458729",
-      "context": "agent_response",
-      "input_summary": "That's really sweet of your mom, though. I can imagine how beautiful your garden must be with all th...",
-      "emotional_analysis": {
-        "dominant_emotion": "appreciative",
-        "intensity": 0.6,
-        "valence": 0.8
-      },
-      "resulting_pad": {
-        "pleasure": 0.47592234875013817,
-        "arousal": 0.19063263689518362,
-        "dominance": 0.4278973685535384
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:28:30.347495",
-      "context": "dialogue",
-      "input_summary": "lilium flower",
-      "emotional_analysis": {
-        "dominant_emotion": "neutral",
-        "intensity": 0.0,
-        "valence": 0.0
-      },
-      "resulting_pad": {
-        "pleasure": 0.41640514599982414,
-        "arousal": 0.18366008342847095,
-        "dominance": 0.38049012514270647
-      },
-      "resulting_emotion": "content"
-    },
-    {
-      "timestamp": "2025-06-10T16:28:42.224097",
-      "context": "agent_response",
-      "input_summary": "The lilium flower. That's so beautiful. It reminds me of the bouquet Zack got me for our anniversary...",
+      "input_summary": "Hi, it's so great to hear from you. How's your day going so far? I just got back from a beautiful wa...",
       "emotional_analysis": {
         "dominant_emotion": "happy",
         "intensity": 0.8,
         "valence": 0.9
       },
       "resulting_pad": {
-        "pleasure": 0.48786394614862183,
-        "arousal": 0.2254974974839859,
-        "dominance": 0.44425006019646646
+        "pleasure": 0.48495144312974237,
+        "arousal": 0.25194000121827964,
+        "dominance": 0.446772698889865
       },
       "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-10T19:52:27.020809",
+      "context": "dialogue",
+      "input_summary": "who is cindy",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.2,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.4733954614683744,
+        "arousal": 0.23774654646027019,
+        "dominance": 0.43462331759315326
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-10T19:52:35.128602",
+      "context": "agent_response",
+      "input_summary": "Cindy is my daughter, and she's the light of my life. I'm so proud of the little person she's growin...",
+      "emotional_analysis": {
+        "dominant_emotion": "love",
+        "intensity": 0.8,
+        "valence": 0.7
+      },
+      "resulting_pad": {
+        "pleasure": 0.544355457817115,
+        "arousal": 0.2426531488034537,
+        "dominance": 0.49077150474016246
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-10T19:59:01.786540",
+      "context": "dialogue",
+      "input_summary": "oh i have a bad news she has cancer and dr jacob said she will live for a month",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.9
+      },
+      "resulting_pad": {
+        "pleasure": 0.3572997665493999,
+        "arousal": 0.12278260368220553,
+        "dominance": 0.3263150224313503
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-10T19:59:09.160565",
+      "context": "agent_response",
+      "input_summary": "Oh my god, what...? *takes a deep breath* Who has cancer? You have to tell me, I need to know. Is it...",
+      "emotional_analysis": {
+        "dominant_emotion": "anxious",
+        "intensity": 0.8,
+        "valence": -0.8
+      },
+      "resulting_pad": {
+        "pleasure": 0.2674894460577192,
+        "arousal": 0.1885663893188043,
+        "dominance": 0.2807073484754345
+      },
+      "resulting_emotion": "sad"
+    },
+    {
+      "timestamp": "2025-06-10T20:00:20.803434",
+      "context": "dialogue",
+      "input_summary": "your daughter",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.0,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.3529442290386613,
+        "arousal": 0.1815327225747581,
+        "dominance": 0.33614118419802747
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-10T20:00:38.550207",
+      "context": "agent_response",
+      "input_summary": "My daughter... what about her? Is everything okay? You're not telling me something's wrong, are you?...",
+      "emotional_analysis": {
+        "dominant_emotion": "anxious",
+        "intensity": 0.8,
+        "valence": -0.5
+      },
+      "resulting_pad": {
+        "pleasure": 0.28743115539454245,
+        "arousal": 0.24240398279574002,
+        "dominance": 0.3036585407147881
+      },
+      "resulting_emotion": "bored"
     }
   ],
-  "last_update": "2025-06-10T16:28:42.224107",
-  "timestamp": "2025-06-10T16:29:35.868346"
+  "last_update": "2025-06-10T20:00:38.550216",
+  "timestamp": "2025-06-10T20:03:55.660800"
 }

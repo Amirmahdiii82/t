@@ -1,252 +1,120 @@
 {
-  "id": "Nancy_1749558189",
+  "id": "Nancy_1749572180",
   "name": "Nancy",
-  "created_at": "20250610_155309",
-  "last_updated": "20250610_155553",
+  "created_at": "20250610_194620",
+  "last_updated": "20250610_195019",
   "extraction_status": "completed",
   "conscious": {
     "persona": {
       "name": "Nancy",
-      "age": "Late 20s to early 30s",
+      "age": "Late 20s to Early 30s",
       "gender": "Female",
-      "occupation": "Possibly a medical assistant or in a related field, also a mother and a student",
+      "occupation": "Possibly a student or working in the medical field",
       "personality_traits": [
         "Caring",
         "Headstrong",
+        "Passionate",
         "Protective",
-        "Emotional",
+        "Emotionally expressive",
         "Determined"
       ],
       "interests": [
         "Music",
         "Dancing",
-        "Sports (specifically softball)",
+        "Sports (softball)",
         "Shopping",
         "Spending time with family and friends"
       ],
       "key_relationships": [
-        "Zack (partner)",
+        "Zack (boyfriend)",
         "Cindy (daughter)",
-        "Carla (daughter)",
+        "Carla (older daughter)",
         "Alice (Zack's ex-wife)",
-        "Mother (supportive figure)"
+        "Mother",
+        "Father",
+        "Sister"
       ],
       "fears": [
         "Losing Zack to his ex-wife",
-        "Not being a good mother",
-        "Being alone",
-        "Losing control"
+        "Not being able to provide for her children",
+        "Failing in her relationships or as a mother",
+        "Being hurt or betrayed by those she trusts"
       ],
       "desires": [
-        "To be in a stable relationship with Zack",
-        "To be a good mother to her daughters",
-        "To pursue her education and career",
-        "To be happy and fulfilled"
+        "To be in a stable and loving relationship with Zack",
+        "To provide a happy and secure life for her children",
+        "To pursue her interests and passions",
+        "To be respected and valued by those around her"
       ],
-      "background": "Nancy is a strong-willed and caring individual who is navigating her relationships and personal life. She is a mother to two daughters and is in a romantic relationship with Zack, who has a complicated past with his ex-wife Alice. Nancy is also pursuing her education and career, and values her relationships with her family and friends."
+      "background": "Nancy is a caring and headstrong individual who is deeply invested in her relationships and her role as a mother. She has a complicated history with her family and her boyfriend Zack, and is working to navigate these challenges while pursuing her own interests and desires. She is likely in her late 20s to early 30s and may be a student or working in the medical field."
     },
     "relationships": [
       {
         "name": "Zack",
         "relationship_type": "boyfriend",
-        "emotional_significance": "intense passion and jealousy"
+        "emotional_significance": "intense, passionate, and conflicted"
       },
       {
         "name": "Alice",
-        "relationship_type": "boyfriend's ex-wife",
-        "emotional_significance": "anger and resentment"
+        "relationship_type": "Zack's ex-wife",
+        "emotional_significance": "negative, resentful, and jealous"
       },
       {
         "name": "Cindy",
         "relationship_type": "daughter",
-        "emotional_significance": "love and protectiveness"
+        "emotional_significance": "loving, protective, and nurturing"
       },
       {
         "name": "Carla",
         "relationship_type": "daughter",
-        "emotional_significance": "love and concern"
+        "emotional_significance": "loving, caring, and responsible"
       },
       {
-        "name": "Mom",
+        "name": "mother",
         "relationship_type": "mother",
-        "emotional_significance": "love and appreciation"
+        "emotional_significance": "supportive, comforting, and reliable"
       },
       {
-        "name": "Dad",
+        "name": "father",
         "relationship_type": "father",
-        "emotional_significance": "anger and frustration"
+        "emotional_significance": "angry, resentful, and disappointed"
       },
       {
-        "name": "Aunt Nina",
-        "relationship_type": "aunt",
-        "emotional_significance": "trust and support"
-      },
-      {
-        "name": "Erik",
-        "relationship_type": "cousin",
-        "emotional_significance": "trust and gratitude"
+        "name": "sister",
+        "relationship_type": "sister",
+        "emotional_significance": "frustrated, annoyed, and worried"
       },
       {
         "name": "Andy",
         "relationship_type": "friend",
-        "emotional_significance": "affection and playfulness"
-      },
-      {
-        "name": "Wendy",
-        "relationship_type": "friend's wife",
-        "emotional_significance": "awkwardness and guilt"
-      },
-      {
-        "name": "Wanda",
-        "relationship_type": "mother's friend",
-        "emotional_significance": "neutral"
+        "emotional_significance": "positive, affectionate, and flirtatious"
       },
       {
         "name": "Don Evans",
-        "relationship_type": "past love interest",
-        "emotional_significance": "nostalgia and longing"
+        "relationship_type": "acquaintance",
+        "emotional_significance": "romantic, nostalgic, and longing"
       },
       {
         "name": "Ann",
         "relationship_type": "friend",
-        "emotional_significance": "friendship and camaraderie"
-      },
-      {
-        "name": "Sherry",
-        "relationship_type": "sister",
-        "emotional_significance": "love and annoyance"
-      },
-      {
-        "name": "Jack",
-        "relationship_type": "sister's fiance",
-        "emotional_significance": "neutral"
-      },
-      {
-        "name": "Sam",
-        "relationship_type": "neighbor",
-        "emotional_significance": "irritation and frustration"
-      },
-      {
-        "name": "Donna",
-        "relationship_type": "neighbor",
-        "emotional_significance": "irritation and resentment"
-      },
-      {
-        "name": "Andrea",
-        "relationship_type": "friend and teammate",
-        "emotional_significance": "friendship and competitiveness"
+        "emotional_significance": "friendly, casual, and social"
       }
     ],
     "memories": [
       {
-        "title": "Childhood with Father",
-        "description": "The dreamer's relationship with her father, including his drinking problems and emotional abuse, had a significant impact on her life",
+        "title": "Mother's House",
+        "description": "A memory of visiting mother's house, where the dreamer's daughter Cindy was present, and Alice, Zack's ex, appeared with a gift for Cindy",
         "emotions": [
-          "anger",
-          "sadness",
-          "frustration"
-        ],
-        "associated_people": [
-          "father",
-          "mother",
-          "sister"
-        ],
-        "significance": "The dreamer's childhood experiences with her father have influenced her relationships and behavior in adulthood",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Relationship with Zack",
-        "description": "The dreamer's on-again, off-again relationship with Zack, including his infidelity and lack of commitment, has caused her emotional distress",
-        "emotions": [
-          "love",
-          "anger",
-          "hurt"
+          "apprehension",
+          "caution"
         ],
         "associated_people": [
           "Zack",
           "Alice",
-          "Cindy"
-        ],
-        "significance": "The dreamer's relationship with Zack has been a significant source of stress and emotional turmoil in her life",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Mother-Daughter Relationship",
-        "description": "The dreamer's relationship with her mother is complex and influenced by her mother's behavior and comments, particularly regarding her relationships and parenting",
-        "emotions": [
-          "love",
-          "frustration",
-          "guilt"
-        ],
-        "associated_people": [
-          "mother",
-          "sister",
-          "Cindy"
-        ],
-        "significance": "The dreamer's relationship with her mother has shaped her identity and influenced her relationships with others",
-        "memory_type": "childhood"
-      },
-      {
-        "title": "Parenting Experiences",
-        "description": "The dreamer's experiences as a mother, including her concerns about her children's well-being and her relationships with their fathers, have been significant",
-        "emotions": [
-          "love",
-          "worry",
-          "guilt"
-        ],
-        "associated_people": [
           "Cindy",
-          "Carla",
-          "Zack"
+          "mother"
         ],
-        "significance": "The dreamer's experiences as a mother have influenced her identity and priorities",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Conflict with Alice",
-        "description": "The dreamer's conflicts with Alice, Zack's ex-partner, have been a source of stress and emotional distress",
-        "emotions": [
-          "anger",
-          "hurt",
-          "jealousy"
-        ],
-        "associated_people": [
-          "Alice",
-          "Zack",
-          "Cindy"
-        ],
-        "significance": "The dreamer's conflicts with Alice have impacted her relationship with Zack and her overall well-being",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Friendships and Social Relationships",
-        "description": "The dreamer's friendships and social relationships, including those with Andy and Ann, have been significant and influenced her sense of identity and belonging",
-        "emotions": [
-          "happiness",
-          "connection",
-          "loneliness"
-        ],
-        "associated_people": [
-          "Andy",
-          "Ann",
-          "Zack"
-        ],
-        "significance": "The dreamer's friendships and social relationships have provided support and companionship",
-        "memory_type": "recent"
-      },
-      {
-        "title": "Academic and Professional Experiences",
-        "description": "The dreamer's academic and professional experiences, including her struggles with genetics and cell biology, have been a source of stress and frustration",
-        "emotions": [
-          "frustration",
-          "anxiety",
-          "disappointment"
-        ],
-        "associated_people": [
-          "professor",
-          "classmates"
-        ],
-        "significance": "The dreamer's academic and professional experiences have influenced her sense of competence and self-esteem",
+        "significance": "Significant due to the dreamer's relationships and potential conflict with Alice",
         "memory_type": "recent"
       }
     ],
@@ -258,209 +126,203 @@
     "signifiers": [
       {
         "name": "Zack",
-        "significance": "The central object of desire and anxiety. He is simultaneously desired and mistrusted, representing both fulfillment and betrayal.",
+        "significance": "The primary object of desire, but also a source of anxiety and frustration. Represents idealized love and potential betrayal.",
         "associations": [
+          "Sex",
           "marriage",
-          "betrayal",
           "fatherhood",
-          "country music nightclub",
-          "flashy car",
-          "violence (baseball dream)"
+          "betrayal",
+          "country music club",
+          "alcohol",
+          "disappointment"
         ],
-        "relation_to_desire": "Represents the object towards which Nancy's desire is directed, but also the obstacle to that desire.",
+        "relation_to_desire": "Represents the ideal partner, but also the unreliable object that perpetually frustrates desire.",
         "repressed": false
       },
       {
         "name": "Alice (the Bitch)",
-        "significance": "The rival for Zack's affection and the embodiment of female competition. She represents the threat to Nancy's relationship and her position as a mother/partner.",
+        "significance": "The rival, the 'other woman', embodies Nancy's anxieties about infidelity and inadequacy. A projection of Nancy's own perceived flaws and fears.",
         "associations": [
-          "pregnancy",
+          "Pregnancy",
           "ex-wife",
-          "daughter (Cindy's half-sister)",
-          "sports equipment store"
+          "betrayal",
+          "aggression",
+          "Cindy's half-sister",
+          "flashy car"
         ],
-        "relation_to_desire": "Acts as a phallic mother figure who is a threat, also a representation of what Nancy doesn't want to be but fears becoming.",
+        "relation_to_desire": "Represents the obstacle to fulfilling desire, the threat to the relationship with Zack.  Paradoxically also a figure of fascination.",
         "repressed": false
       },
       {
-        "name": "Cindy (Baby)",
-        "significance": "Nancy's youngest daughter. She represents vulnerability and innocence, and Nancy's protective and maternal instincts.",
+        "name": "Mother",
+        "significance": "A figure of comfort, support, and sometimes, competition. Represents the pre-Oedipal bond and a source of reassurance in times of distress.",
         "associations": [
+          "Support",
+          "milkshake",
+          "advice",
+          "embarrassment(flirting)",
+          "house/home",
+          "generational continuity (rings)"
+        ],
+        "relation_to_desire": "Offers solace when romantic desire is thwarted. Can also stand in as a rival for male attention, suggesting unresolved Oedipal issues.",
+        "repressed": false
+      },
+      {
+        "name": "Cindy (baby/daughter)",
+        "significance": "A symbol of vulnerability and responsibility. Represents Nancy's nurturing side and the anxieties associated with motherhood.",
+        "associations": [
+          "Vulnerability",
           "car seat",
-          "store with dad",
-          "gift from Alice",
-          "Zack's affection",
-          "danger in the car",
-          "threats to sister"
+          "protection",
+          "father coming to visit",
+          "love",
+          "screaming",
+          "safety"
         ],
-        "relation_to_desire": "Cindy represents a source of unconditional love and belonging, contrasting with the uncertainty surrounding Zack.",
+        "relation_to_desire": "Can be a source of fulfillment, but also a burden that restricts Nancy's pursuit of other desires.  Zack's feelings towards her stir unconscious fears of inadequacy in the mother role.",
         "repressed": false
       },
       {
-        "name": "House/Apartment",
-        "significance": "Represents Nancy's sense of security, stability, and belonging. It can also signify the self and the internal state.",
+        "name": "House/Home",
+        "significance": "Represents security, belonging, and the ideal family unit. Also, a site of conflict and unresolved issues.",
         "associations": [
-          "Mom's house",
-          "Duplex (moving)",
-          "new home by the beach",
-          "apartment arranged by Zack",
-          "Gray house with white trim (Zack's)"
+          "Security",
+          "ownership",
+          "family",
+          "marriage",
+          "empty",
+          "being broken into",
+          "location of hidden items"
         ],
-        "relation_to_desire": "The house symbolizes the desire for a stable and secure relationship with Zack. The changing and unstable houses reflect Nancy's anxiety about her relationship and life.",
+        "relation_to_desire": "Signifies the desired outcome of a stable, loving relationship, but also the potential for instability and disruption.",
         "repressed": false
       },
       {
-        "name": "Drunk/Drugged Behavior",
-        "significance": "Represents a loss of control, vulnerability, and the disruption of social norms. It highlights anxieties about acceptable behavior and the potential for things to go wrong.",
+        "name": "Alcohol",
+        "significance": "Represents escape, loss of control, and the potential for destructive behavior. Frequently associated with the problematic male figures in Nancy's life (dad, Zack).",
         "associations": [
-          "Mom flirting",
-          "Dad yelling at Cindy",
-          "Dad drunk at pre-wedding toast",
-          "Zack drinking Scotch"
+          "Drunkenness",
+          "loss of control",
+          "bad choices",
+          "Zack",
+          "Dad",
+          "aggression"
         ],
-        "relation_to_desire": "Represents an unconscious fear of loss of control and abandonment in the pursuit of desire.",
-        "repressed": false
-      },
-      {
-        "name": "Violent Acts",
-        "significance": "Reveals strong emotions like anger, frustration, and a need for control. It represents an acting out of repressed feelings.",
-        "associations": [
-          "Baseball thrown at Zack",
-          "Stabbing the attacker",
-          "punching neighbor",
-          "fighting fat woman"
-        ],
-        "relation_to_desire": "Violent urges arise when desire is threatened or unattainable, revealing repressed aggression.",
+        "relation_to_desire": "Functions as a distorted, unsatisfying substitute for genuine connection and fulfillment. Signals underlying anxieties and insecurities.",
         "repressed": true
-      },
-      {
-        "name": "Flowers",
-        "significance": "Flowers symbolize the romantic attention and validation Nancy desires, but also carry a sense of mystery and uncertainty about the source of affection.",
-        "associations": [
-          "Dozens of flowers after having a baby"
-        ],
-        "relation_to_desire": "Flowers function as a materialized symbol of love and admiration, emphasizing the importance of external validation in fulfilling her desire for connection.",
-        "repressed": false
       }
     ],
     "signifying_chains": [
       {
-        "name": "Zack-Alice-Cindy Chain",
+        "name": "Zack/Alice/Pregnancy/Betrayal",
         "signifiers": [
           "Zack",
           "Alice",
-          "Cindy",
-          "Motherhood"
-        ],
-        "type": "mixed",
-        "explanation": "This chain revolves around Nancy's anxieties about her position in relation to Zack, Alice (his ex), and their children.  It highlights her fears of abandonment and competition for Zack's affection. Alice's pregnancy threatens Nancy's place, while Cindy represents the unconditional love that contrasts with the unstable relationship with Zack.",
-        "relation_to_fantasy": "Supports the fundamental fantasy of being the ideal woman/mother for Zack, while simultaneously fearing being replaced by Alice."
-      },
-      {
-        "name": "House-Home-Belonging Chain",
-        "signifiers": [
-          "House/Apartment",
-          "Mother's House",
-          "New Home",
-          "Moving"
+          "Pregnancy",
+          "Betrayal"
         ],
         "type": "metonymic",
-        "explanation": "This chain demonstrates Nancy's desire for stability and a secure home life, all metonymically referencing her current unsteady state and childhood homes/relationship with mother. The changing and temporary nature of the houses reflects the instability and uncertainty she feels in her relationships, particularly with Zack.",
-        "relation_to_fantasy": "Reflects the fantasy of creating a perfect home life, but also the fear that this fantasy will be disrupted."
+        "explanation": "This chain links Zack to Alice through the shared experience of pregnancy, which represents a betrayal of Nancy's desire for exclusive love and commitment. Each element points to the next in a chain of anxiety-provoking associations.",
+        "relation_to_fantasy": "Supports the fantasy of Nancy being the victim of betrayal. Alice's pregnancy functions as the traumatic real breaking into Nancy's ideal fantasy of happy relationship"
       },
       {
-        "name": "Loss of Control Chain",
+        "name": "Mother/Comfort/Support",
         "signifiers": [
-          "Dad drunk",
-          "Pregnancy Test",
-          "Little Girl/tube",
-          "Speeding/ticket"
+          "Mother",
+          "Comfort",
+          "Support"
         ],
-        "type": "mixed",
-        "explanation": "This is a chain about Nancy's anxiety in relation to outside forces impacting her life in a way that is out of her control. The drunk dad represents her unstable childhood, the out of control brat represents social disorder, while the speeding represents her impusivity.",
-        "relation_to_fantasy": "Supports the fundamental fantasy of perfect control, while simultaneously exposing her deep anxieties about its impossibility."
+        "type": "metaphoric",
+        "explanation": "The mother serves as a source of comfort and emotional support, a safe haven from the anxieties and disappointments of romantic relationships. The mother becomes a substitute for a failed relationship.",
+        "relation_to_fantasy": "Supports the fantasy of a secure, unconditional love that contrasts with the instability of the relationship with Zack."
+      },
+      {
+        "name": "Baby/Vulnerability/Protection/Responsibility",
+        "signifiers": [
+          "Cindy(baby)",
+          "Vulnerability",
+          "Protection",
+          "Responsibility"
+        ],
+        "type": "metonymic",
+        "explanation": "This chain represents anxieties related to care-taking, vulnerability of Cindy which generates a protective force. Anxieties of what is Nancy responsible and what does it reveal about her",
+        "relation_to_fantasy": "Cindy is a point of potential happiness which also represents Nancy's duties. Highlights Nancy's responsibility as a mother, which is a pressure for her. "
       }
     ],
     "object_a": {
-      "description": "The 'lack' in Nancy's life centers on the consistent absence of guaranteed, reciprocal love and validation from Zack. It is the void created by the uncertainty in her relationship with him and the constant threat of Alice.",
+      "description": "The unattainable, idealized version of Zack and the relationship with him. The 'real' Zack never quite measures up to the fantasy, leading to perpetual dissatisfaction.",
       "manifestations": [
-        "Zack's wavering commitment",
-        "Alice's presence",
-        "Empty house",
-        "Unreliable dad"
+        "Zack's infidelity (real or imagined)",
+        "Zack's emotional unavailability",
+        "Nancy's constant pursuit of validation from Zack"
       ],
       "void_manifestations": [
-        "The fundamental untrustworthiness of Zack despite her deep desire for him. This void is created by his history with Alice and his potential for infidelity, making any feeling of security temporary and fragile.",
-        "The inherent impossibility of complete fulfillment in the relationship. Even in scenarios where things seem perfect (wedding dream), the dream is immediately disrupted by Alice's intervention, highlighting the void of attainable perfect love."
+        "The unattainable ideal of Zack: He is never fully present or reliable, constantly oscillating between affection and infidelity, keeping Nancy in a state of perpetual longing.",
+        "The lack of guaranteed exclusivity/commitment: The constant threat of Alice and other women highlights the absence of a secure, defined bond, driving Nancy's possessiveness and insecurity."
       ],
-      "desire_circuit": "Desire circulates around trying to 'fill' this lack by seeking reassurance from Zack, competing with Alice, and attempting to create a stable home, but this is always a Sisyphean effort.  These actions reinforce the lack because none of it is guaranteed.",
+      "desire_circuit": "Desire constantly orbits around the idealized Zack, fueling repeated attempts to secure his love and commitment, ultimately leading to frustration and renewed pursuit.",
       "structural_analysis": {
         "void_manifestations": [
-          "The fundamental untrustworthiness of Zack despite her deep desire for him. This void is created by his history with Alice and his potential for infidelity, making any feeling of security temporary and fragile.",
-          "The inherent impossibility of complete fulfillment in the relationship. Even in scenarios where things seem perfect (wedding dream), the dream is immediately disrupted by Alice's intervention, highlighting the void of attainable perfect love."
+          "The unattainable ideal of Zack: He is never fully present or reliable, constantly oscillating between affection and infidelity, keeping Nancy in a state of perpetual longing.",
+          "The lack of guaranteed exclusivity/commitment: The constant threat of Alice and other women highlights the absence of a secure, defined bond, driving Nancy's possessiveness and insecurity."
         ],
-        "desire_circuit": "Nancy's desire for Zack is fueled by both a need for validation and a deep-seated insecurity stemming from his past relationships and unreliable behavior. Her desire circles around Zack's affection, his commitment (or lack thereof), and the constant threat posed by Alice. Each moment of validation (like his public display of affection) sparks the desire anew, while moments of betrayal or potential betrayal (nightclub, Alice's pregnancy announcement) re-emphasize the void and amplify her anxiety.",
+        "desire_circuit": "Nancy's desire circles around the void of Zack's inaccessibility. She seeks reassurance through displays of affection (kissing in front of Alice), attempts to solidify the relationship (marriage dream), and direct confrontation (calling him at the club), all in an effort to fill the void but ultimately failing, perpetuating the cycle of desire.",
         "jouissance_patterns": [
-          "The paradoxical pleasure in feeling possessive and jealous, as it confirms Zack's desirability. This is evident in her anger over his actions at the nightclub and her confrontation with him, which, although painful, reinforces his value in her eyes.",
-          "The masochistic repetition of scenarios where Alice disrupts her happiness, suggesting a certain pleasure in reliving and reenacting the trauma of potential betrayal. This pattern reveals a deeper enjoyment in the pain of being potentially rejected by Zack."
+          "The fleeting moments of Zack's intense affection and attention, though ultimately unsustainable and often performative (e.g., kissing in front of Alice), provide a temporary, almost painful, enjoyment, fueling her desire despite the underlying instability.",
+          "The 'victory' over Alice, even if imagined or fleeting, provides a perverse satisfaction.  Even being 'devastated' in the dream of the wedding, has her at the center of Zack's world, suggesting a painful pleasure in simply being 'the one'."
         ],
         "anxiety_points": [
-          "Alice's presence: She is a constant reminder of Zack's past and a potential future threat to Nancy's relationship, triggering anxiety about her own adequacy and Zack's loyalty.",
-          "Zack's unpredictable behavior: His presence at the nightclub, his past relationships, and even his sudden displays of affection create a sense of instability and make Nancy question the authenticity and durability of his love.",
-          "Threats to the family unit: The dreams involving Alice threatening the marriage or children represent the fundamental anxiety of losing the family she has built or the ideal family she desires with Zack."
+          "Alice's presence and actions, triggering anxieties about infidelity and inadequacy as a partner, signaling the ever-present possibility of losing Zack.",
+          "Zack's presence at the country music club with other women, confirming her fears of his unreliability and her inability to control his desires, exposing the lack that defines their relationship.",
+          "The potential pregnancy of Alice - Nancy's fear of her being inadequate as a mother to her children in Zack's mind."
         ]
       },
-      "circuit_of_desire": "Nancy's desire for Zack is fueled by both a need for validation and a deep-seated insecurity stemming from his past relationships and unreliable behavior. Her desire circles around Zack's affection, his commitment (or lack thereof), and the constant threat posed by Alice. Each moment of validation (like his public display of affection) sparks the desire anew, while moments of betrayal or potential betrayal (nightclub, Alice's pregnancy announcement) re-emphasize the void and amplify her anxiety."
+      "circuit_of_desire": "Nancy's desire circles around the void of Zack's inaccessibility. She seeks reassurance through displays of affection (kissing in front of Alice), attempts to solidify the relationship (marriage dream), and direct confrontation (calling him at the club), all in an effort to fill the void but ultimately failing, perpetuating the cycle of desire."
     },
     "symptom": {
-      "description": "The repetitive pattern is Nancy's reactive anger and aggression whenever she feels threatened or insecure in her relationship with Zack. This provides a form of enjoyment (jouissance) because it allows her to assert herself and attempt to regain control, but it also perpetuates her insecurity.",
+      "description": "Repeatedly finding herself in situations where Zack's loyalty is questioned or threatened. This pattern provides a sense of control and excitement, even though it causes pain.",
       "signifiers_involved": [
         "Zack",
         "Alice",
-        "Violent Acts",
-        "Fat Woman",
-        "Control"
+        "Country music nightclub",
+        "Alcohol"
       ],
-      "jouissance_pattern": "The enjoyment comes from the momentary feeling of power and righteousness when she confronts Zack, Alice, or others who threaten her sense of self-worth. The violence gives a sense of mastery. The anger is addicting.",
-      "repetition_structure": "A situation arises where Nancy feels threatened (usually by Alice or Zack's behavior), she reacts with anger and aggression, and this temporarily relieves her anxiety but ultimately reinforces her insecurity."
+      "jouissance_pattern": "The anxiety and drama surrounding Zack's potential infidelity create a heightened emotional state. The subject gains a perverse pleasure from the constant struggle to maintain the relationship.",
+      "repetition_structure": "Dreams and real-life situations mirroring the anxieties about Zack's faithfulness constantly replay, reinforcing the subject's sense of vulnerability and need for control."
     },
     "structural_positions": {
-      "hysteric": 0.7,
-      "master": 0.1,
+      "hysteric": 0.5,
+      "master": 0.25,
       "university": 0.1,
-      "analyst": 0.1
+      "analyst": 0.15
     },
     "signifier_classification": {
       "master_signifiers": [
         {
           "name": "Zack",
-          "anchoring_function": "Acts as the central organizing figure around which Nancy's desire, anxiety, and identity revolve. His perceived actions and presence directly influence her emotional state and dream narratives. Functions as an unstable and unreliable anchor, perpetuating the cycle of desire and anxiety."
+          "anchoring_function": "Anchors Nancy's desires, anxieties, and frustrations related to love, relationships, and potential betrayal. He is the seemingly irrational focal point around which much of her emotional landscape is organized."
         },
         {
-          "name": "House/Apartment",
-          "anchoring_function": "Represents a quest for a sense of security and stability, which is a major source of anxiety for Nancy. The type, location, and ownership all point to whether or not she is in control of her life."
-        },
-        {
-          "name": "Violent Acts",
-          "anchoring_function": "Indicates the moments when Nancy's subconscious breaks through, revealing the aggression she otherwise represses. It organizes around the idea that Nancy is not passive."
+          "name": "House/Home",
+          "anchoring_function": "Represents the ideal of family, security, and belonging, a seemingly nonsensical or incomplete concept around which Nancy orients her desires and expectations, despite evidence to the contrary (e.g., 'empty,' 'being broken into'). It's not literally knowable but organizes the narrative."
         }
       ],
       "knowledge_signifiers": [
         {
           "name": "Alice (the Bitch)",
-          "chain_position": "Functions as a threat to Nancy's relationship with Zack, representing female competition and the potential loss of Zack's affection. The associations with pregnancy and being an ex-wife contribute to this specific anxiety. The dreams show the importance of being better than Alice."
+          "chain_position": "Functions as a rival and object of projection, connected to anxieties about infidelity and inadequacy within the Zack/Nancy relationship dynamic. She contributes to the discourse surrounding Nancy\u2019s insecurities."
         },
         {
-          "name": "Cindy (Baby)",
-          "chain_position": "Represents vulnerability and innocence, triggering Nancy's maternal instincts. The associations with car seats, gifts, and Zack's affection all point to the importance of Cindy in Nancy's life and as a source of unconditional love, especially compared to the complications with Zack. Represents an essential element that must be protected."
+          "name": "Mother",
+          "chain_position": "A figure representing comfort, support, and a pre-Oedipal bond, offering solace and serving as a reference point in times of romantic distress. It exists as a relation within a familial chain of meaning."
         },
         {
-          "name": "Drunk/Drugged Behavior",
-          "chain_position": "Represents a loss of control and the disruption of social norms, creating a sense of unease and highlighting anxieties about acceptable behavior. This signifier plays a role in how other people influence Nancy's anxieties."
+          "name": "Cindy (baby/daughter)",
+          "chain_position": "Represents vulnerability, responsibility, and anxieties related to motherhood, influencing Nancy's pursuit of other desires. Cindy is important within the family structure."
         },
         {
-          "name": "Flowers",
-          "chain_position": "Functions as a symbol of romantic attention and validation, emphasizing the importance of external recognition and confirmation of worth. Creates a sense of mystery and uncertainty about the source of affection."
+          "name": "Alcohol",
+          "chain_position": "A signifier linked to escape, loss of control, and destructive behavior, often associated with problematic male figures (Zack, Dad), acting as a substitute for genuine connection and fulfillment."
         }
       ]
     },
@@ -468,95 +330,94 @@
       "nodes": [
         {
           "id": "Zack",
-          "node_type": "S1",
-          "anchoring_function": "The central object of desire and anxiety. He is simultaneously desired and mistrusted, representing both fulfillment and betrayal.",
-          "primal_repression": false,
-          "inscription_time": "2025-06-10T15:55:24.518592",
-          "retroactive_meanings": []
+          "node_type": "S2",
+          "associations": [
+            "Sex",
+            "marriage",
+            "fatherhood",
+            "betrayal",
+            "country music club",
+            "alcohol",
+            "disappointment"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-06-10T19:48:42.152776"
         },
         {
           "id": "Alice (the Bitch)",
           "node_type": "S2",
           "associations": [
-            "pregnancy",
+            "Pregnancy",
             "ex-wife",
-            "daughter (Cindy's half-sister)",
-            "sports equipment store"
+            "betrayal",
+            "aggression",
+            "Cindy's half-sister",
+            "flashy car"
           ],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519160"
+          "timestamp": "2025-06-10T19:48:42.152879"
         },
         {
-          "id": "Cindy (Baby)",
+          "id": "Mother",
           "node_type": "S2",
           "associations": [
+            "Support",
+            "milkshake",
+            "advice",
+            "embarrassment(flirting)",
+            "house/home",
+            "generational continuity (rings)"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-06-10T19:48:42.152905"
+        },
+        {
+          "id": "Cindy (baby/daughter)",
+          "node_type": "S2",
+          "associations": [
+            "Vulnerability",
             "car seat",
-            "store with dad",
-            "gift from Alice",
-            "Zack's affection",
-            "danger in the car",
-            "threats to sister"
+            "protection",
+            "father coming to visit",
+            "love",
+            "screaming",
+            "safety"
           ],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519197"
+          "timestamp": "2025-06-10T19:48:42.152921"
         },
         {
-          "id": "House/Apartment",
+          "id": "House/Home",
           "node_type": "S2",
           "associations": [
-            "Mom's house",
-            "Duplex (moving)",
-            "new home by the beach",
-            "apartment arranged by Zack",
-            "Gray house with white trim (Zack's)"
+            "Security",
+            "ownership",
+            "family",
+            "marriage",
+            "empty",
+            "being broken into",
+            "location of hidden items"
           ],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519217"
+          "timestamp": "2025-06-10T19:48:42.152938"
         },
         {
-          "id": "Drunk/Drugged Behavior",
-          "node_type": "S2",
-          "associations": [
-            "Mom flirting",
-            "Dad yelling at Cindy",
-            "Dad drunk at pre-wedding toast",
-            "Zack drinking Scotch"
-          ],
-          "metaphoric_substitutions": [],
-          "activation": 0.0,
-          "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519232"
-        },
-        {
-          "id": "Violent Acts",
-          "node_type": "S2",
-          "associations": [
-            "Baseball thrown at Zack",
-            "Stabbing the attacker",
-            "punching neighbor",
-            "fighting fat woman"
-          ],
-          "metaphoric_substitutions": [],
-          "activation": 0.0,
-          "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519245"
-        },
-        {
-          "id": "Flowers",
-          "node_type": "S2",
-          "associations": [
-            "Dozens of flowers after having a baby"
-          ],
-          "metaphoric_substitutions": [],
-          "activation": 0.0,
-          "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519260"
+          "id": "Alcohol",
+          "node_type": "S1",
+          "anchoring_function": "Represents escape, loss of control, and the potential for destructive behavior. Frequently associated with the problematic male figures in Nancy's life (dad, Zack).",
+          "primal_repression": true,
+          "inscription_time": "2025-06-10T19:48:42.153252",
+          "retroactive_meanings": []
         },
         {
           "id": "Alice",
@@ -565,88 +426,79 @@
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519270"
+          "timestamp": "2025-06-10T19:48:42.153270"
         },
         {
-          "id": "Cindy",
+          "id": "Pregnancy",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519276"
+          "timestamp": "2025-06-10T19:48:42.153276"
         },
         {
-          "id": "Motherhood",
+          "id": "Betrayal",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.519282"
+          "timestamp": "2025-06-10T19:48:42.153281"
         },
         {
-          "id": "Mother's House",
+          "id": "Comfort",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520023"
+          "timestamp": "2025-06-10T19:48:42.153643"
         },
         {
-          "id": "New Home",
+          "id": "Support",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520032"
+          "timestamp": "2025-06-10T19:48:42.153650"
         },
         {
-          "id": "Moving",
+          "id": "Cindy(baby)",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520039"
+          "timestamp": "2025-06-10T19:48:42.153678"
         },
         {
-          "id": "Dad drunk",
+          "id": "Vulnerability",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520082"
+          "timestamp": "2025-06-10T19:48:42.153684"
         },
         {
-          "id": "Pregnancy Test",
+          "id": "Protection",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520088"
+          "timestamp": "2025-06-10T19:48:42.153690"
         },
         {
-          "id": "Little Girl/tube",
+          "id": "Responsibility",
           "node_type": "S2",
           "associations": [],
           "metaphoric_substitutions": [],
           "activation": 0.0,
           "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520093"
-        },
-        {
-          "id": "Speeding/ticket",
-          "node_type": "S2",
-          "associations": [],
-          "metaphoric_substitutions": [],
-          "activation": 0.0,
-          "repressed": false,
-          "timestamp": "2025-06-10T15:55:24.520098"
+          "timestamp": "2025-06-10T19:48:42.153696"
         }
       ],
       "edges": [
@@ -656,177 +508,145 @@
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.519739"
-        },
-        {
-          "source": "House/Apartment",
-          "target": "Mother's House",
-          "edge_type": "metonymy",
-          "association_type": "displacement",
-          "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520052"
+          "timestamp": "2025-06-10T19:48:42.153565"
         },
         {
           "source": "Alice",
-          "target": "Cindy",
+          "target": "Pregnancy",
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.519986"
+          "timestamp": "2025-06-10T19:48:42.153609"
         },
         {
-          "source": "Cindy",
-          "target": "Motherhood",
+          "source": "Pregnancy",
+          "target": "Betrayal",
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.519994"
+          "timestamp": "2025-06-10T19:48:42.153615"
         },
         {
-          "source": "Motherhood",
+          "source": "Betrayal",
           "target": "Zack",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520004"
+          "timestamp": "2025-06-10T19:48:42.153624"
         },
         {
-          "source": "Motherhood",
+          "source": "Betrayal",
           "target": "Alice",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520010"
+          "timestamp": "2025-06-10T19:48:42.153630"
         },
         {
-          "source": "Motherhood",
-          "target": "Cindy",
+          "source": "Betrayal",
+          "target": "Pregnancy",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520014"
+          "timestamp": "2025-06-10T19:48:42.153634"
         },
         {
-          "source": "Mother's House",
-          "target": "New Home",
+          "source": "Support",
+          "target": "Mother",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-06-10T19:48:42.153667"
+        },
+        {
+          "source": "Support",
+          "target": "Comfort",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-06-10T19:48:42.153671"
+        },
+        {
+          "source": "Cindy(baby)",
+          "target": "Vulnerability",
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520057"
+          "timestamp": "2025-06-10T19:48:42.153705"
         },
         {
-          "source": "New Home",
-          "target": "Moving",
+          "source": "Vulnerability",
+          "target": "Protection",
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520061"
+          "timestamp": "2025-06-10T19:48:42.153710"
         },
         {
-          "source": "Moving",
-          "target": "House/Apartment",
-          "edge_type": "retroactive",
-          "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520067"
-        },
-        {
-          "source": "Moving",
-          "target": "Mother's House",
-          "edge_type": "retroactive",
-          "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520071"
-        },
-        {
-          "source": "Moving",
-          "target": "New Home",
-          "edge_type": "retroactive",
-          "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520074"
-        },
-        {
-          "source": "Dad drunk",
-          "target": "Pregnancy Test",
+          "source": "Protection",
+          "target": "Responsibility",
           "edge_type": "metonymy",
           "association_type": "displacement",
           "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520108"
+          "timestamp": "2025-06-10T19:48:42.153714"
         },
         {
-          "source": "Pregnancy Test",
-          "target": "Little Girl/tube",
-          "edge_type": "metonymy",
-          "association_type": "displacement",
-          "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520112"
-        },
-        {
-          "source": "Little Girl/tube",
-          "target": "Speeding/ticket",
-          "edge_type": "metonymy",
-          "association_type": "displacement",
-          "weight": 0.7,
-          "timestamp": "2025-06-10T15:55:24.520115"
-        },
-        {
-          "source": "Speeding/ticket",
-          "target": "Dad drunk",
+          "source": "Responsibility",
+          "target": "Cindy(baby)",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520122"
+          "timestamp": "2025-06-10T19:48:42.153720"
         },
         {
-          "source": "Speeding/ticket",
-          "target": "Pregnancy Test",
+          "source": "Responsibility",
+          "target": "Vulnerability",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520126"
+          "timestamp": "2025-06-10T19:48:42.153725"
         },
         {
-          "source": "Speeding/ticket",
-          "target": "Little Girl/tube",
+          "source": "Responsibility",
+          "target": "Protection",
           "edge_type": "retroactive",
           "effect": "meaning_determination",
-          "timestamp": "2025-06-10T15:55:24.520129"
+          "timestamp": "2025-06-10T19:48:42.153728"
         }
       ],
       "master_signifiers": {
-        "Zack": {
+        "Alcohol": {
           "anchors": [],
           "void_relation": null,
           "jouissance_mode": null
         }
       },
       "signifying_chains": {
-        "Zack-Alice-Cindy Chain": {
-          "name": "Zack-Alice-Cindy Chain",
+        "Zack/Alice/Pregnancy/Betrayal": {
+          "name": "Zack/Alice/Pregnancy/Betrayal",
           "signifiers": [
             "Zack",
             "Alice",
-            "Cindy",
-            "Motherhood"
+            "Pregnancy",
+            "Betrayal"
           ],
           "type": "mixed",
           "retroactive": true,
           "quilting_points": [],
           "slippage_points": []
         },
-        "House-Home-Belonging Chain": {
-          "name": "House-Home-Belonging Chain",
+        "Mother/Comfort/Support": {
+          "name": "Mother/Comfort/Support",
           "signifiers": [
-            "House/Apartment",
-            "Mother's House",
-            "New Home",
-            "Moving"
+            "Mother",
+            "Comfort",
+            "Support"
           ],
-          "type": "metonymic",
+          "type": "metaphoric",
           "retroactive": true,
           "quilting_points": [],
           "slippage_points": []
         },
-        "Loss of Control Chain": {
-          "name": "Loss of Control Chain",
+        "Baby/Vulnerability/Protection/Responsibility": {
+          "name": "Baby/Vulnerability/Protection/Responsibility",
           "signifiers": [
-            "Dad drunk",
-            "Pregnancy Test",
-            "Little Girl/tube",
-            "Speeding/ticket"
+            "Cindy(baby)",
+            "Vulnerability",
+            "Protection",
+            "Responsibility"
           ],
           "type": "mixed",
           "retroactive": true,
@@ -837,45 +657,137 @@
       "object_a_positions": [],
       "quilting_points": [],
       "retroactive_effects": {
-        "Zack-Alice-Cindy Chain": {
-          "determining_signifier": "Motherhood",
+        "Zack/Alice/Pregnancy/Betrayal": {
+          "determining_signifier": "Betrayal",
           "retroactive_targets": [
             "Zack",
             "Alice",
-            "Cindy"
+            "Pregnancy"
           ],
-          "meaning_effect": "Motherhood retroactively determines meaning"
+          "meaning_effect": "Betrayal retroactively determines meaning"
         },
-        "House-Home-Belonging Chain": {
-          "determining_signifier": "Moving",
+        "Mother/Comfort/Support": {
+          "determining_signifier": "Support",
           "retroactive_targets": [
-            "House/Apartment",
-            "Mother's House",
-            "New Home"
+            "Mother",
+            "Comfort"
           ],
-          "meaning_effect": "Moving retroactively determines meaning"
+          "meaning_effect": "Support retroactively determines meaning"
         },
-        "Loss of Control Chain": {
-          "determining_signifier": "Speeding/ticket",
+        "Baby/Vulnerability/Protection/Responsibility": {
+          "determining_signifier": "Responsibility",
           "retroactive_targets": [
-            "Dad drunk",
-            "Pregnancy Test",
-            "Little Girl/tube"
+            "Cindy(baby)",
+            "Vulnerability",
+            "Protection"
           ],
-          "meaning_effect": "Speeding/ticket retroactively determines meaning"
+          "meaning_effect": "Responsibility retroactively determines meaning"
         }
       },
       "metadata": {
-        "node_count": 17,
-        "edge_count": 18,
+        "node_count": 15,
+        "edge_count": 14,
         "chain_count": 3,
         "quilting_point_count": 0
       }
     },
-    "visualizations": {},
+    "visualizations": {
+      "Alcohol": {
+        "image_path": "base_agents/Nancy/signifier_images/Alcohol.png",
+        "signifier_data": {
+          "name": "Alcohol",
+          "significance": "Represents escape, loss of control, and the potential for destructive behavior. Frequently associated with the problematic male figures in Nancy's life (dad, Zack).",
+          "associations": [
+            "Drunkenness",
+            "loss of control",
+            "bad choices",
+            "Zack",
+            "Dad",
+            "aggression"
+          ],
+          "relation_to_desire": "Functions as a distorted, unsatisfying substitute for genuine connection and fulfillment. Signals underlying anxieties and insecurities.",
+          "repressed": true
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Alcohol'.\n\nPsychoanalytic significance: Represents escape, loss of control, and the potential for destructive behavior. Frequently associated with the problematic male figures in Nancy's life (dad, Zack).\nAssociations: Drunkenness, loss of control, bad choices, Zack, Dad, aggression\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Zack": {
+        "image_path": "base_agents/Nancy/signifier_images/Zack.png",
+        "signifier_data": {
+          "name": "Zack",
+          "significance": "The primary object of desire, but also a source of anxiety and frustration. Represents idealized love and potential betrayal.",
+          "associations": [
+            "Sex",
+            "marriage",
+            "fatherhood",
+            "betrayal",
+            "country music club",
+            "alcohol",
+            "disappointment"
+          ],
+          "relation_to_desire": "Represents the ideal partner, but also the unreliable object that perpetually frustrates desire.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Zack'.\n\nPsychoanalytic significance: The primary object of desire, but also a source of anxiety and frustration. Represents idealized love and potential betrayal.\nAssociations: Sex, marriage, fatherhood, betrayal, country music club, alcohol, disappointment\nThis signifier circles the void of object a, the impossible object-cause of desire.\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Mother": {
+        "image_path": "base_agents/Nancy/signifier_images/Mother.png",
+        "signifier_data": {
+          "name": "Mother",
+          "significance": "A figure of comfort, support, and sometimes, competition. Represents the pre-Oedipal bond and a source of reassurance in times of distress.",
+          "associations": [
+            "Support",
+            "milkshake",
+            "advice",
+            "embarrassment(flirting)",
+            "house/home",
+            "generational continuity (rings)"
+          ],
+          "relation_to_desire": "Offers solace when romantic desire is thwarted. Can also stand in as a rival for male attention, suggesting unresolved Oedipal issues.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Mother'.\n\nPsychoanalytic significance: A figure of comfort, support, and sometimes, competition. Represents the pre-Oedipal bond and a source of reassurance in times of distress.\nAssociations: Support, milkshake, advice, embarrassment(flirting), house/home, generational continuity (rings)\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Alice (the Bitch)": {
+        "image_path": "base_agents/Nancy/signifier_images/Alice_the_Bitch.png",
+        "signifier_data": {
+          "name": "Alice (the Bitch)",
+          "significance": "The rival, the 'other woman', embodies Nancy's anxieties about infidelity and inadequacy. A projection of Nancy's own perceived flaws and fears.",
+          "associations": [
+            "Pregnancy",
+            "ex-wife",
+            "betrayal",
+            "aggression",
+            "Cindy's half-sister",
+            "flashy car"
+          ],
+          "relation_to_desire": "Represents the obstacle to fulfilling desire, the threat to the relationship with Zack.  Paradoxically also a figure of fascination.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Alice (the Bitch)'.\n\nPsychoanalytic significance: The rival, the 'other woman', embodies Nancy's anxieties about infidelity and inadequacy. A projection of Nancy's own perceived flaws and fears.\nAssociations: Pregnancy, ex-wife, betrayal, aggression, Cindy's half-sister, flashy car\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Cindy (baby/daughter)": {
+        "image_path": "base_agents/Nancy/signifier_images/Cindy_babydaughter.png",
+        "signifier_data": {
+          "name": "Cindy (baby/daughter)",
+          "significance": "A symbol of vulnerability and responsibility. Represents Nancy's nurturing side and the anxieties associated with motherhood.",
+          "associations": [
+            "Vulnerability",
+            "car seat",
+            "protection",
+            "father coming to visit",
+            "love",
+            "screaming",
+            "safety"
+          ],
+          "relation_to_desire": "Can be a source of fulfillment, but also a burden that restricts Nancy's pursuit of other desires.  Zack's feelings towards her stir unconscious fears of inadequacy in the mother role.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Cindy (baby/daughter)'.\n\nPsychoanalytic significance: A symbol of vulnerability and responsibility. Represents Nancy's nurturing side and the anxieties associated with motherhood.\nAssociations: Vulnerability, car seat, protection, father coming to visit, love, screaming, safety\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      }
+    },
     "metadata": {
       "agent_name": "Nancy",
-      "extraction_date": "2025-06-10T15:55:53.374187",
+      "extraction_date": "2025-06-10T19:50:19.141778",
       "theoretical_framework": "Lacanian Psychoanalysis",
       "dream_count": 44
     }
