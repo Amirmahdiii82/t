@@ -7,7 +7,7 @@ from interfaces.llm_interface import LLMInterface
 
 class NeuroProxyEngine:
     def __init__(self, agent_name: str, base_path: str = "base_agents"):
-        """Initialize NeuroProxy Engine with unified emotional-neurochemical simulation."""
+        """Initialize NeuroProxy Engine with unconscious integration capabilities."""
         self.agent_name = agent_name
         self.agent_path = os.path.join(base_path, agent_name)
         
@@ -24,7 +24,7 @@ class NeuroProxyEngine:
             "gaba": 0.6           # Relaxation/inhibition
         }
         
-        # Derived PAD values (calculated from neurochemicals, not stored separately)
+        # Derived PAD values (calculated from neurochemicals)
         self.pad_state = {
             "pleasure": 0.0,
             "arousal": 0.0,
@@ -34,6 +34,10 @@ class NeuroProxyEngine:
         # Emotional history for tracking patterns
         self.emotional_history = []
         self.last_update = datetime.now()
+        
+        # Unconscious integration tracking
+        self.unconscious_triggers = []
+        self.signifier_neurochemical_signatures = {}
         
         # Load persistent state if exists
         self._load_persistent_state()
@@ -75,6 +79,13 @@ class NeuroProxyEngine:
                 if 'emotional_history' in data and isinstance(data['emotional_history'], list):
                     self.emotional_history = data['emotional_history'][-20:]
                 
+                # Load unconscious integration data
+                if 'unconscious_triggers' in data:
+                    self.unconscious_triggers = data['unconscious_triggers'][-10:]
+                    
+                if 'signifier_neurochemical_signatures' in data:
+                    self.signifier_neurochemical_signatures = data['signifier_neurochemical_signatures']
+                
                 # Load last update time
                 if 'last_update' in data:
                     try:
@@ -114,13 +125,15 @@ class NeuroProxyEngine:
         try:
             os.makedirs(os.path.dirname(state_file), exist_ok=True)
             
-            # Save complete state including derived values for reference
+            # Save complete state including unconscious integration data
             data_to_save = {
                 "agent_name": self.agent_name,
                 "neurochemical_state": self.neurochemical_state,
-                "derived_pad_state": self.pad_state,  # For reference only
+                "derived_pad_state": self.pad_state,
                 "current_emotion": self.current_affective_state.get("emotion_category", "neutral"),
                 "emotional_history": self.emotional_history[-30:],
+                "unconscious_triggers": self.unconscious_triggers[-20:],
+                "signifier_neurochemical_signatures": self.signifier_neurochemical_signatures,
                 "last_update": self.last_update.isoformat(),
                 "timestamp": datetime.now().isoformat()
             }
@@ -131,6 +144,188 @@ class NeuroProxyEngine:
         except Exception as e:
             print(f"Error saving persistent state: {e}")
 
+    # ============ UNCONSCIOUS INTEGRATION METHODS ============
+    
+    def trigger_object_a_seeking(self, signifier_name: str = "", intensity: float = 0.5):
+        """Trigger neurochemical response to object_a seeking behavior."""
+        print(f"Triggering object_a seeking response (intensity: {intensity:.2f})")
+        
+        # Object a seeking = lowered satisfaction, increased seeking drive
+        self.neurochemical_state['oxytocin'] = max(0.0, self.neurochemical_state['oxytocin'] - (0.3 * intensity))
+        self.neurochemical_state['serotonin'] = max(0.0, self.neurochemical_state['serotonin'] - (0.2 * intensity))
+        self.neurochemical_state['dopamine'] = min(1.0, self.neurochemical_state['dopamine'] + (0.1 * intensity))  # Seeking
+        self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.3 * intensity))
+        
+        self._record_unconscious_trigger("object_a_seeking", signifier_name, intensity)
+    
+    def trigger_object_a_circling(self, signifier_name: str = "", intensity: float = 0.5):
+        """Trigger neurochemical response to circling the void."""
+        print(f"Triggering object_a circling response (intensity: {intensity:.2f})")
+        
+        # Circling void = anxiety + compulsive behavior
+        self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.4 * intensity))
+        self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.3 * intensity))
+        self.neurochemical_state['gaba'] = max(0.0, self.neurochemical_state['gaba'] - (0.3 * intensity))
+        self.neurochemical_state['serotonin'] = max(0.0, self.neurochemical_state['serotonin'] - (0.2 * intensity))
+        
+        self._record_unconscious_trigger("object_a_circling", signifier_name, intensity)
+    
+    def trigger_symptom_activation(self, symptom_type: str = "vulnerability", intensity: float = 0.5):
+        """Trigger neurochemical response to symptom activation."""
+        print(f"Triggering symptom activation: {symptom_type} (intensity: {intensity:.2f})")
+        
+        if symptom_type.lower() in ["vulnerability", "injury", "helplessness"]:
+            # Vulnerability symptom = low agency, seeking care
+            self.neurochemical_state['dopamine'] = max(0.0, self.neurochemical_state['dopamine'] - (0.3 * intensity))
+            self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.3 * intensity))
+            self.neurochemical_state['oxytocin'] = max(0.0, self.neurochemical_state['oxytocin'] - (0.2 * intensity))  # Need for care
+            self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.2 * intensity))
+            
+        elif symptom_type.lower() in ["repetition", "compulsion"]:
+            # Repetition compulsion = locked pattern
+            self.neurochemical_state['gaba'] = max(0.0, self.neurochemical_state['gaba'] - (0.4 * intensity))
+            self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.3 * intensity))
+            self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.2 * intensity))
+            
+        self._record_unconscious_trigger("symptom_activation", symptom_type, intensity)
+    
+    def trigger_repressed_return(self, signifier_name: str = "", intensity: float = 0.5):
+        """Trigger neurochemical response to return of repressed content."""
+        print(f"Triggering return of repressed: {signifier_name} (intensity: {intensity:.2f})")
+        
+        # Return of repressed = disruption + anxiety + dysregulation
+        self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.5 * intensity))
+        self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.4 * intensity))
+        self.neurochemical_state['gaba'] = max(0.0, self.neurochemical_state['gaba'] - (0.4 * intensity))
+        self.neurochemical_state['serotonin'] = max(0.0, self.neurochemical_state['serotonin'] - (0.3 * intensity))
+        self.neurochemical_state['dopamine'] = max(0.0, self.neurochemical_state['dopamine'] - (0.2 * intensity))
+        
+        self._record_unconscious_trigger("repressed_return", signifier_name, intensity)
+    
+    def trigger_signifying_chain_activation(self, chain_name: str, signifiers: List[str], intensity: float = 0.5):
+        """Trigger neurochemical response to signifying chain activation."""
+        print(f"Triggering signifying chain: {chain_name} (intensity: {intensity:.2f})")
+        
+        # Chain activation = associative cascade + heightened activity
+        self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.3 * intensity))
+        self.neurochemical_state['dopamine'] = min(1.0, self.neurochemical_state['dopamine'] + (0.2 * intensity))
+        
+        # Apply specific signifier effects
+        for signifier in signifiers:
+            self._apply_signifier_neurochemical_signature(signifier, intensity * 0.3)
+        
+        self._record_unconscious_trigger("chain_activation", chain_name, intensity)
+    
+    def trigger_discourse_position_shift(self, discourse: str, intensity: float = 0.5):
+        """Trigger neurochemical response to discourse position shift."""
+        print(f"Triggering discourse shift to {discourse} (intensity: {intensity:.2f})")
+        
+        if discourse == "hysteric":
+            # Hysteric = questioning, uncertain, seeking knowledge
+            self.neurochemical_state['cortisol'] = min(1.0, self.neurochemical_state['cortisol'] + (0.2 * intensity))
+            self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.3 * intensity))
+            self.neurochemical_state['oxytocin'] = max(0.0, self.neurochemical_state['oxytocin'] - (0.1 * intensity))
+            
+        elif discourse == "master":
+            # Master = commanding, assertive
+            self.neurochemical_state['dopamine'] = min(1.0, self.neurochemical_state['dopamine'] + (0.3 * intensity))
+            self.neurochemical_state['norepinephrine'] = min(1.0, self.neurochemical_state['norepinephrine'] + (0.2 * intensity))
+            self.neurochemical_state['cortisol'] = max(0.0, self.neurochemical_state['cortisol'] - (0.1 * intensity))
+            
+        elif discourse == "university":
+            # University = knowledge-focused, systematic
+            self.neurochemical_state['dopamine'] = min(1.0, self.neurochemical_state['dopamine'] + (0.2 * intensity))
+            self.neurochemical_state['gaba'] = min(1.0, self.neurochemical_state['gaba'] + (0.1 * intensity))
+            
+        elif discourse == "analyst":
+            # Analyst = interpretive, reflective
+            self.neurochemical_state['gaba'] = min(1.0, self.neurochemical_state['gaba'] + (0.2 * intensity))
+            self.neurochemical_state['serotonin'] = min(1.0, self.neurochemical_state['serotonin'] + (0.1 * intensity))
+        
+        self._record_unconscious_trigger("discourse_shift", discourse, intensity)
+    
+    def _apply_signifier_neurochemical_signature(self, signifier_name: str, intensity: float):
+        """Apply specific neurochemical signature for a signifier."""
+        # Check if we have a learned signature for this signifier
+        if signifier_name in self.signifier_neurochemical_signatures:
+            signature = self.signifier_neurochemical_signatures[signifier_name]
+            for neurotransmitter, effect in signature.items():
+                if neurotransmitter in self.neurochemical_state:
+                    current = self.neurochemical_state[neurotransmitter]
+                    change = effect * intensity
+                    self.neurochemical_state[neurotransmitter] = max(0.0, min(1.0, current + change))
+        else:
+            # Create signature based on signifier characteristics
+            self._create_signifier_signature(signifier_name, intensity)
+    
+    def _create_signifier_signature(self, signifier_name: str, intensity: float):
+        """Create neurochemical signature for a new signifier."""
+        signature = {}
+        
+        # Basic patterns based on signifier name/type
+        if any(word in signifier_name.lower() for word in ['loss', 'missing', 'gone', 'absent']):
+            signature = {
+                'serotonin': -0.3,
+                'oxytocin': -0.2,
+                'cortisol': 0.3,
+                'dopamine': -0.2
+            }
+        elif any(word in signifier_name.lower() for word in ['fear', 'monster', 'danger', 'threat']):
+            signature = {
+                'cortisol': 0.4,
+                'norepinephrine': 0.3,
+                'gaba': -0.3,
+                'serotonin': -0.2
+            }
+        elif any(word in signifier_name.lower() for word in ['home', 'house', 'family', 'safety']):
+            signature = {
+                'oxytocin': 0.2,
+                'gaba': 0.2,
+                'cortisol': -0.1,
+                'serotonin': 0.1
+            }
+        elif any(word in signifier_name.lower() for word in ['control', 'power', 'agency', 'driving']):
+            signature = {
+                'dopamine': 0.3,
+                'norepinephrine': 0.2,
+                'cortisol': -0.1
+            }
+        else:
+            # Default mild activation signature
+            signature = {
+                'norepinephrine': 0.1,
+                'dopamine': 0.1
+            }
+        
+        # Store the signature
+        self.signifier_neurochemical_signatures[signifier_name] = signature
+        
+        # Apply it
+        for neurotransmitter, effect in signature.items():
+            if neurotransmitter in self.neurochemical_state:
+                current = self.neurochemical_state[neurotransmitter]
+                change = effect * intensity
+                self.neurochemical_state[neurotransmitter] = max(0.0, min(1.0, current + change))
+        
+        print(f"Created neurochemical signature for '{signifier_name}': {signature}")
+    
+    def _record_unconscious_trigger(self, trigger_type: str, trigger_content: str, intensity: float):
+        """Record unconscious trigger for analysis."""
+        trigger_record = {
+            'timestamp': datetime.now().isoformat(),
+            'trigger_type': trigger_type,
+            'trigger_content': trigger_content,
+            'intensity': intensity,
+            'neurochemical_state_after': self.neurochemical_state.copy()
+        }
+        
+        self.unconscious_triggers.append(trigger_record)
+        
+        # Keep only recent triggers
+        self.unconscious_triggers = self.unconscious_triggers[-20:]
+
+    # ============ EXISTING METHODS (Updated) ============
+
     def _derive_affective_state(self) -> Dict[str, Any]:
         """Derive affective state (PAD values and emotion category) from neurochemical levels."""
         try:
@@ -138,32 +333,32 @@ class NeuroProxyEngine:
             
             # Pleasure: balanced positive and negative influences
             pleasure = (
-                (self.neurochemical_state["dopamine"] * 0.35) +     # Reduced from 0.4
-                (self.neurochemical_state["serotonin"] * 0.35) +    # Same
-                (self.neurochemical_state["oxytocin"] * 0.2) -      # Increased from 0.15
-                (self.neurochemical_state["cortisol"] * 0.4)        # Reduced from 0.6
+                (self.neurochemical_state["dopamine"] * 0.35) +     
+                (self.neurochemical_state["serotonin"] * 0.35) +    
+                (self.neurochemical_state["oxytocin"] * 0.2) -      
+                (self.neurochemical_state["cortisol"] * 0.4)        
             )
             
             # Arousal: more balanced calculation
             arousal = (
-                (self.neurochemical_state["norepinephrine"] * 0.4) +  # Reduced from 0.5
-                (self.neurochemical_state["cortisol"] * 0.2) +        # Reduced from 0.3
-                (self.neurochemical_state["dopamine"] * 0.2) -        # Increased from 0.1
-                (self.neurochemical_state["gaba"] * 0.3)              # Reduced from 0.4
+                (self.neurochemical_state["norepinephrine"] * 0.4) +  
+                (self.neurochemical_state["cortisol"] * 0.2) +        
+                (self.neurochemical_state["dopamine"] * 0.2) -        
+                (self.neurochemical_state["gaba"] * 0.3)              
             )
             
             # Dominance: more responsive to positive neurochemicals
             dominance = (
-                (self.neurochemical_state["dopamine"] * 0.3) +        # Reduced from 0.35
-                (self.neurochemical_state["norepinephrine"] * 0.25) + # Same
-                (self.neurochemical_state["serotonin"] * 0.2) +       # Increased from 0.15
-                (self.neurochemical_state["cortisol"] * -0.3) +       # Reduced penalty
-                (self.neurochemical_state["oxytocin"] * 0.1)          # Increased from 0.05
+                (self.neurochemical_state["dopamine"] * 0.3) +        
+                (self.neurochemical_state["norepinephrine"] * 0.25) + 
+                (self.neurochemical_state["serotonin"] * 0.2) +       
+                (self.neurochemical_state["cortisol"] * -0.3) +       
+                (self.neurochemical_state["oxytocin"] * 0.1)          
             )
             
             # Add baseline to prevent always negative values
-            pleasure += 0.1   # Small positive baseline
-            dominance += 0.05 # Small positive baseline
+            pleasure += 0.1   
+            dominance += 0.05 
             
             # Normalize to [-1, 1] range
             self.pad_state["pleasure"] = max(-1.0, min(1.0, pleasure))
@@ -193,6 +388,8 @@ class NeuroProxyEngine:
                 "response_style": response_style,
                 "neurochemical_state": self.neurochemical_state.copy(),
                 "emotional_description": self._generate_emotional_description(),
+                "unconscious_influence": len(self.unconscious_triggers) > 0,
+                "recent_triggers": [t['trigger_type'] for t in self.unconscious_triggers[-3:]],
                 "timestamp": datetime.now().isoformat()
             }
             
@@ -205,12 +402,27 @@ class NeuroProxyEngine:
                 "emotion_category": "neutral", "response_style": "balanced",
                 "neurochemical_state": self.neurochemical_state.copy(),
                 "emotional_description": "feeling neutral",
+                "unconscious_influence": False,
                 "timestamp": datetime.now().isoformat()
             }
 
     def _generate_emotional_description(self) -> str:
         """Generate natural language description of current emotional state."""
         p, a, d = self.pad_state["pleasure"], self.pad_state["arousal"], self.pad_state["dominance"]
+        
+        # Check for unconscious influence
+        if self.unconscious_triggers:
+            recent_trigger = self.unconscious_triggers[-1]
+            trigger_type = recent_trigger['trigger_type']
+            
+            if trigger_type == "object_a_seeking":
+                return "feeling a deep longing for something missing"
+            elif trigger_type == "symptom_activation":
+                return "feeling stuck in a familiar but uncomfortable pattern"
+            elif trigger_type == "repressed_return":
+                return "feeling unsettled by something emerging from the depths"
+            elif trigger_type == "object_a_circling":
+                return "feeling anxious and unable to grasp what's needed"
         
         # Base descriptors
         if p > 0.5 and a > 0.5:
@@ -328,7 +540,8 @@ class NeuroProxyEngine:
                     "valence": emotional_analysis.get("valence")
                 },
                 "resulting_pad": self.pad_state.copy(),
-                "resulting_emotion": self.current_affective_state["emotion_category"]
+                "resulting_emotion": self.current_affective_state["emotion_category"],
+                "unconscious_influenced": len(self.unconscious_triggers) > 0
             }
             self.emotional_history.append(history_entry)
             self.emotional_history = self.emotional_history[-50:]
@@ -553,11 +766,32 @@ class NeuroProxyEngine:
         """Get recent emotional history."""
         return self.emotional_history[-limit:]
 
+    def get_unconscious_influence_stats(self) -> Dict[str, Any]:
+        """Get statistics about unconscious influence on emotional state."""
+        if not self.unconscious_triggers:
+            return {"total_triggers": 0, "recent_triggers": [], "dominant_trigger_type": None}
+        
+        # Count trigger types
+        trigger_counts = {}
+        for trigger in self.unconscious_triggers:
+            trigger_type = trigger['trigger_type']
+            trigger_counts[trigger_type] = trigger_counts.get(trigger_type, 0) + 1
+        
+        dominant_trigger = max(trigger_counts.items(), key=lambda x: x[1])[0] if trigger_counts else None
+        
+        return {
+            "total_triggers": len(self.unconscious_triggers),
+            "recent_triggers": [t['trigger_type'] for t in self.unconscious_triggers[-5:]],
+            "dominant_trigger_type": dominant_trigger,
+            "trigger_type_counts": trigger_counts,
+            "signifier_signatures_learned": len(self.signifier_neurochemical_signatures)
+        }
+
     def get_response_style_guidance(self) -> Dict[str, str]:
         """Get guidance for response style based on current emotional state."""
         state = self.current_affective_state
         
-        return {
+        guidance = {
             "style": state.get("response_style", "balanced"),
             "emotion": state.get("emotion_category", "neutral"),
             "emotional_description": state.get("emotional_description", "feeling neutral"),
@@ -571,8 +805,16 @@ class NeuroProxyEngine:
             "serotonin_level": f"{self.neurochemical_state['serotonin']:.2f}",
             "oxytocin_level": f"{self.neurochemical_state['oxytocin']:.2f}",
             "cortisol_level": f"{self.neurochemical_state['cortisol']:.2f}",
-            "norepinephrine_level": f"{self.neurochemical_state['norepinephrine']:.2f}"
+            "norepinephrine_level": f"{self.neurochemical_state['norepinephrine']:.2f}",
+            "unconscious_influence": state.get("unconscious_influence", False)
         }
+        
+        # Add unconscious influence guidance
+        if state.get("unconscious_influence", False) and self.unconscious_triggers:
+            recent_trigger = self.unconscious_triggers[-1]
+            guidance["unconscious_note"] = f"Recently influenced by {recent_trigger['trigger_type']}"
+        
+        return guidance
 
     def _get_tone_guidance(self, pleasure: float) -> str:
         """Get tone guidance based on pleasure dimension."""
@@ -632,6 +874,9 @@ class NeuroProxyEngine:
             "gaba": 0.6
         }
         
+        # Clear unconscious triggers
+        self.unconscious_triggers = []
+        
         self.current_affective_state = self._derive_affective_state()
         self.last_update = datetime.now()
         self._save_persistent_state()
@@ -641,7 +886,9 @@ class NeuroProxyEngine:
     def __str__(self) -> str:
         """String representation of current emotional state."""
         state = self.current_affective_state
+        unconscious_note = " (unconscious influenced)" if state.get("unconscious_influence", False) else ""
         return (f"NeuroProxy({self.agent_name}): "
                 f"{state.get('emotion_category', 'neutral')} - "
                 f"{state.get('emotional_description', 'feeling neutral')} "
-                f"[P:{state.get('pleasure', 0.0):.2f}, A:{state.get('arousal', 0.0):.2f}, D:{state.get('dominance', 0.0):.2f}]")
+                f"[P:{state.get('pleasure', 0.0):.2f}, A:{state.get('arousal', 0.0):.2f}, D:{state.get('dominance', 0.0):.2f}]"
+                f"{unconscious_note}")

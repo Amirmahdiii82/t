@@ -12,8 +12,7 @@ class AgentExtractor:
     """
     Extracts psychoanalytic AI agents from dream datasets.
     
-    Transforms raw dream narratives into structured conscious and unconscious
-    memory systems following Lacanian psychoanalytic principles.
+    Uses LLM for conscious processing and VLM for ALL unconscious processing.
     """
     
     def __init__(self):
@@ -25,12 +24,6 @@ class AgentExtractor:
     def extract_agent_from_dreams(self, dream_file_path):
         """
         Extract complete agent from dream dataset.
-        
-        Args:
-            dream_file_path: Path to JSON file containing dream data
-            
-        Returns:
-            Dictionary containing complete agent data
         """
         print(f"Starting agent extraction from: {dream_file_path}")
         
@@ -62,8 +55,10 @@ class AgentExtractor:
             "extraction_status": "in_progress"
         }
         
-        # Build conscious memory
-        print("Building conscious memory...")
+        extraction_errors = []
+        
+        # Step 1-5: Build conscious memory (using LLM)
+        print("Step 1-5: Building conscious memory...")
         try:
             conscious = self.conscious_builder.build_conscious_memory(dream_data, agent_name, agent_dir)
             agent["conscious"] = conscious
@@ -73,32 +68,79 @@ class AgentExtractor:
             print(f"❌ Error in conscious memory extraction: {e}")
             agent["conscious_extraction_status"] = "failed"
             agent["conscious_extraction_error"] = str(e)
+            extraction_errors.append(f"Conscious extraction: {e}")
         
-        # Build unconscious memory
-        print("Building unconscious memory...")
+        # Step 6: Build unconscious memory (using VLM)
+        print("Step 6: Building unconscious memory for", agent_name, "...")
         try:
+            print("Building Lacanian unconscious structure for", agent_name, "...")
+            print("Extracting unconscious signifiers through Lacanian analysis...")
+            
             unconscious = self.unconscious_builder.build_unconscious_memory(dream_data, agent_name, agent_dir)
             agent["unconscious"] = unconscious
             agent["unconscious_extraction_status"] = "completed"
             print("✅ Unconscious memory extraction completed")
+            
         except Exception as e:
             print(f"❌ Error in unconscious memory extraction: {e}")
             agent["unconscious_extraction_status"] = "failed"
             agent["unconscious_extraction_error"] = str(e)
+            extraction_errors.append(f"Unconscious extraction: {e}")
+            
+            # If unconscious extraction fails completely, we cannot proceed
+            # This is a critical failure that should be addressed
+            print("🚨 CRITICAL: Unconscious extraction failed - this needs to be fixed")
+            print("🔧 Check your GEMINI_API_KEY and VLM configuration")
+            
+            # Still save what we have but mark as incomplete
+            agent["extraction_status"] = "partial_failure"
+            agent["extraction_errors"] = extraction_errors
         
-        # Finalize agent data
-        agent["extraction_status"] = "completed"
+        # Step 7: Finalize agent data
+        print("Step 7: Finalizing agent data...")
+        if not extraction_errors:
+            agent["extraction_status"] = "completed"
+        elif agent.get("conscious_extraction_status") == "completed":
+            agent["extraction_status"] = "partial_success"
+        else:
+            agent["extraction_status"] = "failed"
+            
         agent["last_updated"] = get_timestamp()
+        agent["extraction_errors"] = extraction_errors
         
         # Save complete agent data
         agent_file_path = f"{agent_dir}/base_{agent_name}.json"
         save_json(agent, agent_file_path)
-        print(f"Agent data saved to {agent_file_path}")
+        print(f"✓ Agent data saved to {agent_file_path}")
         
         # Generate extraction summary
         self._generate_extraction_summary(agent, agent_dir)
         
-        print(f"Agent extraction completed for: {agent_name}")
+        print("--- EXTRACTION SUMMARY ---")
+        print(f"Agent: {agent_name}")
+        print(f"Date: {agent.get('last_updated', 'unknown')}")
+        print(f"Conscious Status: {agent.get('conscious_extraction_status', 'unknown')}")
+        print(f"Unconscious Status: {agent.get('unconscious_extraction_status', 'unknown')}")
+        print(f"Overall Status: {agent.get('extraction_status', 'unknown')}")
+        
+        if agent.get("conscious_extraction_status") == "completed":
+            conscious = agent.get("conscious", {})
+            memories_count = len(conscious.get("memories", []))
+            relationships_count = len(conscious.get("relationships", []))
+            print(f"Conscious Stats: {memories_count} memories, {relationships_count} relationships")
+        
+        if extraction_errors:
+            print("Errors encountered:")
+            for error in extraction_errors:
+                print(f"  - {error}")
+        
+        summary_path = f"{agent_dir}/extraction_summary.json"
+        print(f"Summary saved to: {summary_path}")
+        
+        print("=" * 60)
+        print(f"AGENT EXTRACTION COMPLETED FOR: {agent_name}")
+        print("=" * 60)
+        
         return agent
     
     def _determine_agent_name(self, dream_file_path, dream_data):
@@ -155,7 +197,8 @@ class AgentExtractor:
             "extraction_date": agent.get("last_updated", "Unknown"),
             "conscious_status": agent.get("conscious_extraction_status", "unknown"),
             "unconscious_status": agent.get("unconscious_extraction_status", "unknown"),
-            "overall_status": agent.get("extraction_status", "unknown")
+            "overall_status": agent.get("extraction_status", "unknown"),
+            "extraction_errors": agent.get("extraction_errors", [])
         }
         
         if "conscious" in agent:
@@ -177,19 +220,6 @@ class AgentExtractor:
         # Save summary
         summary_path = f"{agent_dir}/extraction_summary.json"
         save_json(summary, summary_path)
-        
-        print(f"Extraction Summary:")
-        print(f"  Agent: {summary['agent_name']}")
-        print(f"  Conscious Status: {summary['conscious_status']}")
-        print(f"  Unconscious Status: {summary['unconscious_status']}")
-        
-        if "conscious_stats" in summary:
-            stats = summary["conscious_stats"]
-            print(f"  Memories: {stats['memories_extracted']}, Relationships: {stats['relationships_extracted']}")
-        
-        if "unconscious_stats" in summary:
-            stats = summary["unconscious_stats"]
-            print(f"  Signifiers: {stats['signifiers_extracted']}, Chains: {stats['signifying_chains']}")
     
     def extract_agent_data(self, agent_name):
         """Extract agent by name (compatibility method)."""
@@ -203,4 +233,4 @@ class AgentExtractor:
             return self.extract_agent_from_dreams(dataset_path)
         except Exception as e:
             print(f"Error extracting agent {agent_name}: {e}")
-            return None
+            raise e  # Don't suppress errors

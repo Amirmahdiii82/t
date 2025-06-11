@@ -1,45 +1,65 @@
-Generate a psychoanalytically authentic dream for {{agent_name}} based on activated unconscious signifiers.
+Generate a psychoanalytically authentic dream for {{agent_name}} based on their unconscious structure.
 
-## Activated Signifiers from Recent Interactions
+## Activated Signifiers from Recent Activity
 {{#activated_signifiers}}
-- {{signifier}}: {{significance}}
-  Activation strength: {{activation_strength}}
-  {{#triggered_by}}Triggered by: {{triggered_by}}{{/triggered_by}}
+- {{name}}: {{signifier_data.significance}}
+  Activation: {{activation_strength}} ({{activation_source}})
+  {{#signifier_data.repressed}}**REPRESSED CONTENT**{{/signifier_data.repressed}}
 {{/activated_signifiers}}
 
-## Active Signifying Chains  
+## Active Signifying Chains
 {{#signifying_chains}}
-- {{name}}: {{#signifiers}}{{.}} → {{/signifiers}}
-  Activated nodes: {{#activated_nodes}}{{.}}, {{/activated_nodes}}
+- {{name}}: {{signifiers}} 
+  Active: {{active_signifiers}} (strength: {{activation_strength}})
+  Explanation: {{explanation}}
+  Fantasy relation: {{relation_to_fantasy}}
 {{/signifying_chains}}
 
-## Unconscious Context
-Object a: {{object_a.description}}
-Symptom: {{symptom.description}}
+## Emerging Repressed Content
+{{#emerging_repressed}}
+- {{signifier}}: {{significance}}
+  Emergence type: {{emergence_type}} (strength: {{emergence_strength}})
+{{/emerging_repressed}}
+
+## Object a Dynamics
+{{#object_a_dynamics}}
+Proximity level: {{proximity_level}}
+Manifestation type: {{manifestation_type}}
+Desire direction: {{desire_direction}}
+{{#void_representations}}
+- Void: {{.}}
+{{/void_representations}}
+{{/object_a_dynamics}}
+
+## Symptom Manifestations
+{{#symptom_manifestations}}
+- {{signifier}}: {{jouissance_pattern}}
+  Repetition: {{repetition_structure}}
+{{/symptom_manifestations}}
 
 ## Dream Generation Instructions
-Create a dream following psychoanalytic dream-work principles:
 
-1. **Condensation**: Multiple signifiers merge into single dream images
-2. **Displacement**: Emotional charge shifts from one element to another  
-3. **Symbolization**: Abstract thoughts become concrete visual images
-4. **Primary Process**: Dream logic overrides rational thought
+Create a dream that authentically represents the unconscious dynamics using these principles:
 
-The dream should manifest the activated signifiers through symbolic imagery while following dream-work mechanisms.
+1. **Signifying Chain Logic**: Let the activated chains determine the dream's associative flow
+2. **Return of Repressed**: Include repressed signifiers emerging in distorted forms
+3. **Object a Circulation**: Show how desire circles around the void without capturing it
+4. **Symptom Repetition**: Include repetitive patterns that provide painful enjoyment
+5. **Dream Condensation**: Multiple signifiers condense into single dream images
+6. **Dream Displacement**: Emotional charge shifts between elements
 
 Return ONLY valid JSON:
 {
-  "title": "Brief dream title reflecting primary signifier",
-  "narrative": "Complete dream narrative in first person, 2-3 paragraphs showing dream logic",
+  "title": "Dream title reflecting primary unconscious dynamics",
+  "narrative": "Complete first-person dream narrative showing unconscious structure at work",
   "scenes": [
     {
-      "setting": "Dream location/environment", 
-      "narrative": "What happens in this scene",
-      "symbols": ["key symbolic elements"],
-      "signifiers_expressed": ["which activated signifiers appear here"],
-      "visual_description": "Detailed surrealist description for image generation"
+      "setting": "Dream location",
+      "narrative": "What happens in this scene with dream logic",
+      "signifiers_expressed": ["which signifiers appear"],
+      "visual_description": "Surrealist description for image generation"
     }
   ],
-  "manifest_content": ["Surface elements visible in the dream"],
-  "latent_content": ["Hidden signifiers and unconscious meanings"]
+  "manifest_content": ["surface elements visible in dream"],
+  "latent_content": ["hidden unconscious meanings and repressed signifiers"]
 }

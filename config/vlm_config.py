@@ -4,7 +4,7 @@ class VLMConfig:
     def __init__(self):
         self.api_key = os.environ.get("GEMINI_API_KEY", "")
         self.model = "gemini-2.0-flash-exp-image-generation"
-        self.text_model = "gemini-2.0-flash"
+        self.text_model = "gemini-2.0-flash-exp-image-generation"  
         self.temperature = 1.0
         self.top_p = 0.95
         self.top_k = 40
