@@ -60,9 +60,41 @@ def list_available_agents():
     
     return agents
 
+def generate_visualizations(agent_name):
+    """Generate visualizations for an agent."""
+    print(f"\n📊 Generating visualizations for {agent_name}...")
+    
+    try:
+        from utils.agent_visualizer import create_agent_visualizations
+        success = create_agent_visualizations(agent_name)
+        
+        if success:
+            agent_plots_dir = f"base_agents/{agent_name}/plots"
+            print(f"\n🎉 Visualizations generated successfully!")
+            print(f"📁 Saved to: {agent_plots_dir}")
+            print("📈 Created files:")
+            print("   - emotional_journey.png: PAD emotional trajectory")
+            print("   - signifier_network.png: Unconscious signifier relationships")
+            
+            # Show file sizes for verification
+            if os.path.exists(f"{agent_plots_dir}/emotional_journey.png"):
+                size1 = os.path.getsize(f"{agent_plots_dir}/emotional_journey.png") / 1024
+                print(f"   - emotional_journey.png ({size1:.1f} KB)")
+            
+            if os.path.exists(f"{agent_plots_dir}/signifier_network.png"):
+                size2 = os.path.getsize(f"{agent_plots_dir}/signifier_network.png") / 1024
+                print(f"   - signifier_network.png ({size2:.1f} KB)")
+                
+        else:
+            print(f"\n⚠️ Some visualizations could not be generated for {agent_name}")
+            print("This may be due to insufficient data or missing files.")
+            
+    except Exception as e:
+        print(f"\n❌ Error generating visualizations: {e}")
+
 def interactive_mode(agent_name):
     """Run interactive session with agent (Phase 2)."""
-    print("=== DreamerAgent Interactive Mode ===")
+    print("=== PsyAgent Interactive Mode ===")
     
     available_agents = list_available_agents()
     if not available_agents:
@@ -96,7 +128,7 @@ def interactive_mode(agent_name):
         
         current_mode = "wake"
         print(f"\n💬 Chatting with {agent_name} (Mode: {current_mode})")
-        print("\nCommands: 'exit', 'sleep', 'wake', 'dream', 'stats', 'help'")
+        print("\nCommands: 'exit', 'sleep', 'wake', 'dream', 'stats', 'visualize', 'help'")
         
         while True:
             try:
@@ -116,6 +148,7 @@ def interactive_mode(agent_name):
                     print("  'wake' - Wake the agent")
                     print("  'dream' - Generate dream (sleep mode only)")
                     print("  'stats' - Show agent statistics")
+                    print("  'visualize' - Generate emotional and signifier visualizations")
                 
                 elif user_input.lower() == 'stats':
                     state = agent_brain.get_state()
@@ -123,8 +156,16 @@ def interactive_mode(agent_name):
                     print(f"\n📊 {agent_name} Statistics:")
                     print(f"   Mode: {current_mode}")
                     print(f"   Memories: {stats.get('conscious_memories', 0)}")
+                    print(f"   Psychological Memories: {stats.get('psychological_short_term', 0)}")
+                    print(f"   Conversation Exchanges: {stats.get('conversational_exchanges', 0)}")
                     print(f"   Interactions: {state.get('session_data', {}).get('interactions', 0)}")
                     print(f"   Dreams: {state.get('session_data', {}).get('dreams_generated', 0)}")
+                    if state.get('conversation_summary'):
+                        print(f"   Recent Topics: {state['conversation_summary']}")
+                
+                elif user_input.lower() == 'visualize':
+                    print(f"📊 Generating visualizations for {agent_name}...")
+                    generate_visualizations(agent_name)
                 
                 elif user_input.lower() == 'sleep':
                     if current_mode == "sleep":
@@ -198,8 +239,8 @@ def interactive_mode(agent_name):
         print(f"❌ Error initializing agent: {e}")
 
 def main():
-    """Main entry point for DreamerAgent system."""
-    print("🧠 DreamerAgent - Psychoanalytic AI System")
+    """Main entry point for PsyAgent system."""
+    print("🧠 PsyAgent - Psychoanalytic AI System")
     print("=" * 40)
     
     # Load environment variables
@@ -217,7 +258,7 @@ def main():
     setup_project_structure()
     
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="DreamerAgent - Psychoanalytic AI")
+    parser = argparse.ArgumentParser(description="PsyAgent - Psychoanalytic AI")
     parser.add_argument("--extract", metavar="DREAM_FILE", 
                        help="Extract agent from dream file (Phase 1)")
     parser.add_argument("--interactive", action="store_true", 
@@ -226,6 +267,8 @@ def main():
                        help="Specify agent for interactive mode")
     parser.add_argument("--list", action="store_true", 
                        help="List available agents")
+    parser.add_argument("--visualize", metavar="AGENT_NAME", 
+                       help="Generate visualizations for agent")
     
     args = parser.parse_args()
     
@@ -252,11 +295,22 @@ def main():
         print(f"\n🚀 Phase 2: Interactive Mode")
         interactive_mode(args.agent)
     
+    elif args.visualize:
+        print(f"\n📊 Visualization Generation")
+        available_agents = list_available_agents()
+        if args.visualize in available_agents:
+            generate_visualizations(args.visualize)
+        else:
+            print(f"❌ Agent '{args.visualize}' not found.")
+            if available_agents:
+                print(f"Available agents: {', '.join(available_agents)}")
+    
     else:
         print("\n📖 Usage Examples:")
         print("  python main.py --extract nancy.json")
         print("  python main.py --interactive --agent Nancy")
         print("  python main.py --extract nancy.json --interactive")
+        print("  python main.py --visualize Nancy")
         print("  python main.py --list")
         print("\n")
         parser.print_help()

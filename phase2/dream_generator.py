@@ -1,7 +1,8 @@
+import os
 import json
-import re, os
+import re
 from datetime import datetime
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from interfaces.llm_interface import LLMInterface
 from interfaces.vlm_interface import VLMInterface
 from utils.lacanian_graph import LacanianSignifierGraph
@@ -71,7 +72,7 @@ class DreamGenerator:
             Dictionary containing complete dream data
         """
         try:
-            # Get signifiers activated from recent memories
+            # FIXED: Get signifiers activated from BOTH memory types
             activated_signifiers = self._get_activated_signifiers_from_memories()
             
             if not activated_signifiers:
@@ -122,31 +123,40 @@ class DreamGenerator:
     
     def _get_activated_signifiers_from_memories(self) -> List[Dict[str, Any]]:
         """
-        Get signifiers activated from recent memory content with improved activation logic.
+        FIXED: Get signifiers activated from BOTH psychological and conversational memories.
         """
         activated = []
-        activation_map = {}  # Track activation sources
         
-        # Get recent interactions from short-term memory
-        recent_memories = self.memory_manager.get_short_term_memory(10)
+        # FIXED: Get both types of recent content
+        # 1. Psychological memories (persistent, emotional impact)
+        psychological_memories = self.memory_manager.get_short_term_memory(10)
         
-        if not recent_memories:
+        # 2. Conversational history (recent exchanges)
+        conversation_history = self.memory_manager.get_conversation_context(5)
+        
+        # Extract text from both sources
+        memory_texts = []
+        
+        # From psychological memories
+        for mem in psychological_memories:
+            memory_texts.append(mem.get("content", ""))
+        
+        # From conversation history  
+        for exchange in conversation_history:
+            memory_texts.append(exchange.get("user", ""))
+            memory_texts.append(exchange.get("agent", ""))
+        
+        # Combine all text
+        combined_text = " ".join(memory_texts).lower()
+        
+        print(f"🧠 Dream analysis: Found {len(memory_texts)} memory fragments")
+        print(f"📝 Combined text length: {len(combined_text)} characters")
+        
+        if not combined_text.strip():
+            print("⚠️ No memory content found for dream generation")
             return []
         
-        # Extract emotional themes from recent interactions
-        emotional_themes = self._extract_emotional_themes(recent_memories)
-        
-        # Build comprehensive text from memories
-        memory_segments = []
-        for mem in recent_memories:
-            content = mem.get("content", "")
-            context = mem.get("context", "")
-            
-            # Weight user inputs higher than agent responses
-            weight = 1.0 if context == "user_interaction" else 0.7
-            memory_segments.append((content, weight))
-        
-        # Check which signifiers are activated by weighted content
+        # Check which signifiers from unconscious memory are activated
         for signifier_obj in self.unconscious_memory.get("signifiers", []):
             if not isinstance(signifier_obj, dict):
                 continue
@@ -155,190 +165,74 @@ class DreamGenerator:
             if not signifier_name:
                 continue
             
-            activation_score = 0.0
-            activation_reasons = []
-            
-            # Check for direct activation in weighted content
-            for content, weight in memory_segments:
-                content_lower = content.lower()
-                
-                # Direct mention
-                if signifier_name.lower() in content_lower:
-                    activation_score += 1.0 * weight
-                    activation_reasons.append(f"direct mention (weight: {weight})")
-                
-                # Check associations
-                associations = signifier_obj.get("associations", [])
-                for assoc in associations:
-                    if isinstance(assoc, str) and assoc.lower() in content_lower:
-                        activation_score += 0.5 * weight
-                        activation_reasons.append(f"association '{assoc}' (weight: {weight * 0.5})")
-            
-            # Check emotional resonance
-            signifier_emotions = self._get_signifier_emotions(signifier_obj)
-            for theme in emotional_themes:
-                if theme in signifier_emotions:
-                    activation_score += 0.3
-                    activation_reasons.append(f"emotional resonance: {theme}")
-            
-            # Only activate if score is significant
-            if activation_score >= 0.5:
+            # Check for direct activation
+            if signifier_name.lower() in combined_text:
                 activated.append({
                     'signifier': signifier_name,
-                    'activation_type': 'memory_based',
-                    'activation_strength': min(1.0, activation_score),
-                    'activation_reasons': activation_reasons,
+                    'activation_type': 'direct_memory',
+                    'activation_strength': 1.0,
                     'significance': signifier_obj.get('significance', ''),
                     'associations': signifier_obj.get('associations', [])
                 })
-        
-        # Sort by activation strength
-        activated.sort(key=lambda x: x['activation_strength'], reverse=True)
-        
-        # Apply dream-work: condensation and displacement
-        activated = self._apply_dream_work_transformations(activated)
-        
-        return activated[:5]  # Limit to most relevant for focused dream
-    
-    def _extract_emotional_themes(self, memories: List[Dict]) -> List[str]:
-        """Extract dominant emotional themes from recent memories."""
-        themes = []
-        
-        for mem in memories:
-            emotional_state = mem.get('emotional_state', {})
-            emotion_category = emotional_state.get('emotion_category', '')
-            
-            if emotion_category and emotion_category != 'neutral':
-                themes.append(emotion_category)
-        
-        # Return unique themes
-        return list(set(themes))
-    
-    def _get_signifier_emotions(self, signifier: Dict) -> List[str]:
-        """Extract emotional associations from signifier."""
-        emotions = []
-        
-        # From significance
-        significance = signifier.get('significance', '').lower()
-        emotion_words = ['fear', 'love', 'anger', 'anxiety', 'joy', 'sadness', 'jealousy']
-        for word in emotion_words:
-            if word in significance:
-                emotions.append(word)
-        
-        # From associations
-        for assoc in signifier.get('associations', []):
-            if isinstance(assoc, str):
-                assoc_lower = assoc.lower()
-                for word in emotion_words:
-                    if word in assoc_lower:
-                        emotions.append(word)
-        
-        return emotions
-    
-    def _apply_dream_work_transformations(self, signifiers: List[Dict]) -> List[Dict]:
-        """Apply condensation and displacement to signifiers."""
-        if len(signifiers) < 2:
-            return signifiers
-        
-        # Condensation: merge related signifiers
-        condensed = []
-        processed = set()
-        
-        for i, sig1 in enumerate(signifiers):
-            if i in processed:
+                print(f"✅ Activated signifier: {signifier_name} (direct)")
                 continue
-                
-            # Look for signifiers to condense with
-            for j, sig2 in enumerate(signifiers[i+1:], i+1):
-                if j in processed:
-                    continue
-                    
-                # Check if they share associations or are in same chain
-                shared_assoc = set(sig1.get('associations', [])) & set(sig2.get('associations', []))
-                
-                if shared_assoc or self._are_in_same_chain(sig1['signifier'], sig2['signifier']):
-                    # Create condensed signifier
-                    condensed.append({
-                        'signifier': f"{sig1['signifier']}-{sig2['signifier']}",
-                        'activation_type': 'condensation',
-                        'activation_strength': (sig1['activation_strength'] + sig2['activation_strength']) / 2,
-                        'condensed_from': [sig1['signifier'], sig2['signifier']],
-                        'significance': f"Condensation of {sig1['signifier']} and {sig2['signifier']}",
-                        'associations': list(set(sig1.get('associations', []) + sig2.get('associations', [])))
+            
+            # Check for associative activation
+            associations = signifier_obj.get("associations", [])
+            for assoc in associations:
+                if isinstance(assoc, str) and assoc.lower() in combined_text:
+                    activated.append({
+                        'signifier': signifier_name,
+                        'activation_type': 'associative_memory',
+                        'activation_strength': 0.7,
+                        'triggered_by': assoc,
+                        'significance': signifier_obj.get('significance', ''),
+                        'associations': associations
                     })
-                    processed.add(i)
-                    processed.add(j)
+                    print(f"✅ Activated signifier: {signifier_name} (via {assoc})")
                     break
-            
-            if i not in processed:
-                condensed.append(sig1)
-                processed.add(i)
         
-        # Displacement: shift emotional charge
-        if len(condensed) > 1:
-            # Find signifier with highest emotional charge
-            max_charge_idx = 0
-            max_charge = condensed[0]['activation_strength']
-            
-            for i, sig in enumerate(condensed[1:], 1):
-                if sig['activation_strength'] > max_charge:
-                    max_charge = sig['activation_strength']
-                    max_charge_idx = i
-            
-            # Displace some charge to a random other signifier
-            if max_charge_idx != 0:
-                target_idx = (max_charge_idx + 1) % len(condensed)
+        # Apply resonance through signifier graph
+        if activated and len(activated) < 8:  # Only if we need more content
+            primary_signifier = activated[0]['signifier']
+            if primary_signifier in self.signifier_graph.graph:
+                resonance = self.signifier_graph.get_signifier_resonance(primary_signifier, depth=2)
                 
-                # Transfer some activation
-                transfer_amount = condensed[max_charge_idx]['activation_strength'] * 0.3
-                condensed[max_charge_idx]['activation_strength'] -= transfer_amount
-                condensed[target_idx]['activation_strength'] += transfer_amount
-                
-                # Note displacement
-                condensed[target_idx]['displacement_from'] = condensed[max_charge_idx]['signifier']
-                condensed[target_idx]['activation_type'] = 'displacement'
+                for resonated_sig, strength in resonance.items():
+                    if (resonated_sig != primary_signifier and 
+                        strength > 0.3 and 
+                        not any(s['signifier'] == resonated_sig for s in activated)):
+                        
+                        activated.append({
+                            'signifier': resonated_sig,
+                            'activation_type': 'resonance',
+                            'activation_strength': strength,
+                            'resonated_from': primary_signifier,
+                            'significance': f'Resonance from {primary_signifier}'
+                        })
+                        print(f"✅ Activated signifier: {resonated_sig} (resonance)")
         
-        return condensed
-    
-    def _are_in_same_chain(self, sig1: str, sig2: str) -> bool:
-        """Check if two signifiers are in the same signifying chain."""
-        for chain in self.unconscious_memory.get('signifying_chains', []):
-            if isinstance(chain, dict):
-                chain_signifiers = chain.get('signifiers', [])
-                if sig1 in chain_signifiers and sig2 in chain_signifiers:
-                    return True
-        return False
+        print(f"🌙 Total activated signifiers for dream: {len(activated)}")
+        return activated[:7]  # Limit for focused dream content
     
     def _get_active_signifying_chains(self, activated_signifiers: List[Dict]) -> List[Dict]:
         """Get signifying chains involving activated signifiers."""
         active_chains = []
-        activated_names = []
+        activated_names = [s['signifier'] for s in activated_signifiers]
         
-        # Extract base signifier names (handle condensed signifiers)
-        for sig in activated_signifiers:
-            sig_name = sig['signifier']
-            if '-' in sig_name and sig.get('activation_type') == 'condensation':
-                # Split condensed signifiers
-                activated_names.extend(sig.get('condensed_from', [sig_name]))
-            else:
-                activated_names.append(sig_name)
-        
-        for chain in self.unconscious_memory.get('signifying_chains', []):
+        for chain in self.unconscious_memory.get("signifying_chains", []):
             if not isinstance(chain, dict):
                 continue
                 
-            chain_signifiers = chain.get('signifiers', [])
+            chain_signifiers = chain.get("signifiers", [])
             
             # Check if any signifiers in this chain are activated
-            activated_in_chain = [s for s in chain_signifiers if s in activated_names]
-            
-            if activated_in_chain:
+            if any(sig in activated_names for sig in chain_signifiers):
                 active_chains.append({
-                    "name": chain.get('name', 'unnamed_chain'),
+                    "name": chain.get("name", "unnamed_chain"),
                     "signifiers": chain_signifiers,
-                    "explanation": chain.get('explanation', ''),
-                    "activated_nodes": activated_in_chain,
-                    "activation_ratio": len(activated_in_chain) / len(chain_signifiers)
+                    "explanation": chain.get("explanation", ""),
+                    "activated_nodes": [s for s in chain_signifiers if s in activated_names]
                 })
         
         return active_chains
@@ -348,332 +242,161 @@ class DreamGenerator:
         returns = []
         
         for sig_data in activated_signifiers:
-            signifier = sig_data['signifier'].split('-')[0]  # Handle condensed signifiers
-            
+            signifier = sig_data['signifier']
             if signifier in self.signifier_graph.graph:
                 node_data = self.signifier_graph.graph.nodes[signifier]
                 if node_data.get('repressed', False):
                     returns.append({
                         "signifier": signifier,
                         "significance": sig_data.get("significance", ""),
-                        "return_context": "Emerging through dream after activation",
-                        "activation_strength": sig_data.get('activation_strength', 0.5)
+                        "return_context": "Emerging through dream after daily activation"
                     })
         
         return returns
     
     def _generate_psychoanalytic_dream(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Generate dream using psychoanalytic framework with proper JSON parsing."""
+        """Generate dream using psychoanalytic framework."""
         try:
-            # Generate dream with LLM
+            # Use LLM to generate dream with psychoanalytic structure
             result = self.llm.generate("phase2", "generate_dream", context)
-            
             if result:
-                # Clean up the response - remove markdown blocks and parse JSON
-                cleaned_result = self._clean_json_response(result)
-                
                 try:
-                    dream_data = json.loads(cleaned_result)
-                    
-                    # Ensure all required fields
-                    if self._validate_dream_structure(dream_data):
-                        return dream_data
-                    else:
-                        # Fix structure if needed
-                        return self._fix_dream_structure(dream_data)
-                        
-                except json.JSONDecodeError as e:
-                    print(f"JSON decode error: {e}")
-                    # Try to extract narrative at least
-                    return self._extract_narrative_fallback(result)
-            
-            # Fallback to generating from signifiers
-            return self._generate_signifier_based_dream(context)
-            
-        except Exception as e:
-            print(f"Error in dream generation: {e}")
+                    return json.loads(result)
+                except json.JSONDecodeError:
+                    return self._structure_dream_narrative(result, context)
+            else:
+                return self._generate_signifier_based_dream(context)
+        except Exception:
             return self._generate_signifier_based_dream(context)
     
-    def _clean_json_response(self, response: str) -> str:
-        """Clean LLM response to extract valid JSON."""
-        # Remove markdown code blocks
-        cleaned = re.sub(r'```json\s*', '', response)
-        cleaned = re.sub(r'```\s*', '', cleaned)
+    def _structure_dream_narrative(self, narrative: str, context: Dict) -> Dict[str, Any]:
+        """Structure narrative text into dream format."""
+        scenes = []
+        paragraphs = narrative.split('\n\n')
         
-        # Find the first { or [ and last } or ]
-        start_idx = cleaned.find('{')
-        if start_idx == -1:
-            start_idx = cleaned.find('[')
-        
-        if start_idx == -1:
-            return response
-        
-        # Find matching closing bracket
-        stack = []
-        end_idx = -1
-        
-        for i in range(start_idx, len(cleaned)):
-            if cleaned[i] in '{[':
-                stack.append(cleaned[i])
-            elif cleaned[i] in '}]':
-                if stack:
-                    stack.pop()
-                    if not stack:
-                        end_idx = i
-                        break
-        
-        if end_idx != -1:
-            return cleaned[start_idx:end_idx + 1]
-        
-        return cleaned[start_idx:]
-    
-    def _validate_dream_structure(self, dream_data: Dict) -> bool:
-        """Validate that dream data has required structure."""
-        required_fields = ['title', 'narrative', 'scenes', 'manifest_content', 'latent_content']
-        
-        for field in required_fields:
-            if field not in dream_data:
-                return False
-        
-        # Check scenes structure
-        if not isinstance(dream_data['scenes'], list) or len(dream_data['scenes']) == 0:
-            return False
-        
-        for scene in dream_data['scenes']:
-            if not isinstance(scene, dict):
-                return False
-            if 'narrative' not in scene or 'setting' not in scene:
-                return False
-        
-        return True
-    
-    def _fix_dream_structure(self, dream_data: Dict) -> Dict:
-        """Fix incomplete dream structure."""
-        # Ensure all required fields
-        fixed = {
-            'title': dream_data.get('title', 'Untitled Dream'),
-            'narrative': dream_data.get('narrative', ''),
-            'scenes': dream_data.get('scenes', []),
-            'manifest_content': dream_data.get('manifest_content', []),
-            'latent_content': dream_data.get('latent_content', [])
-        }
-        
-        # Fix scenes if needed
-        if not fixed['scenes'] and fixed['narrative']:
-            # Create a single scene from narrative
-            fixed['scenes'] = [{
-                'setting': 'Dream space',
-                'narrative': fixed['narrative'],
-                'symbols': [],
-                'signifiers_expressed': [],
-                'visual_description': 'Surrealist dreamscape'
-            }]
-        
-        # Fix manifest/latent content if empty
-        if not fixed['manifest_content']:
-            fixed['manifest_content'] = ['dream imagery', 'unconscious symbols']
-        
-        if not fixed['latent_content']:
-            fixed['latent_content'] = ['hidden desires', 'repressed thoughts']
-        
-        return fixed
-    
-    def _extract_narrative_fallback(self, response: str) -> Dict[str, Any]:
-        """Extract narrative from response when JSON parsing fails."""
-        # Look for narrative markers
-        narrative = ""
-        
-        if "narrative" in response:
-            narrative_match = re.search(r'"narrative"\s*:\s*"([^"]+)"', response)
-            if narrative_match:
-                narrative = narrative_match.group(1)
-        
-        if not narrative:
-            # Take first substantial text block
-            sentences = re.split(r'[.!?]+', response)
-            narrative = '. '.join(sentences[:3]) + '.'
+        for i, para in enumerate(paragraphs[:3]):
+            if para.strip():
+                # Extract signifiers mentioned in this scene
+                scene_signifiers = []
+                para_lower = para.lower()
+                for sig_data in context['activated_signifiers']:
+                    if sig_data['signifier'].lower() in para_lower:
+                        scene_signifiers.append(sig_data['signifier'])
+                
+                scenes.append({
+                    "setting": f"Dream scene {i+1}",
+                    "narrative": para.strip(),
+                    "symbols": scene_signifiers[:3],
+                    "signifiers_expressed": scene_signifiers,
+                    "visual_description": self._create_visual_description(para, scene_signifiers)
+                })
         
         return {
-            'title': 'Dream Fragment',
-            'narrative': narrative,
-            'scenes': [{
-                'setting': 'Unconscious landscape',
-                'narrative': narrative,
-                'symbols': [],
-                'signifiers_expressed': [],
-                'visual_description': 'Abstract dream imagery'
-            }],
-            'manifest_content': ['fragmented images'],
-            'latent_content': ['unconscious material']
+            "title": "Dream of Signifying Chains",
+            "narrative": narrative,
+            "scenes": scenes,
+            "manifest_content": [scene['narrative'][:100] + "..." for scene in scenes],
+            "latent_content": [sig['signifier'] for sig in context['activated_signifiers'][:5]]
         }
     
     def _generate_signifier_based_dream(self, context: Dict) -> Dict[str, Any]:
-        """Generate dream directly from signifier content."""
+        """Generate dream directly from signifier content when LLM fails."""
         signifiers = context['activated_signifiers']
         
         if not signifiers:
             return self._generate_minimal_dream()
         
-        # Build narrative using dream-work principles
+        # Create narrative from signifier associations
         primary_sig = signifiers[0]
-        narrative_parts = []
+        narrative = f"In the dream, {primary_sig['signifier']} appeared transformed. "
         
-        # Opening with primary signifier transformed
-        narrative_parts.append(
-            f"I found myself in a strange place where {primary_sig['signifier']} "
-            f"appeared, but it wasn't quite right - it was somehow different, transformed."
-        )
-        
-        # Add condensation if multiple signifiers
+        # Add condensation from multiple signifiers
         if len(signifiers) > 1:
             secondary_sig = signifiers[1]
-            narrative_parts.append(
-                f"Then {primary_sig['signifier']} began to merge with {secondary_sig['signifier']}, "
-                f"creating something that was both and neither at the same time."
-            )
+            narrative += f"It merged with {secondary_sig['signifier']}, creating something both familiar and strange. "
         
-        # Add displacement
-        if primary_sig.get('associations'):
-            assoc = primary_sig['associations'][0]
-            narrative_parts.append(
-                f"The feeling I expected wasn't there - instead, {assoc} "
-                f"carried all the emotional weight, leaving me confused."
-            )
+        # Add associations
+        associations = primary_sig.get('associations', [])
+        if associations:
+            narrative += f"Images of {', '.join(associations[:2])} flowed through the scene. "
         
         # Add return of repressed if present
         repressed_returns = context.get('return_of_repressed', [])
         if repressed_returns:
-            narrative_parts.append(
-                f"Something long forgotten pushed through: {repressed_returns[0]['signifier']}. "
-                f"I knew I had been avoiding this, but here it was, undeniable."
-            )
+            narrative += f"Something long forgotten emerged: {repressed_returns[0]['signifier']}. "
         
-        # Closing with typical dream dissolution
-        narrative_parts.append(
-            "The dream began to fragment, pieces sliding away from each other "
-            "until I couldn't hold onto the meaning anymore."
-        )
-        
-        narrative = " ".join(narrative_parts)
-        
-        # Create scenes from narrative segments
-        scenes = []
-        for i, part in enumerate(narrative_parts[:3]):
-            scenes.append({
-                'setting': f'Dream sequence {i+1}',
-                'narrative': part,
-                'symbols': [s['signifier'] for s in signifiers[:2]],
-                'signifiers_expressed': [s['signifier'] for s in signifiers],
-                'visual_description': self._create_visual_description(part, signifiers)
-            })
+        narrative += "The dream logic held everything together until awakening dissolved the connections."
         
         return {
-            'title': f"Dream of {primary_sig['signifier']}",
-            'narrative': narrative,
-            'scenes': scenes,
-            'manifest_content': [s['signifier'] for s in signifiers] + ['transformation', 'merging'],
-            'latent_content': [s.get('significance', 'unconscious desire') for s in signifiers]
+            "title": f"Dream of {primary_sig['signifier']}",
+            "narrative": narrative,
+            "scenes": [{
+                "setting": "Unconscious dream space",
+                "narrative": narrative,
+                "symbols": [s['signifier'] for s in signifiers[:3]],
+                "signifiers_expressed": [s['signifier'] for s in signifiers],
+                "visual_description": f"Surrealist landscape featuring {primary_sig['signifier']} in transformation"
+            }],
+            "manifest_content": [narrative],
+            "latent_content": [s['signifier'] for s in signifiers]
         }
     
     def _generate_minimal_dream(self) -> Dict[str, Any]:
         """Generate minimal dream when no signifiers are activated."""
         return {
             "title": "Empty Dream Space",
-            "narrative": "I found myself in a vast, empty space. Nothing seemed to happen, yet there was a sense of waiting, of something just beyond reach. The emptiness itself seemed significant, as if it were holding space for something that couldn't yet appear.",
+            "narrative": "I found myself in a vast, empty space. Nothing seemed to happen, yet there was a sense of waiting, of something just beyond reach.",
             "scenes": [{
                 "setting": "Void",
-                "narrative": "An endless expanse of possibility, neither dark nor light",
-                "symbols": ["emptiness", "potential"],
+                "narrative": "An endless expanse of possibility",
+                "symbols": [],
                 "signifiers_expressed": [],
-                "visual_description": "Minimalist void with subtle gradients suggesting hidden depth"
+                "visual_description": "Minimalist void with subtle gradients"
             }],
-            "manifest_content": ["empty space", "waiting", "vastness"],
-            "latent_content": ["unfulfilled desire", "potential", "the void of object a"]
+            "manifest_content": ["Empty space", "Waiting"],
+            "latent_content": ["void", "potential"]
         }
     
-    def _create_visual_description(self, scene_text: str, signifiers: List[Dict]) -> str:
+    def _create_visual_description(self, scene_text: str, signifiers: List[str]) -> str:
         """Create visual description for image generation."""
-        base = "A surrealist dream scene in the style of Salvador Dalí and René Magritte, featuring "
-        
+        base = "A surrealist dream scene with "
         if signifiers:
-            # Use primary signifiers for visual focus
-            primary_elements = [s['signifier'] for s in signifiers[:2]]
-            base += f"symbolic representations of {' and '.join(primary_elements)}, "
-        
-        # Add dream-work elements
-        if 'merge' in scene_text.lower() or 'transform' in scene_text.lower():
-            base += "with elements morphing and merging impossibly, "
-        
-        if 'feeling' in scene_text.lower() or 'emotional' in scene_text.lower():
-            base += "where emotional charge shifts between objects unexpectedly, "
-        
-        base += "rendered with dreamlike distortions, impossible perspectives, and symbolic condensation"
-        
+            base += f"symbolic representations of {', '.join(signifiers[:2])}, "
+        base += "rendered in the style of Salvador Dalí and René Magritte, with dreamlike distortions and symbolic condensation"
         return base
     
     def _generate_dream_images(self, dream_data: Dict) -> List[Dict[str, Any]]:
         """Generate images for key dream scenes."""
         images = []
         
-        # Limit to 2 most significant scenes
-        scenes_to_render = dream_data.get('scenes', [])[:2]
-        
-        for i, scene in enumerate(scenes_to_render):
+        for i, scene in enumerate(dream_data.get('scenes', [])[:2]):  # Limit to 2 images
             visual_desc = scene.get('visual_description', '')
             signifiers = scene.get('signifiers_expressed', [])
             
             if visual_desc:
-                # Create comprehensive prompt
-                prompt = self._create_image_prompt(visual_desc, signifiers, scene)
+                prompt = f"{visual_desc}. "
+                if signifiers:
+                    prompt += f"Emphasizing symbolic elements: {', '.join(signifiers[:2])}. "
+                prompt += "Surrealist psychoanalytic art showing unconscious symbolism."
                 
                 # Generate image
-                timestamp = int(datetime.now().timestamp())
-                image_filename = f"dream_{timestamp}_scene_{i+1}"
+                image_filename = f"dream_{int(datetime.now().timestamp())}_scene_{i+1}"
                 image_output_path = os.path.join(self.agent_path, "dreams", "images", image_filename)
                 os.makedirs(os.path.dirname(image_output_path), exist_ok=True)
                 
-                try:
-                    result = self.vlm.direct_image_generation(prompt, image_output_path)
-                    if result and result.get("success"):
-                        images.append({
-                            "scene_number": i + 1,
-                            "image_path": result.get("image_path"),
-                            "signifiers_depicted": signifiers,
-                            "description": visual_desc
-                        })
-                except Exception as e:
-                    print(f"Error generating image for scene {i+1}: {e}")
+                result = self.vlm.direct_image_generation(prompt, image_output_path)
+                if result and result.get("success"):
+                    images.append({
+                        "scene_number": i + 1,
+                        "image_path": result.get("image_path"),
+                        "signifiers_depicted": signifiers,
+                        "description": visual_desc
+                    })
         
         return images
     
-    def _create_image_prompt(self, visual_desc: str, signifiers: List[str], scene: Dict) -> str:
-        """Create detailed prompt for dream image generation."""
-        prompt_parts = [visual_desc]
-        
-        # Add specific surrealist techniques
-        techniques = [
-            "Use perspective distortion and impossible geometry",
-            "Include metamorphosis of forms",
-            "Employ symbolic juxtaposition",
-            "Create uncanny atmosphere with familiar yet strange elements"
-        ]
-        
-        prompt_parts.append(techniques[hash(str(signifiers)) % len(techniques)])
-        
-        # Add emotional atmosphere based on scene
-        if 'merge' in scene.get('narrative', '').lower():
-            prompt_parts.append("Show elements blending and merging in impossible ways")
-        
-        if 'forgotten' in scene.get('narrative', '').lower():
-            prompt_parts.append("Include faded or ghostly elements suggesting repressed memories")
-        
-        # Final touches
-        prompt_parts.append("High detail, oil painting texture, dramatic lighting, surrealist masterpiece")
-        
-        return ". ".join(prompt_parts)
-    
     def _save_dream(self, dream: Dict[str, Any]) -> None:
-        """Save dream to JSON file."""
+        """Save dream to JSON file with readable format."""
         try:
             dreams_dir = os.path.join(self.agent_path, "dreams")
             os.makedirs(dreams_dir, exist_ok=True)
@@ -687,8 +410,8 @@ class DreamGenerator:
             # Save readable version
             self._save_readable_dream(dream, dreams_dir)
             
-        except Exception as e:
-            print(f"Error saving dream: {e}")
+        except Exception:
+            pass  # Fail silently for publication version
     
     def _save_readable_dream(self, dream: Dict[str, Any], dreams_dir: str) -> None:
         """Save human-readable dream format."""
@@ -717,12 +440,8 @@ class DreamGenerator:
                     for i, scene in enumerate(dream['scenes']):
                         f.write(f"\nScene {i+1}: {scene.get('setting', 'Unknown')}\n")
                         f.write(scene.get('narrative', ''))
-                        f.write("\n")
                 
-                f.write(f"\n\nMANIFEST CONTENT: {', '.join(dream.get('manifest_content', []))}\n")
-                f.write(f"LATENT CONTENT: {', '.join(dream.get('latent_content', []))}\n")
+                f.write(f"\n\n" + "=" * 50 + "\n")
                 
-                f.write(f"\n" + "=" * 50 + "\n")
-                
-        except Exception as e:
-            print(f"Error saving readable dream: {e}")
+        except Exception:
+            pass  # Fail silently

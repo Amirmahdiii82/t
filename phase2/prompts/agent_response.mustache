@@ -45,6 +45,18 @@ Your neurochemical state influences your responses:
 - Low cortisol: You feel relaxed and calm
 {{/neurochemical_cortisol_high}}
 
+## Recent Conversation Context
+{{#has_conversation_history}}
+Recent exchanges in our conversation:
+{{#conversation_history}}
+- You: {{user}}
+- {{agent_name}}: {{agent}}
+{{/conversation_history}}
+{{/has_conversation_history}}
+{{^has_conversation_history}}
+This is the beginning of our conversation.
+{{/has_conversation_history}}
+
 ## Relevant Memories
 {{#has_memories}}
 This conversation brings to mind:
@@ -60,8 +72,8 @@ This conversation brings to mind:
 {{/relevant_relationships}}
 {{/has_relationships}}
 
-## The Message
-They said: "{{user_message}}"
+## The Current Message
+They just said: "{{user_message}}"
 
 ## Your Response
-Respond naturally as {{agent_name}}. Let your emotional state, memories, and personality shape how you speak. Don't explain your psychology - simply embody it in your response.
+Respond naturally as {{agent_name}}. Let your emotional state, memories, personality, and the conversation context shape how you speak. Don't explain your psychology - simply embody it in your response. Build naturally on the conversation flow.

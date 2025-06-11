@@ -59,7 +59,9 @@ class ConsciousProcessor:
             'relationships': self.memory_manager.retrieve_relationships(user_input, 3),
             'persona': self.memory_manager.get_persona(),
             'emotional_state': self.memory_manager.get_emotional_state(),
-            'recent_interactions': self.memory_manager.get_short_term_memory(5)
+            'psychological_memory': self.memory_manager.get_short_term_memory(5),
+            'conversation_context': self.memory_manager.get_conversation_context(3),  # NEW
+            'conversation_summary': self.memory_manager.get_conversation_summary()    # NEW
         }
     
     def _generate_conscious_response(self, user_input: str, context: Dict) -> str:
@@ -186,6 +188,15 @@ class ConsciousProcessor:
         emotional_state = context.get('emotional_state', {})
         neurochemical = emotional_state.get('neurochemical_state', {})
         
+        # NEW: Format conversation context
+        conversation_history = []
+        for exchange in context.get('conversation_context', []):
+            conversation_history.append({
+                "user": exchange.get('user', ''),
+                "agent": exchange.get('agent', ''),
+                "timestamp": exchange.get('timestamp', '')
+            })
+        
         return {
             'agent_name': self.agent_name,
             'user_message': user_input,
@@ -221,34 +232,25 @@ class ConsciousProcessor:
             'has_relationships': len(context.get('relationships', [])) > 0,
             'relevant_relationships': [self._format_relationship(r) for r in context.get('relationships', [])[:3]],
             
-            # Conversation history
-            'conversation_history': self._format_conversation_history(context.get('recent_interactions', []))
+            # NEW: Conversation context
+            'conversation_history': conversation_history,
+            'conversation_summary': context.get('conversation_summary', ''),
+            'has_conversation_history': len(conversation_history) > 0
         }
     
     def _create_direct_prompt(self, template_data: Dict) -> str:
         """Create direct prompt when template unavailable."""
-        return f"""You are {template_data['agent_name']} responding to: "{template_data['user_message']}"
+        prompt = f"""You are {template_data['agent_name']} responding to: "{template_data['user_message']}"
 
-Your current emotional state: {template_data['emotional_description']}
-
-Respond authentically as {template_data['agent_name']} based on your personality and current emotional state."""
-    
-    def _format_conversation_history(self, recent_interactions: List[Dict]) -> List[Dict]:
-        """Format conversation history for template."""
-        formatted = []
-        user_msg = None
+Your current emotional state: {template_data['emotional_description']}"""
         
-        for entry in recent_interactions[-6:]:
-            content = entry.get('content', '')
-            context = entry.get('context', '')
-            
-            if context == 'user_interaction':
-                user_msg = content
-            elif context == 'agent_response' and user_msg:
-                formatted.append({"user": user_msg, "agent": content})
-                user_msg = None
+        # Add conversation context if available
+        if template_data.get('has_conversation_history'):
+            prompt += f"\n\nRecent conversation context: {template_data['conversation_summary']}"
         
-        return formatted[-2:] if formatted else []
+        prompt += f"\n\nRespond authentically as {template_data['agent_name']} based on your personality and current emotional state."
+        
+        return prompt
     
     def _format_memory(self, memory: Dict) -> str:
         """Format memory for display."""

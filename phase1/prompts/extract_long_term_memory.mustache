@@ -1,4 +1,10 @@
-You are an expert psychologist analyzing dream data to extract long-term memories. Based on the dream content provided, identify all significant memories, experiences, or knowledge that would form part of the dreamer's long-term memory.
+You are an expert psychologist analyzing dream data to extract long-term memories. Based on the dream content provided, identify ALL significant memories, experiences, or knowledge that would form part of the dreamer's long-term memory.
+
+IMPORTANT: Extract AT LEAST 3-5 different memories from the dream content. Look for:
+- Different life periods (childhood, recent events, etc.)
+- Various emotional experiences 
+- Different types of memories (family, friends, achievements, fears, etc.)
+- Multiple significant relationships or experiences mentioned
 
 For each memory, provide:
 1. A brief title for the memory
@@ -7,12 +13,12 @@ For each memory, provide:
 4. Associated people or relationships
 5. Significance to the dreamer's life or identity
 
-IMPORTANT: You must respond with ONLY a valid JSON array. No explanations, no additional text.
+IMPORTANT: You must respond with ONLY a valid JSON array containing MULTIPLE memory objects. No explanations, no additional text.
 
 Dream data:
 {{dreams}}
 
-Respond with a JSON array of memory objects. Use the following format:
+Extract MULTIPLE memories (minimum 3-5) and respond with a JSON array of memory objects. Use the following format:
 [
   {
     "title": "string",
@@ -22,13 +28,29 @@ Respond with a JSON array of memory objects. Use the following format:
     "significance": "string",
     "memory_type": "string" (e.g., "childhood", "recent", "recurring", "traumatic")
   },
-  ...
+  {
+    "title": "string",
+    "description": "string", 
+    "emotions": ["string", "string", ...],
+    "associated_people": ["string", "string", ...],
+    "significance": "string",
+    "memory_type": "string"
+  },
+  {
+    "title": "string",
+    "description": "string",
+    "emotions": ["string", "string", ...], 
+    "associated_people": ["string", "string", ...],
+    "significance": "string",
+    "memory_type": "string"
+  }
 ]
 
 Rules:
 - Output ONLY the JSON array
+- Include AT LEAST 3 memory objects in the array
 - Each object must have exactly these six fields
 - No trailing commas
 - Use double quotes only
 - No comments or explanations
-- If no memories found, return: []
+- If insufficient content for 3+ memories, create plausible related memories based on dream themes

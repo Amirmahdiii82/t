@@ -48,17 +48,14 @@ class AgentBrain:
             }
         
         try:
-            # Add input to memory and update emotional state
-            self.memory_manager.add_to_short_term_memory(user_input, context=context)
-            
             # Process through unconscious first (signifier activation)
             unconscious_influence = self.unconscious_processor.process_input(user_input, context)
             
             # Process through conscious with unconscious influence
             response = self.conscious_processor.process_input(user_input, unconscious_influence)
             
-            # Add response to memory
-            self.memory_manager.add_to_short_term_memory(response, context="agent_response")
+            # FIXED: Add complete conversation exchange to memory
+            self.memory_manager.add_conversation_exchange(user_input, response)
             
             self.state["session_data"]["interactions"] += 1
             
@@ -72,7 +69,8 @@ class AgentBrain:
                     "emotional_state": self.memory_manager.get_emotional_state().get('emotion_category', 'neutral')
                 },
                 "session_stats": {
-                    "interactions": self.state["session_data"]["interactions"]
+                    "interactions": self.state["session_data"]["interactions"],
+                    "conversation_exchanges": len(self.memory_manager.conversational_history)
                 }
             }
             
@@ -139,7 +137,8 @@ class AgentBrain:
             "mode": self.state["mode"],
             "is_active": self.state["is_active"],
             "memory_statistics": memory_stats,
-            "session_data": self.state["session_data"]
+            "session_data": self.state["session_data"],
+            "conversation_summary": self.memory_manager.get_conversation_summary()
         }
     
     def save_state(self) -> None:

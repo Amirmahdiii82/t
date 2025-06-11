@@ -23,18 +23,19 @@ class MemoryManager:
         self.conscious_memory = self._load_conscious_memory()
         self.unconscious_memory = self._load_unconscious_memory()
         
-        # --- FIX: Load short-term memory from the file where it was saved ---
-        # Instead of self.short_term_memory = [], we now load the data that 
-        # the save_state() function stored in conscious_memory.json.
-        self.short_term_memory = self.conscious_memory.get("short_term_memory", [])
-        # --- END FIX ---
-
+        # FIXED: Two separate short-term memory systems
+        # 1. Psychological short-term memory (persistent, affects emotional state)
+        self.psychological_short_term = self.conscious_memory.get("short_term_memory", [])
+        
+        # 2. Conversational short-term memory (session-only, for context)
+        self.conversational_history = []
+        
         self.max_short_term_size = 10
+        self.max_conversation_history = 8  # Recent exchanges only
         
         print(f"Memory Manager initialized for {agent_name}")
-        # Add a more informative startup message
-        if self.short_term_memory:
-            print(f"✅ Loaded {len(self.short_term_memory)} entries from persistent short-term memory.")
+        if self.psychological_short_term:
+            print(f"✅ Loaded {len(self.psychological_short_term)} psychological memories.")
         print(f"Loaded conscious memory: {len(self.conscious_memory.get('memories', []))} memories, {len(self.conscious_memory.get('relationships', []))} relationships")
         print(f"Loaded unconscious memory: {len(self.unconscious_memory.get('signifiers', []))} signifiers")
     
@@ -78,8 +79,8 @@ class MemoryManager:
                 "structural_positions": [], "fantasy_formula": "", "jouissance_economy": {}, "dream_work_patterns": {}
             }
     
-    def add_to_short_term_memory(self, content: str, context: str = "interaction") -> None:
-        """Add content to short-term memory."""
+    def add_to_psychological_memory(self, content: str, context: str = "interaction") -> None:
+        """Add content to psychological short-term memory (affects emotional state)."""
         memory_entry = {
             "content": content,
             "context": context,
@@ -87,12 +88,50 @@ class MemoryManager:
             "emotional_state": self.neuroproxy_engine.get_current_state()
         }
         
-        self.short_term_memory.append(memory_entry)
+        self.psychological_short_term.append(memory_entry)
         
-        if len(self.short_term_memory) > self.max_short_term_size:
-            self.short_term_memory = self.short_term_memory[-self.max_short_term_size:]
+        if len(self.psychological_short_term) > self.max_short_term_size:
+            self.psychological_short_term = self.psychological_short_term[-self.max_short_term_size:]
         
+        # Update emotional state based on psychological memory
         self.neuroproxy_engine.update_emotional_state(content, context)
+    
+    def add_conversation_exchange(self, user_message: str, agent_response: str) -> None:
+        """Add a conversation exchange to conversational history."""
+        exchange = {
+            "user": user_message,
+            "agent": agent_response,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        self.conversational_history.append(exchange)
+        
+        # Keep only recent exchanges for context
+        if len(self.conversational_history) > self.max_conversation_history:
+            self.conversational_history = self.conversational_history[-self.max_conversation_history:]
+        
+        # Also add to psychological memory for emotional impact
+        self.add_to_psychological_memory(user_message, context="user_interaction")
+        self.add_to_psychological_memory(agent_response, context="agent_response")
+    
+    def get_conversation_context(self, limit: int = 4) -> List[Dict[str, Any]]:
+        """Get recent conversation history for context."""
+        return self.conversational_history[-limit:] if self.conversational_history else []
+    
+    def get_conversation_summary(self) -> str:
+        """Generate a summary of the conversation so far."""
+        if not self.conversational_history:
+            return "No conversation history yet."
+        
+        # Create a simple summary of recent topics
+        recent_exchanges = self.conversational_history[-3:]
+        topics = []
+        
+        for exchange in recent_exchanges:
+            user_msg = exchange["user"][:50] + "..." if len(exchange["user"]) > 50 else exchange["user"]
+            topics.append(f"User asked about: {user_msg}")
+        
+        return "Recent conversation: " + " | ".join(topics)
     
     def retrieve_memories(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
         """Retrieve relevant memories using RAG system."""
@@ -103,8 +142,8 @@ class MemoryManager:
         return self.rag_system.search_relationships(query, n_results)
     
     def get_short_term_memory(self, limit: int = 10) -> List[Dict[str, Any]]:
-        """Get recent short-term memory entries."""
-        return self.short_term_memory[-limit:]
+        """Get recent psychological short-term memory entries."""
+        return self.psychological_short_term[-limit:]
     
     def get_emotional_state(self) -> Dict[str, Any]:
         """Get current emotional state."""
@@ -146,7 +185,8 @@ class MemoryManager:
     def save_state(self) -> None:
         """Save current memory state."""
         try:
-            self.conscious_memory["short_term_memory"] = self.short_term_memory
+            # Save psychological short-term memory (persistent)
+            self.conscious_memory["short_term_memory"] = self.psychological_short_term
             self.conscious_memory["last_updated"] = datetime.now().isoformat()
             
             conscious_path = os.path.join(self.agent_path, "conscious_memory.json")
@@ -154,6 +194,17 @@ class MemoryManager:
                 json.dump(self.conscious_memory, f, indent=2)
             
             print(f"Memory state saved to {conscious_path}")
+            
+            # Save conversational history separately (session-specific)
+            if self.conversational_history:
+                session_path = os.path.join(self.agent_path, "last_session.json")
+                session_data = {
+                    "conversation_history": self.conversational_history,
+                    "session_end": datetime.now().isoformat()
+                }
+                with open(session_path, 'w') as f:
+                    json.dump(session_data, f, indent=2)
+                print(f"Session history saved to {session_path}")
             
             self.neuroproxy_engine._save_persistent_state()
             
@@ -169,7 +220,8 @@ class MemoryManager:
             "conscious_relationships": len(self.conscious_memory.get("relationships", [])),
             "unconscious_signifiers": len(self.unconscious_memory.get("signifiers", [])),
             "signifying_chains": len(self.unconscious_memory.get("signifying_chains", [])),
-            "short_term_entries": len(self.short_term_memory),
+            "psychological_short_term": len(self.psychological_short_term),
+            "conversational_exchanges": len(self.conversational_history),
             "rag_memories": rag_stats["memories_count"],
             "rag_relationships": rag_stats["relationships_count"],
             "emotional_state": self.neuroproxy_engine.get_current_state()["emotion_category"]
