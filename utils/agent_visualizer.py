@@ -339,5 +339,5 @@ def create_agent_visualizations(agent_name: str, base_path: str = "base_agents")
 
 if __name__ == "__main__":
     import sys
-    agent_name = sys.argv[1] if len(sys.argv) > 1 else "Nancy"
+    agent_name = sys.argv[1] if len(sys.argv) > 1 else "Joan"
     create_agent_visualizations(agent_name)

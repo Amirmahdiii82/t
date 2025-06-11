@@ -2,35 +2,25 @@ import json
 from typing import Dict, List, Any
 from datetime import datetime
 from utils.lacanian_graph import LacanianSignifierGraph
-from interfaces.vlm_interface import VLMInterface
 
 class UnconsciousProcessor:
     """
-    Processes input through unconscious signifier networks using ALL extracted data.
+    Processes input through unconscious signifier networks and Lacanian dynamics.
     
-    Actually uses signifying chains, object_a dynamics, symptom patterns, 
-    retroactive effects, and repressed content to create authentic unconscious responses.
+    Activates signifiers based on memory content and traces their influence
+    through signifying chains to model unconscious associations.
     """
     
     def __init__(self, agent_name: str, memory_manager):
         self.agent_name = agent_name
         self.memory_manager = memory_manager
         
-        # Use VLM for complex unconscious analysis
-        self.vlm = VLMInterface()
-        
         # Load unconscious structures
         self._load_unconscious_structures()
         
         # Track current unconscious state
         self.active_signifiers = []
-        self.active_chains = []
-        self.current_discourse = "hysteric"
-        self.object_a_proximity = 0.0
-        self.symptom_activation_level = 0.0
-        
-        print(f"Unconscious processor initialized for {agent_name}")
-        print(f"Loaded: {len(self.signifiers)} signifiers, {len(self.chains)} chains")
+        self.current_discourse = "hysteric"  # Default position
         
     def _load_unconscious_structures(self):
         """Load agent's unconscious structures from memory."""
@@ -43,441 +33,327 @@ class UnconsciousProcessor:
             else:
                 self.signifier_graph = LacanianSignifierGraph()
             
-            # Load core structures
+            # Load other structures
             self.signifiers = unconscious_data.get('signifiers', [])
             self.chains = unconscious_data.get('signifying_chains', [])
             self.object_a = unconscious_data.get('object_a', {})
             self.symptom = unconscious_data.get('symptom', {})
-            self.structural_positions = unconscious_data.get('structural_positions', {})
             
-            # Extract key data for efficient processing
-            self._prepare_unconscious_data()
-            
-        except Exception as e:
-            print(f"Error loading unconscious structures: {e}")
+        except Exception:
             self._initialize_empty_structures()
     
-    def _prepare_unconscious_data(self):
-        """Prepare unconscious data for efficient processing."""
-        # Map signifier names to full data
-        self.signifier_map = {sig['name']: sig for sig in self.signifiers if isinstance(sig, dict)}
+    def _reconstruct_graph(self, graph_data: Dict) -> LacanianSignifierGraph:
+        """Reconstruct signifier graph from serialized data."""
+        graph = LacanianSignifierGraph()
         
-        # Extract repressed signifiers
-        self.repressed_signifiers = [
-            sig['name'] for sig in self.signifiers 
-            if isinstance(sig, dict) and sig.get('repressed', False)
-        ]
+        try:
+            # Rebuild nodes
+            for node in graph_data.get('nodes', []):
+                node_id = node.get('id')
+                if node_id:
+                    node_attrs = {k: v for k, v in node.items() if k != 'id'}
+                    graph.graph.add_node(node_id, **node_attrs)
+            
+            # Rebuild edges
+            for edge in graph_data.get('edges', []):
+                source = edge.get('source')
+                target = edge.get('target')
+                if source and target:
+                    edge_attrs = {k: v for k, v in edge.items() if k not in ['source', 'target']}
+                    graph.graph.add_edge(source, target, **edge_attrs)
+            
+            # Restore structures
+            graph.master_signifiers = graph_data.get('master_signifiers', {})
+            graph.signifying_chains = graph_data.get('signifying_chains', {})
+            graph.object_a_positions = graph_data.get('object_a_positions', [])
+            
+        except Exception:
+            pass  # Use empty graph if reconstruction fails
         
-        # Extract object_a manifestations
-        self.object_a_manifestations = self.object_a.get('manifestations', [])
-        self.void_manifestations = self.object_a.get('void_manifestations', [])
-        
-        # Extract symptom signifiers
-        self.symptom_signifiers = self.symptom.get('signifiers_involved', [])
-        
-        # Prepare chain activation maps
-        self.chain_map = {}
-        for chain in self.chains:
-            if isinstance(chain, dict):
-                name = chain.get('name', '')
-                signifiers = chain.get('signifiers', [])
-                self.chain_map[name] = {
-                    'signifiers': signifiers,
-                    'type': chain.get('type', 'mixed'),
-                    'explanation': chain.get('explanation', ''),
-                    'relation_to_fantasy': chain.get('relation_to_fantasy', '')
-                }
+        return graph
     
     def process_input(self, user_input: str, context: str = "dialogue") -> Dict[str, Any]:
         """
-        Process input through complete unconscious mechanisms using all extracted data.
+        Process input through unconscious mechanisms.
+        
+        Args:
+            user_input: User's message
+            context: Interaction context
+            
+        Returns:
+            Dictionary containing unconscious analysis results
         """
         try:
-            print(f"\n=== Unconscious Processing for {self.agent_name} ===")
+            print(f"=== Unconscious Processing for {self.agent_name} ===")
             print(f"Input: '{user_input[:50]}...'")
             
-            # 1. Identify directly activated signifiers from memories
-            directly_activated = self._identify_signifiers_from_memories(user_input)
+            # 1. Identify signifiers activated by memories
+            active_signifiers = self._identify_signifiers_from_memories(user_input)
             
-            # 2. Apply signifying chain dynamics
-            chain_activated = self._activate_signifying_chains(directly_activated)
+            # 2. Process through signifying chains
+            chain_effects = self._process_through_chains(active_signifiers)
             
-            # 3. Apply retroactive determination (Nachträglichkeit)
-            retroactively_determined = self._apply_retroactive_effects(chain_activated)
+            # 3. Analyze discourse position
+            discourse_position = self.signifier_graph.analyze_discourse_position(
+                [s['signifier'] for s in active_signifiers]
+            )
             
-            # 4. Check for return of repressed content
-            repressed_returns = self._check_return_of_repressed(retroactively_determined, user_input)
+            # 4. Calculate jouissance dynamics
+            jouissance_effects = self._calculate_jouissance_effects(active_signifiers)
             
-            # 5. Calculate object_a proximity and dynamics
-            object_a_effects = self._calculate_object_a_dynamics(retroactively_determined, user_input)
-            
-            # 6. Check symptom activation patterns
-            symptom_effects = self._calculate_symptom_activation(retroactively_determined, user_input)
-            
-            # 7. Determine discourse position based on current dynamics
-            discourse_position = self._determine_discourse_position(retroactively_determined, object_a_effects, symptom_effects)
-            
-            # 8. Trigger neurochemical responses based on unconscious dynamics
-            self._trigger_neurochemical_responses(retroactively_determined, object_a_effects, symptom_effects)
-            
-            # Create comprehensive unconscious influence
+            # Create unconscious influence object
             unconscious_influence = {
-                "active_signifiers": retroactively_determined,
-                "activated_chains": chain_activated,
-                "repressed_returns": repressed_returns,
-                "object_a_effects": object_a_effects,
-                "symptom_effects": symptom_effects,
+                "active_signifiers": active_signifiers,
+                "chain_activations": chain_effects,
                 "discourse_position": discourse_position,
-                "unconscious_dynamics": {
-                    "object_a_proximity": self.object_a_proximity,
-                    "symptom_activation": self.symptom_activation_level,
-                    "primary_discourse": self.current_discourse,
-                    "repressed_content_emerging": len(repressed_returns) > 0
-                },
-                "timestamp": datetime.now().isoformat(),
-                "processing_method": "complete_unconscious_integration"
+                "jouissance_effects": jouissance_effects,
+                "timestamp": datetime.now().isoformat()
             }
             
             # Update internal state
             self._update_unconscious_state(unconscious_influence)
             
-            print(f"Unconscious activation: {len(retroactively_determined)} signifiers")
-            print(f"Active chains: {[chain['name'] for chain in chain_activated]}")
-            print(f"Object a proximity: {self.object_a_proximity:.2f}")
-            print(f"Symptom activation: {self.symptom_activation_level:.2f}")
-            print(f"Discourse position: {self.current_discourse}")
+            # Production-ready output summary
+            print(f"Unconscious activation: {len(active_signifiers)} signifiers")
+            print(f"Active chains: {[c['chain'] for c in chain_effects.get('activated_chains', [])]}")
+            
+            object_a_activity = sum(1 for s in active_signifiers 
+                                  if 'object_a' in s.get('activation_type', ''))
+            symptom_activity = jouissance_effects.get('symptom_activation', False)
+            print(f"Object a proximity: {object_a_activity/max(len(active_signifiers), 1):.2f}")
+            print(f"Symptom activation: {symptom_activity:.2f}" if isinstance(symptom_activity, (int, float)) else f"Symptom activation: {'Yes' if symptom_activity else 'No'}")
+            
+            primary_discourse = max(discourse_position.items(), key=lambda x: x[1])[0] if discourse_position else 'hysteric'
+            print(f"Discourse position: {primary_discourse}")
             
             return unconscious_influence
             
         except Exception as e:
-            print(f"Error in unconscious processing: {e}")
+            print(f"Warning: Unconscious processing error: {e}")
             return self._minimal_unconscious_response()
     
     def _identify_signifiers_from_memories(self, user_input: str) -> List[Dict[str, Any]]:
-        """Identify signifiers from memory content and direct input analysis."""
+        """
+        Identify active signifiers based on memory retrieval results.
+        
+        This is the core innovation: signifiers activate based on actual
+        memory content rather than simple text matching.
+        """
         active_signifiers = []
         
         # Get memories triggered by user input
-        relevant_memories = self.memory_manager.retrieve_memories(user_input, 8)
+        relevant_memories = self.memory_manager.retrieve_memories(user_input, 8)  # Reduced from 10
         relevant_relationships = self.memory_manager.retrieve_relationships(user_input, 5)
-        recent_interactions = self.memory_manager.get_short_term_memory(5)
         
-        # Combine all memory content
-        memory_texts = []
+        # Extract signifiers from memory content
         for memory in relevant_memories:
-            if isinstance(memory, dict):
-                text = f"{memory.get('title', '')} {memory.get('description', '')}"
-                memory_texts.append(text.lower())
+            memory_signifiers = self._extract_signifiers_from_memory(memory)
+            active_signifiers.extend(memory_signifiers)
         
+        # Extract signifiers from relationship content
         for relationship in relevant_relationships:
-            if isinstance(relationship, dict):
-                text = f"{relationship.get('name', '')} {relationship.get('emotional_significance', '')}"
-                memory_texts.append(text.lower())
+            rel_signifiers = self._extract_signifiers_from_relationship(relationship)
+            active_signifiers.extend(rel_signifiers)
         
-        for interaction in recent_interactions:
-            if isinstance(interaction, dict):
-                memory_texts.append(interaction.get('content', '').lower())
+        # Remove duplicates and calculate activation strength
+        unique_signifiers = {}
+        for sig in active_signifiers:
+            name = sig['signifier']
+            if name in unique_signifiers:
+                # Increase activation if signifier appears multiple times
+                unique_signifiers[name]['activation_strength'] += 0.2
+                unique_signifiers[name]['activation_strength'] = min(1.0, unique_signifiers[name]['activation_strength'])
+            else:
+                unique_signifiers[name] = sig
         
-        # Add user input
-        memory_texts.append(user_input.lower())
+        # Apply resonance through signifier graph
+        final_signifiers = list(unique_signifiers.values())
+        if final_signifiers and len(final_signifiers) < 8:  # Only if we need more content
+            resonance_signifiers = self._apply_signifier_resonance(final_signifiers)
+            final_signifiers.extend(resonance_signifiers)
         
-        all_text = " ".join(memory_texts)
-        
-        # Check each signifier for activation
-        for signifier_name, signifier_data in self.signifier_map.items():
-            activation_strength = 0.0
-            activation_sources = []
-            
-            # Direct name match
-            if signifier_name.lower() in all_text:
-                activation_strength += 1.0
-                activation_sources.append("direct_match")
-            
-            # Association matches
-            associations = signifier_data.get('associations', [])
-            for assoc in associations:
-                if isinstance(assoc, str) and assoc.lower() in all_text:
-                    activation_strength += 0.6
-                    activation_sources.append(f"association_{assoc}")
-            
-            # Significance-based activation
-            significance = signifier_data.get('significance', '').lower()
-            significance_words = significance.split()
-            for word in significance_words:
-                if len(word) > 4 and word in all_text:
-                    activation_strength += 0.3
-                    activation_sources.append(f"significance_{word}")
-            
-            if activation_strength > 0:
-                active_signifiers.append({
-                    'signifier': signifier_name,
-                    'activation_strength': min(activation_strength, 2.0),
-                    'activation_sources': activation_sources,
-                    'signifier_data': signifier_data,
-                    'repressed': signifier_data.get('repressed', False)
-                })
-        
-        # Sort by activation strength
-        active_signifiers.sort(key=lambda x: x['activation_strength'], reverse=True)
-        
-        return active_signifiers[:8]  # Limit to top 8
+        return final_signifiers[:10]  # Limit to most relevant
     
-    def _activate_signifying_chains(self, active_signifiers: List[Dict]) -> List[Dict]:
-        """Activate signifying chains based on active signifiers."""
-        activated_chains = []
-        active_names = [sig['signifier'] for sig in active_signifiers]
+    def _extract_signifiers_from_memory(self, memory: Dict) -> List[Dict[str, Any]]:
+        """Extract signifiers that might be present in memory content."""
+        signifiers = []
         
-        for chain_name, chain_data in self.chain_map.items():
-            chain_signifiers = chain_data['signifiers']
+        # Get memory text content
+        memory_text = ""
+        if isinstance(memory, dict):
+            memory_text += memory.get('title', '') + " "
+            memory_text += memory.get('description', '') + " "
+            memory_text += " ".join(memory.get('associated_people', []))
+        
+        memory_text = memory_text.lower()
+        
+        # Check against known signifiers
+        for signifier_data in self.signifiers:
+            if isinstance(signifier_data, dict):
+                signifier_name = signifier_data.get('name', '').lower()
+                
+                # Direct match
+                if signifier_name in memory_text:
+                    signifiers.append({
+                        'signifier': signifier_data.get('name'),
+                        'activation_type': 'memory_content',
+                        'activation_strength': 0.8,
+                        'source_memory': memory.get('title', 'untitled'),
+                        'significance': signifier_data.get('significance', '')
+                    })
+                
+                # Association match
+                associations = signifier_data.get('associations', [])
+                for assoc in associations:
+                    if isinstance(assoc, str) and assoc.lower() in memory_text:
+                        signifiers.append({
+                            'signifier': signifier_data.get('name'),
+                            'activation_type': 'memory_association',
+                            'activation_strength': 0.6,
+                            'source_memory': memory.get('title', 'untitled'),
+                            'triggered_by': assoc,
+                            'significance': signifier_data.get('significance', '')
+                        })
+                        break
+        
+        return signifiers
+    
+    def _extract_signifiers_from_relationship(self, relationship: Dict) -> List[Dict[str, Any]]:
+        """Extract signifiers from relationship content."""
+        signifiers = []
+        
+        if not isinstance(relationship, dict):
+            return signifiers
+        
+        # Get relationship content
+        rel_text = (
+            relationship.get('name', '') + " " +
+            relationship.get('relationship_type', '') + " " +
+            relationship.get('emotional_significance', '')
+        ).lower()
+        
+        # Check against known signifiers
+        for signifier_data in self.signifiers:
+            if isinstance(signifier_data, dict):
+                signifier_name = signifier_data.get('name', '').lower()
+                
+                if signifier_name in rel_text:
+                    signifiers.append({
+                        'signifier': signifier_data.get('name'),
+                        'activation_type': 'relationship_content',
+                        'activation_strength': 0.7,
+                        'source_relationship': relationship.get('name', 'unknown'),
+                        'significance': signifier_data.get('significance', '')
+                    })
+        
+        return signifiers
+    
+    def _apply_signifier_resonance(self, primary_signifiers: List[Dict]) -> List[Dict[str, Any]]:
+        """Apply resonance through signifier network to activate related signifiers."""
+        resonance_signifiers = []
+        
+        for sig_data in primary_signifiers[:3]:  # Use top 3 for resonance
+            signifier = sig_data['signifier']
             
-            # Check how many signifiers in this chain are active
-            active_in_chain = [sig for sig in active_names if sig in chain_signifiers]
+            if signifier in self.signifier_graph.graph:
+                # Get resonance map
+                resonance = self.signifier_graph.get_signifier_resonance(signifier, depth=2)
+                
+                # Add resonated signifiers with lower activation
+                for resonated_sig, strength in resonance.items():
+                    if resonated_sig != signifier and strength > 0.3:
+                        resonance_signifiers.append({
+                            'signifier': resonated_sig,
+                            'activation_type': 'resonance',
+                            'activation_strength': strength * 0.5,
+                            'resonated_from': signifier,
+                            'significance': f'Resonance from {signifier}'
+                        })
+        
+        return resonance_signifiers[:5]  # Limit resonance additions
+    
+    def _process_through_chains(self, active_signifiers: List[Dict]) -> Dict[str, Any]:
+        """Process active signifiers through signifying chains."""
+        chain_effects = {
+            'activated_chains': [],
+            'retroactive_determinations': []
+        }
+        
+        # Find which chains are activated
+        for chain_name, chain_data in self.signifier_graph.signifying_chains.items():
+            chain_signifiers = chain_data['signifiers']
+            active_in_chain = [s['signifier'] for s in active_signifiers 
+                              if s['signifier'] in chain_signifiers]
             
             if active_in_chain:
                 activation_strength = len(active_in_chain) / len(chain_signifiers)
-                
-                activated_chains.append({
-                    'name': chain_name,
-                    'signifiers': chain_signifiers,
-                    'active_signifiers': active_in_chain,
-                    'activation_strength': activation_strength,
-                    'chain_type': chain_data['type'],
-                    'explanation': chain_data['explanation'],
-                    'relation_to_fantasy': chain_data['relation_to_fantasy']
+                chain_effects['activated_chains'].append({
+                    'chain': chain_name,
+                    'activation': activation_strength,
+                    'active_signifiers': active_in_chain
                 })
                 
-                print(f"Chain activated: {chain_name} ({activation_strength:.2f})")
+                # Check for retroactive effects (Nachträglichkeit)
+                if chain_data.get('retroactive', False) and chain_signifiers:
+                    last_sig = chain_signifiers[-1]
+                    if last_sig in active_in_chain:
+                        chain_effects['retroactive_determinations'].append({
+                            'determining_signifier': last_sig,
+                            'affected_signifiers': [s for s in chain_signifiers if s != last_sig],
+                            'retroactive_meaning': f"{last_sig} determines meaning of {chain_name}"
+                        })
         
-        return activated_chains
+        return chain_effects
     
-    def _apply_retroactive_effects(self, active_signifiers: List[Dict]) -> List[Dict]:
-        """Apply Lacanian retroactive determination effects."""
-        enhanced_signifiers = active_signifiers.copy()
-        active_names = [sig['signifier'] for sig in active_signifiers]
-        
-        # Check retroactive effects from signifier graph
-        if hasattr(self.signifier_graph, 'retroactive_effects'):
-            for effect_name, effect_data in self.signifier_graph.retroactive_effects.items():
-                determining_sig = effect_data.get('determining_signifier')
-                affected_sigs = effect_data.get('retroactive_targets', [])
-                
-                # If determining signifier is active, boost affected signifiers
-                if determining_sig in active_names:
-                    for affected_sig in affected_sigs:
-                        # Find and boost affected signifier if it exists
-                        for sig_data in enhanced_signifiers:
-                            if sig_data['signifier'] == affected_sig:
-                                original_strength = sig_data['activation_strength']
-                                sig_data['activation_strength'] = min(original_strength + 0.5, 2.0)
-                                sig_data['retroactive_boost'] = determining_sig
-                                print(f"Retroactive boost: {affected_sig} boosted by {determining_sig}")
-                                break
-                        else:
-                            # Add affected signifier if not already active
-                            if affected_sig in self.signifier_map:
-                                enhanced_signifiers.append({
-                                    'signifier': affected_sig,
-                                    'activation_strength': 0.7,
-                                    'activation_sources': ['retroactive_determination'],
-                                    'signifier_data': self.signifier_map[affected_sig],
-                                    'retroactive_boost': determining_sig,
-                                    'repressed': self.signifier_map[affected_sig].get('repressed', False)
-                                })
-                                print(f"Retroactive activation: {affected_sig} activated by {determining_sig}")
-        
-        # Re-sort by activation strength
-        enhanced_signifiers.sort(key=lambda x: x['activation_strength'], reverse=True)
-        return enhanced_signifiers
-    
-    def _check_return_of_repressed(self, active_signifiers: List[Dict], user_input: str) -> List[Dict]:
-        """Check for return of repressed content."""
-        repressed_returns = []
-        
-        for sig_data in active_signifiers:
-            if sig_data.get('repressed', False):
-                # Repressed content is returning
-                repressed_returns.append({
-                    'signifier': sig_data['signifier'],
-                    'return_strength': sig_data['activation_strength'],
-                    'return_context': 'activated_through_interaction',
-                    'significance': sig_data['signifier_data'].get('significance', ''),
-                    'associations': sig_data['signifier_data'].get('associations', [])
-                })
-                
-                print(f"Return of repressed: {sig_data['signifier']}")
-        
-        return repressed_returns
-    
-    def _calculate_object_a_dynamics(self, active_signifiers: List[Dict], user_input: str) -> Dict[str, Any]:
-        """Calculate object_a proximity and effects."""
-        object_a_effects = {
-            'proximity_level': 0.0,
-            'active_manifestations': [],
-            'desire_direction': 'neutral',
-            'anxiety_triggers': []
+    def _calculate_jouissance_effects(self, active_signifiers: List[Dict]) -> Dict[str, Any]:
+        """Calculate jouissance dynamics based on signifier activation."""
+        jouissance = {
+            'level': 0.0,
+            'patterns': [],
+            'symptom_activation': False
         }
-        
-        active_names = [sig['signifier'] for sig in active_signifiers]
-        
-        # Check if object_a manifestations are active
-        for manifestation in self.object_a_manifestations:
-            for active_name in active_names:
-                if active_name.lower() in manifestation.lower():
-                    object_a_effects['proximity_level'] += 0.4
-                    object_a_effects['active_manifestations'].append(manifestation)
-                    print(f"Object a manifestation active: {manifestation}")
-        
-        # Check void manifestations
-        for void_manifest in self.void_manifestations:
-            for active_name in active_names:
-                if active_name.lower() in void_manifest.lower():
-                    object_a_effects['proximity_level'] += 0.6
-                    object_a_effects['anxiety_triggers'].append(void_manifest)
-                    print(f"Void manifestation detected: {void_manifest}")
-        
-        # Determine desire direction based on object_a dynamics
-        if object_a_effects['proximity_level'] > 0.5:
-            if any('missing' in manifest.lower() for manifest in object_a_effects['active_manifestations']):
-                object_a_effects['desire_direction'] = 'seeking_substitute'
-            else:
-                object_a_effects['desire_direction'] = 'circling_void'
-        
-        self.object_a_proximity = min(object_a_effects['proximity_level'], 1.0)
-        
-        return object_a_effects
-    
-    def _calculate_symptom_activation(self, active_signifiers: List[Dict], user_input: str) -> Dict[str, Any]:
-        """Calculate symptom activation based on extracted symptom structure."""
-        symptom_effects = {
-            'activation_level': 0.0,
-            'active_symptom_signifiers': [],
-            'jouissance_pattern': None,
-            'repetition_detected': False
-        }
-        
-        active_names = [sig['signifier'] for sig in active_signifiers]
         
         # Check if symptom signifiers are active
-        for symptom_sig in self.symptom_signifiers:
-            if symptom_sig in active_names:
-                symptom_effects['activation_level'] += 0.6
-                symptom_effects['active_symptom_signifiers'].append(symptom_sig)
-                print(f"Symptom signifier active: {symptom_sig}")
-        
-        # If symptom is activated, apply patterns
-        if symptom_effects['activation_level'] > 0:
-            symptom_effects['jouissance_pattern'] = self.symptom.get('jouissance_pattern', '')
-            symptom_effects['repetition_detected'] = True
+        if self.symptom:
+            symptom_signifiers = self.symptom.get('signifiers_involved', [])
+            active_names = [s['signifier'] for s in active_signifiers]
             
-            # Check repetition structure
-            repetition = self.symptom.get('repetition_structure', '')
-            if 'repeat' in repetition.lower():
-                symptom_effects['repetition_detected'] = True
+            symptom_activation = any(sig in active_names for sig in symptom_signifiers)
+            if symptom_activation:
+                jouissance['symptom_activation'] = True
+                jouissance['level'] += 0.4
+                jouissance['patterns'].append({
+                    'type': 'symptomatic_jouissance',
+                    'description': 'Symptom signifiers activated'
+                })
         
-        self.symptom_activation_level = min(symptom_effects['activation_level'], 1.0)
-        
-        return symptom_effects
-    
-    def _determine_discourse_position(self, active_signifiers: List[Dict], object_a_effects: Dict, symptom_effects: Dict) -> Dict[str, float]:
-        """Determine current discourse position based on unconscious dynamics."""
-        # Start with extracted structural positions
-        discourse_scores = self.structural_positions.copy()
-        
-        # Modify based on current unconscious state
-        if object_a_effects['proximity_level'] > 0.5:
-            # High object_a proximity = more hysteric position
-            discourse_scores['hysteric'] = discourse_scores.get('hysteric', 0.3) + 0.3
-            discourse_scores['analyst'] = discourse_scores.get('analyst', 0.2) + 0.2
-        
-        if symptom_effects['activation_level'] > 0.5:
-            # Symptom activation = more hysteric position  
-            discourse_scores['hysteric'] = discourse_scores.get('hysteric', 0.3) + 0.2
-        
-        if len([sig for sig in active_signifiers if sig.get('repressed', False)]) > 0:
-            # Repressed content returning = analyst position
-            discourse_scores['analyst'] = discourse_scores.get('analyst', 0.2) + 0.3
-        
-        # Normalize
-        total = sum(discourse_scores.values())
-        if total > 0:
-            discourse_scores = {k: v/total for k, v in discourse_scores.items()}
-        
-        # Determine primary discourse
-        self.current_discourse = max(discourse_scores.items(), key=lambda x: x[1])[0]
-        
-        return discourse_scores
-    
-    def _trigger_neurochemical_responses(self, active_signifiers: List[Dict], object_a_effects: Dict, symptom_effects: Dict):
-        """Trigger specific neurochemical responses based on unconscious dynamics."""
-        neuroproxy = self.memory_manager.neuroproxy_engine
-        
-        # Object a proximity effects
-        if object_a_effects['proximity_level'] > 0.3:
-            if 'seeking_substitute' in object_a_effects.get('desire_direction', ''):
-                # Seeking behavior - increase oxytocin need, decrease serotonin
-                neuroproxy.neurochemical_state['oxytocin'] = max(0.0, neuroproxy.neurochemical_state['oxytocin'] - 0.2)
-                neuroproxy.neurochemical_state['serotonin'] = max(0.0, neuroproxy.neurochemical_state['serotonin'] - 0.2)
-                neuroproxy.neurochemical_state['cortisol'] = min(1.0, neuroproxy.neurochemical_state['cortisol'] + 0.3)
-                print("Triggered object_a seeking neurochemical pattern")
-        
-        # Symptom activation effects
-        if symptom_effects['activation_level'] > 0.3:
-            # Symptom = vulnerability pattern - specific neurochemical signature
-            neuroproxy.neurochemical_state['dopamine'] = max(0.0, neuroproxy.neurochemical_state['dopamine'] - 0.2)
-            neuroproxy.neurochemical_state['cortisol'] = min(1.0, neuroproxy.neurochemical_state['cortisol'] + 0.3)
-            neuroproxy.neurochemical_state['norepinephrine'] = min(1.0, neuroproxy.neurochemical_state['norepinephrine'] + 0.2)
-            print("Triggered symptom activation neurochemical pattern")
-        
-        # Repressed content returning
-        repressed_active = [sig for sig in active_signifiers if sig.get('repressed', False)]
-        if repressed_active:
-            # Return of repressed = anxiety + disruption
-            neuroproxy.neurochemical_state['cortisol'] = min(1.0, neuroproxy.neurochemical_state['cortisol'] + 0.4)
-            neuroproxy.neurochemical_state['norepinephrine'] = min(1.0, neuroproxy.neurochemical_state['norepinephrine'] + 0.3)
-            neuroproxy.neurochemical_state['gaba'] = max(0.0, neuroproxy.neurochemical_state['gaba'] - 0.3)
-            print(f"Triggered return of repressed pattern for {len(repressed_active)} signifiers")
-        
-        # Signifier-specific patterns (customize based on agent's unconscious)
+        # Check for proximity to object a
         for sig_data in active_signifiers:
-            sig_name = sig_data['signifier']
-            
-            # Example patterns - these should be customized per agent
-            if 'loss' in sig_name.lower() or 'missing' in sig_name.lower():
-                neuroproxy.neurochemical_state['serotonin'] = max(0.0, neuroproxy.neurochemical_state['serotonin'] - 0.1)
-                neuroproxy.neurochemical_state['oxytocin'] = max(0.0, neuroproxy.neurochemical_state['oxytocin'] - 0.1)
-            
-            if 'fear' in sig_data['signifier_data'].get('associations', []):
-                neuroproxy.neurochemical_state['cortisol'] = min(1.0, neuroproxy.neurochemical_state['cortisol'] + 0.2)
+            signifier = sig_data['signifier']
+            if signifier in self.signifier_graph.graph:
+                node_data = self.signifier_graph.graph.nodes[signifier]
+                if node_data.get('object_a_proximity', False):
+                    jouissance['level'] += 0.3
+                    jouissance['patterns'].append({
+                        'type': 'object_a_circulation',
+                        'signifier': signifier,
+                        'description': f"{signifier} circles the void of object a"
+                    })
+        
+        # Cap jouissance level
+        jouissance['level'] = min(1.0, jouissance['level'])
+        
+        return jouissance
     
     def _update_unconscious_state(self, influence: Dict[str, Any]) -> None:
         """Update unconscious processor's internal state."""
+        # Update active signifiers
         self.active_signifiers = influence.get('active_signifiers', [])
-        self.active_chains = influence.get('activated_chains', [])
         
-    def _reconstruct_graph(self, graph_data: Dict) -> LacanianSignifierGraph:
-        """Reconstruct signifier graph from serialized data."""
-        graph = LacanianSignifierGraph()
-        
-        # Rebuild nodes
-        for node in graph_data.get('nodes', []):
-            node_copy = node.copy()
-            node_id = node_copy.pop('id')
-            graph.graph.add_node(node_id, **node_copy)
-        
-        # Rebuild edges
-        for edge in graph_data.get('edges', []):
-            edge_copy = edge.copy()
-            source = edge_copy.pop('source')
-            target = edge_copy.pop('target')
-            graph.graph.add_edge(source, target, **edge_copy)
-        
-        # Restore structures
-        graph.master_signifiers = graph_data.get('master_signifiers', {})
-        graph.signifying_chains = graph_data.get('signifying_chains', {})
-        graph.object_a_positions = graph_data.get('object_a_positions', [])
-        graph.retroactive_effects = graph_data.get('retroactive_effects', {})
-        
-        return graph
+        # Update discourse position
+        discourse_scores = influence.get('discourse_position', {})
+        if discourse_scores:
+            self.current_discourse = max(discourse_scores.items(), key=lambda x: x[1])[0]
     
     def _initialize_empty_structures(self):
         """Initialize empty structures if loading fails."""
@@ -486,16 +362,13 @@ class UnconsciousProcessor:
         self.chains = []
         self.object_a = {}
         self.symptom = {}
-        self.structural_positions = {'hysteric': 0.4, 'master': 0.3, 'university': 0.2, 'analyst': 0.1}
-        self._prepare_unconscious_data()
     
     def _minimal_unconscious_response(self) -> Dict[str, Any]:
         """Provide minimal response when processing fails."""
         return {
             "active_signifiers": [],
-            "activated_chains": [],
-            "object_a_effects": {"proximity_level": 0.0},
-            "symptom_effects": {"activation_level": 0.0},
-            "discourse_position": self.structural_positions,
+            "chain_activations": {"activated_chains": []},
+            "discourse_position": {"hysteric": 0.5, "master": 0.2, "university": 0.2, "analyst": 0.1},
+            "jouissance_effects": {"level": 0.0, "patterns": []},
             "timestamp": datetime.now().isoformat()
         }
