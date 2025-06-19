@@ -300,8 +300,8 @@ def validate_environment():
     return issues
 
 def main():
-    """Main entry point for PsyAgent system."""
-    print("🧠 PsyAgent - Psychoanalytic AI System")
+    """Main entry point for DreamerAgent system."""
+    print("🧠 DreamerAgent - Psychoanalytic AI System")
     print("🔬 Production Release v1.0")
     print("=" * 50)
     
@@ -340,7 +340,7 @@ def main():
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(
-        description="PsyAgent - Psychoanalytic AI System",
+        description="DreamerAgent - Psychoanalytic AI System",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -386,7 +386,7 @@ Examples:
         interactive_mode(args.agent)
     
     else:
-        print("\n📖 PsyAgent Usage Guide:")
+        print("\n📖 DreamerAgent Usage Guide:")
         print("=" * 30)
         print("1. Extract an agent from dream data:")
         print("   python main.py --extract your_dream_file.json")
