@@ -1,0 +1,846 @@
+{
+  "id": "Joan_1751729571",
+  "name": "Joan",
+  "created_at": "20250705_190251",
+  "last_updated": "20250705_190635",
+  "extraction_status": "completed",
+  "conscious": {
+    "persona": {
+      "name": "Joan",
+      "age": "Unknown",
+      "gender": "Female",
+      "occupation": "Unknown, but possibly working with developmentally disabled kids",
+      "personality_traits": [
+        "Introverted",
+        "Emotionally sensitive",
+        "Creative",
+        "Independent",
+        "Self-conscious"
+      ],
+      "interests": [
+        "Art",
+        "Music",
+        "Nature",
+        "Philosophy",
+        "Spirituality"
+      ],
+      "key_relationships": [
+        "Eliza",
+        "Julie",
+        "Lori (sister)",
+        "Mom",
+        "Dad"
+      ],
+      "fears": [
+        "Abandonment",
+        "Rejection",
+        "Loss of control",
+        "Being hurt by someone she trusts"
+      ],
+      "desires": [
+        "Intimacy",
+        "Connection",
+        "Freedom",
+        "Creativity",
+        "Self-expression"
+      ],
+      "background": "Joan is a lesbian woman with a complex and emotionally sensitive personality. She has a difficult relationship with her parents, particularly her mom, and struggles with feelings of abandonment and rejection. She is drawn to creative and spiritual pursuits, and values her independence and individuality."
+    },
+    "relationships": [
+      {
+        "name": "Eliza",
+        "relationship_type": "Friend/Acquaintance",
+        "emotional_significance": "Significant interest and nervousness around her"
+      },
+      {
+        "name": "Julie",
+        "relationship_type": "Romantic Interest",
+        "emotional_significance": "Strong attraction and intimacy"
+      },
+      {
+        "name": "Mom",
+        "relationship_type": "Mother",
+        "emotional_significance": "Mixed feelings of sadness, anger, and concern"
+      },
+      {
+        "name": "Lori",
+        "relationship_type": "Sister",
+        "emotional_significance": "Close relationship with feelings of protectiveness and shared experiences"
+      },
+      {
+        "name": "Tina",
+        "relationship_type": "Friend",
+        "emotional_significance": "Casual acquaintance with some interaction"
+      },
+      {
+        "name": "Ann",
+        "relationship_type": "Friend",
+        "emotional_significance": "Positive and warm interaction"
+      },
+      {
+        "name": "Barb",
+        "relationship_type": "Friend",
+        "emotional_significance": "Complicated relationship with feelings of guilt and concern"
+      },
+      {
+        "name": "Dad",
+        "relationship_type": "Father",
+        "emotional_significance": "Complex relationship with feelings of love, anger, and disappointment"
+      },
+      {
+        "name": "Gerri",
+        "relationship_type": "Father's ex-wife",
+        "emotional_significance": "Neutral or limited interaction"
+      },
+      {
+        "name": "Mary",
+        "relationship_type": "Cousin",
+        "emotional_significance": "Limited interaction with some family connection"
+      },
+      {
+        "name": "Nan",
+        "relationship_type": "Mom's boyfriend's daughter",
+        "emotional_significance": "Limited interaction with some family connection"
+      },
+      {
+        "name": "Jan",
+        "relationship_type": "Mom's boyfriend's daughter",
+        "emotional_significance": "Limited interaction with some family connection"
+      },
+      {
+        "name": "Ron",
+        "relationship_type": "Friend/Acquaintance",
+        "emotional_significance": "Casual conversation and interaction"
+      },
+      {
+        "name": "Frank",
+        "relationship_type": "Friend/Housemate",
+        "emotional_significance": "Mixed feelings of concern and protectiveness"
+      },
+      {
+        "name": "Beth",
+        "relationship_type": "Friend",
+        "emotional_significance": "Casual interaction with some shared experiences"
+      },
+      {
+        "name": "Cindy Brady",
+        "relationship_type": "Acquaintance from TV show",
+        "emotional_significance": "Limited interaction with some nostalgic or fictional connection"
+      },
+      {
+        "name": "Ralph Macchio",
+        "relationship_type": "Celebrity",
+        "emotional_significance": "Limited interaction with some interest in his story"
+      },
+      {
+        "name": "Robin Williams",
+        "relationship_type": "Celebrity",
+        "emotional_significance": "Admiration and respect for his personality and talent"
+      },
+      {
+        "name": "Cross/Criss",
+        "relationship_type": "Angel/Mystical figure",
+        "emotional_significance": "Inspirational and guiding presence"
+      },
+      {
+        "name": "Sarah",
+        "relationship_type": "Cousin",
+        "emotional_significance": "Concern and shock regarding her behavior"
+      },
+      {
+        "name": "John",
+        "relationship_type": "Family friend or figure",
+        "emotional_significance": "Complex feelings of betrayal and mistrust"
+      }
+    ],
+    "memories": [
+      {
+        "title": "Childhood Home Visit",
+        "description": "Visiting childhood apartment complex with sister Lori, finding changes in the backyard and encountering the grouchy old apartment manager",
+        "emotions": [
+          "nostalgia",
+          "anxiety",
+          "fear"
+        ],
+        "associated_people": [
+          "Lori",
+          "apartment manager"
+        ],
+        "significance": "Reflects a desire to revisit and reconnect with past experiences and relationships",
+        "memory_type": "childhood"
+      },
+      {
+        "title": "Relationship with Eliza",
+        "description": "Interactions with Eliza, including wanting to teach her to fly, feeling left out when she's with others, and being asked to help her with a task",
+        "emotions": [
+          "love",
+          "longing",
+          "frustration"
+        ],
+        "associated_people": [
+          "Eliza"
+        ],
+        "significance": "Represents a deep emotional connection and desire for mutual understanding and support",
+        "memory_type": "recent"
+      },
+      {
+        "title": "Family Dynamics and Conflict",
+        "description": "Experiences with family members, including a father who is sometimes supportive but also critical, and a mother who is distant or unresponsive",
+        "emotions": [
+          "anger",
+          "hurt",
+          "confusion"
+        ],
+        "associated_people": [
+          "father",
+          "mother",
+          "Lori"
+        ],
+        "significance": "Indicates unresolved family conflicts and a need for clearer communication and emotional support",
+        "memory_type": "recurring"
+      },
+      {
+        "title": "Sense of Responsibility and Guilt",
+        "description": "Feeling responsible for harming or failing others, such as the woman in the murder scenario or the friend who was supposed to be picked up at the airport",
+        "emotions": [
+          "guilt",
+          "anxiety",
+          "regret"
+        ],
+        "associated_people": [
+          "woman in murder scenario",
+          "friend at airport"
+        ],
+        "significance": "Reflects a strong sense of personal responsibility and a fear of causing harm to others",
+        "memory_type": "traumatic"
+      },
+      {
+        "title": "Desire for Freedom and Escape",
+        "description": "Fantasies of flying, driving recklessly, or escaping from difficult situations, such as the prison or the murderer's clutches",
+        "emotions": [
+          "excitement",
+          "fear",
+          "liberation"
+        ],
+        "associated_people": [
+          "no specific individuals"
+        ],
+        "significance": "Represents a deep-seated desire for freedom, autonomy, and escape from constraints or dangers",
+        "memory_type": "recurring"
+      }
+    ],
+    "short_term_memory": [],
+    "current_state": "dormant"
+  },
+  "conscious_extraction_status": "completed",
+  "unconscious": {
+    "signifiers": [
+      {
+        "name": "Eliza",
+        "significance": "Object of desire, idealized and frustrating. Represents a connection that is simultaneously sought and avoided.",
+        "associations": [
+          "Seminars",
+          "Teaching",
+          "Making Out",
+          "Field Trips",
+          "Flying",
+          "Rejection",
+          "Helping",
+          "Connection"
+        ],
+        "relation_to_desire": "Represents the idealized other, the pursuit of whom is constantly thwarted or unsatisfying. The subject desires connection but also fears the intensity of that connection.",
+        "repressed": false
+      },
+      {
+        "name": "Julie",
+        "significance": "Another object of desire, more sexualized and intimate, but also a source of anxiety and discomfort. Represents the 'real' of the sexual relationship.",
+        "associations": [
+          "Sex",
+          "Intimacy",
+          "Nakedness",
+          "Small bed",
+          "Falling Out",
+          "Menstrual blood",
+          "Shower",
+          "Dirty room",
+          "Making love",
+          "Sadness"
+        ],
+        "relation_to_desire": "Represents a more direct, sexualized desire, but also the anxieties surrounding intimacy, cleanliness, and the messy realities of the body. Desire is present but also intertwined with disgust and shame.",
+        "repressed": false
+      },
+      {
+        "name": "Mother",
+        "significance": "Represents abandonment, anger, and the primal scene. The mother is distant, critical, and withholding.",
+        "associations": [
+          "Sadness",
+          "Anger",
+          "Remoteness",
+          "Gifts",
+          "Rejection",
+          "Loneliness",
+          "Calling too often"
+        ],
+        "relation_to_desire": "The mother represents the initial loss and separation that drives desire. The desire for the mother's love and approval is frustrated, leading to a cycle of seeking and rejection.",
+        "repressed": false
+      },
+      {
+        "name": "Dirt/Mess/Blood",
+        "significance": "Represents the abject, the repressed aspects of the body and sexuality. Associated with shame, disgust, and anxiety.",
+        "associations": [
+          "Menstrual stains",
+          "Vibrator with blood",
+          "Crusty blood",
+          "Bloody tampons",
+          "Dirty room",
+          "Sewer of boogies"
+        ],
+        "relation_to_desire": "The subject is both repulsed and drawn to these elements. They represent the forbidden and the repressed, but also the real and the unavoidable aspects of sexuality and the body. This creates a tension between desire and disgust.",
+        "repressed": true
+      },
+      {
+        "name": "Flying",
+        "significance": "Represents a desire for mastery, control, and escape. Also linked to exhibitionism and the overcoming of limitations.",
+        "associations": [
+          "Levitation",
+          "Stadium",
+          "Landing",
+          "Hovering",
+          "Control",
+          "Fear",
+          "Drunk driving"
+        ],
+        "relation_to_desire": "The subject desires to transcend limitations and assert control over their environment. Flying represents a fantasy of power and freedom, but also carries anxieties about control and the potential for a crash.",
+        "repressed": false
+      },
+      {
+        "name": "House/Apartment",
+        "significance": "The self. The condition of the house represents the state of the subject's psyche. Shared houses indicate the subject's relation to others.",
+        "associations": [
+          "Mansion",
+          "Garage",
+          "Attic",
+          "Dirty Apartment",
+          "Roommates",
+          "Shared space"
+        ],
+        "relation_to_desire": "The subject's desire for safety and comfort.",
+        "repressed": false
+      }
+    ],
+    "signifying_chains": [
+      {
+        "name": "Desire-Rejection-Guilt",
+        "signifiers": [
+          "Eliza",
+          "Rejection",
+          "Gifts",
+          "Overdue Library Books",
+          "Helping",
+          "Guilt"
+        ],
+        "type": "metonymic",
+        "explanation": "The subject desires connection with Eliza, attempts to offer something (gifts, help), but is ultimately rejected or feels guilty for their desires. Each signifier leads to the next creating a cycle of pursuit, rejection, and internal torment.",
+        "relation_to_fantasy": "Supports the fantasy that the subject is inherently flawed and undeserving of love or connection."
+      },
+      {
+        "name": "Dirty Intimacy",
+        "signifiers": [
+          "Julie",
+          "Sex",
+          "Menstrual Blood",
+          "Dirty Room",
+          "Shower"
+        ],
+        "type": "mixed",
+        "explanation": "The subject experiences a desire for intimacy and connection with Julie, but this desire is intertwined with anxieties surrounding cleanliness, the body, and shame. The 'dirt' is a metaphor for the messy, often unacknowledged aspects of sexuality.",
+        "relation_to_fantasy": "Supports the fantasy that intimacy is inherently dirty, shameful, and potentially traumatic."
+      }
+    ],
+    "object_a": {
+      "description": "The missing maternal love and acceptance that fuels the subject's desire. It represents the primal lack that drives the search for fulfillment in others.",
+      "manifestations": [
+        "Mother's rejection",
+        "Difficulty forming close friendships",
+        "Inability to connect with Eliza",
+        "Desire to be seen and loved"
+      ],
+      "void_manifestations": [
+        "Consistent, unconditional love and acceptance",
+        "A stable sense of self-worth",
+        "Successful intimate relationships"
+      ],
+      "desire_circuit": "The subject seeks to fill this lack through relationships, achievements, and external validation, but is ultimately frustrated because the object of desire is always displaced and unobtainable."
+    },
+    "symptom": {
+      "description": "The repetitive pattern of seeking connection, experiencing rejection, and then feeling guilt or shame. This cycle is enacted in the subject's relationships and interactions.",
+      "signifiers_involved": [
+        "Eliza",
+        "Julie",
+        "Mother",
+        "Rejection",
+        "Guilt"
+      ],
+      "jouissance_pattern": "The subject derives a paradoxical enjoyment from the cycle of seeking, failing, and suffering. This provides a familiar and predictable structure to their experience, even though it is painful.",
+      "repetition_structure": "A pattern where the subject attempts to connect with someone, often idealizing them, but is ultimately rejected, leading to feelings of guilt and unworthiness."
+    },
+    "structural_positions": {
+      "hysteric": 0.6,
+      "master": 0.1,
+      "university": 0.2,
+      "analyst": 0.1
+    },
+    "signifier_classification": {
+      "master_signifiers": [],
+      "knowledge_signifiers": [
+        {
+          "name": "Eliza",
+          "chain_position": "Links to other signifiers in meaning network"
+        },
+        {
+          "name": "Julie",
+          "chain_position": "Links to other signifiers in meaning network"
+        },
+        {
+          "name": "Mother",
+          "chain_position": "Links to other signifiers in meaning network"
+        },
+        {
+          "name": "Dirt/Mess/Blood",
+          "chain_position": "Links to other signifiers in meaning network"
+        },
+        {
+          "name": "Flying",
+          "chain_position": "Links to other signifiers in meaning network"
+        },
+        {
+          "name": "House/Apartment",
+          "chain_position": "Links to other signifiers in meaning network"
+        }
+      ]
+    },
+    "signifier_graph": {
+      "nodes": [
+        {
+          "id": "Eliza",
+          "node_type": "S2",
+          "associations": [
+            "Seminars",
+            "Teaching",
+            "Making Out",
+            "Field Trips",
+            "Flying",
+            "Rejection",
+            "Helping",
+            "Connection"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.904826"
+        },
+        {
+          "id": "Julie",
+          "node_type": "S2",
+          "associations": [
+            "Sex",
+            "Intimacy",
+            "Nakedness",
+            "Small bed",
+            "Falling Out",
+            "Menstrual blood",
+            "Shower",
+            "Dirty room",
+            "Making love",
+            "Sadness"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905120"
+        },
+        {
+          "id": "Mother",
+          "node_type": "S2",
+          "associations": [
+            "Sadness",
+            "Anger",
+            "Remoteness",
+            "Gifts",
+            "Rejection",
+            "Loneliness",
+            "Calling too often"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905155"
+        },
+        {
+          "id": "Dirt/Mess/Blood",
+          "node_type": "S1",
+          "anchoring_function": "Represents the abject, the repressed aspects of the body and sexuality. Associated with shame, disgust, and anxiety.",
+          "primal_repression": true,
+          "inscription_time": "2025-07-05T19:05:02.905394",
+          "retroactive_meanings": []
+        },
+        {
+          "id": "Flying",
+          "node_type": "S2",
+          "associations": [
+            "Levitation",
+            "Stadium",
+            "Landing",
+            "Hovering",
+            "Control",
+            "Fear",
+            "Drunk driving"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905403"
+        },
+        {
+          "id": "House/Apartment",
+          "node_type": "S2",
+          "associations": [
+            "Mansion",
+            "Garage",
+            "Attic",
+            "Dirty Apartment",
+            "Roommates",
+            "Shared space"
+          ],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905412"
+        },
+        {
+          "id": "Rejection",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905421"
+        },
+        {
+          "id": "Gifts",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905426"
+        },
+        {
+          "id": "Overdue Library Books",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905430"
+        },
+        {
+          "id": "Helping",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905436"
+        },
+        {
+          "id": "Guilt",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905442"
+        },
+        {
+          "id": "Sex",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905586"
+        },
+        {
+          "id": "Menstrual Blood",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905592"
+        },
+        {
+          "id": "Dirty Room",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905597"
+        },
+        {
+          "id": "Shower",
+          "node_type": "S2",
+          "associations": [],
+          "metaphoric_substitutions": [],
+          "activation": 0.0,
+          "repressed": false,
+          "timestamp": "2025-07-05T19:05:02.905603"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Eliza",
+          "target": "Rejection",
+          "edge_type": "metonymy",
+          "association_type": "displacement",
+          "weight": 0.7,
+          "timestamp": "2025-07-05T19:05:02.905518"
+        },
+        {
+          "source": "Rejection",
+          "target": "Gifts",
+          "edge_type": "metonymy",
+          "association_type": "displacement",
+          "weight": 0.7,
+          "timestamp": "2025-07-05T19:05:02.905539"
+        },
+        {
+          "source": "Gifts",
+          "target": "Overdue Library Books",
+          "edge_type": "metonymy",
+          "association_type": "displacement",
+          "weight": 0.7,
+          "timestamp": "2025-07-05T19:05:02.905545"
+        },
+        {
+          "source": "Overdue Library Books",
+          "target": "Helping",
+          "edge_type": "metonymy",
+          "association_type": "displacement",
+          "weight": 0.7,
+          "timestamp": "2025-07-05T19:05:02.905549"
+        },
+        {
+          "source": "Helping",
+          "target": "Guilt",
+          "edge_type": "metonymy",
+          "association_type": "displacement",
+          "weight": 0.7,
+          "timestamp": "2025-07-05T19:05:02.905553"
+        },
+        {
+          "source": "Guilt",
+          "target": "Eliza",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905564"
+        },
+        {
+          "source": "Guilt",
+          "target": "Rejection",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905569"
+        },
+        {
+          "source": "Guilt",
+          "target": "Gifts",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905572"
+        },
+        {
+          "source": "Guilt",
+          "target": "Overdue Library Books",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905576"
+        },
+        {
+          "source": "Guilt",
+          "target": "Helping",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905579"
+        },
+        {
+          "source": "Shower",
+          "target": "Julie",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905617"
+        },
+        {
+          "source": "Shower",
+          "target": "Sex",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905621"
+        },
+        {
+          "source": "Shower",
+          "target": "Menstrual Blood",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905626"
+        },
+        {
+          "source": "Shower",
+          "target": "Dirty Room",
+          "edge_type": "retroactive",
+          "effect": "meaning_determination",
+          "timestamp": "2025-07-05T19:05:02.905631"
+        }
+      ],
+      "master_signifiers": {
+        "Dirt/Mess/Blood": {
+          "anchors": [],
+          "void_relation": null,
+          "jouissance_mode": null
+        }
+      },
+      "signifying_chains": {
+        "Desire-Rejection-Guilt": {
+          "name": "Desire-Rejection-Guilt",
+          "signifiers": [
+            "Eliza",
+            "Rejection",
+            "Gifts",
+            "Overdue Library Books",
+            "Helping",
+            "Guilt"
+          ],
+          "type": "mixed",
+          "retroactive": true,
+          "quilting_points": [],
+          "slippage_points": []
+        },
+        "Dirty Intimacy": {
+          "name": "Dirty Intimacy",
+          "signifiers": [
+            "Julie",
+            "Sex",
+            "Menstrual Blood",
+            "Dirty Room",
+            "Shower"
+          ],
+          "type": "metaphoric",
+          "retroactive": true,
+          "quilting_points": [],
+          "slippage_points": []
+        }
+      },
+      "object_a_positions": [],
+      "quilting_points": [],
+      "retroactive_effects": {
+        "Desire-Rejection-Guilt": {
+          "determining_signifier": "Guilt",
+          "retroactive_targets": [
+            "Eliza",
+            "Rejection",
+            "Gifts",
+            "Overdue Library Books",
+            "Helping"
+          ],
+          "meaning_effect": "Guilt retroactively determines meaning"
+        },
+        "Dirty Intimacy": {
+          "determining_signifier": "Shower",
+          "retroactive_targets": [
+            "Julie",
+            "Sex",
+            "Menstrual Blood",
+            "Dirty Room"
+          ],
+          "meaning_effect": "Shower retroactively determines meaning"
+        }
+      },
+      "metadata": {
+        "node_count": 15,
+        "edge_count": 14,
+        "chain_count": 2,
+        "quilting_point_count": 0
+      }
+    },
+    "visualizations": {
+      "Dirt/Mess/Blood": {
+        "image_path": "base_agents/Joan/signifier_images/DirtMessBlood.png",
+        "signifier_data": {
+          "name": "Dirt/Mess/Blood",
+          "significance": "Represents the abject, the repressed aspects of the body and sexuality. Associated with shame, disgust, and anxiety.",
+          "associations": [
+            "Menstrual stains",
+            "Vibrator with blood",
+            "Crusty blood",
+            "Bloody tampons",
+            "Dirty room",
+            "Sewer of boogies"
+          ],
+          "relation_to_desire": "The subject is both repulsed and drawn to these elements. They represent the forbidden and the repressed, but also the real and the unavoidable aspects of sexuality and the body. This creates a tension between desire and disgust.",
+          "repressed": true
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Dirt/Mess/Blood'.\n\nPsychoanalytic significance: Represents the abject, the repressed aspects of the body and sexuality. Associated with shame, disgust, and anxiety.\nAssociations: Menstrual stains, Vibrator with blood, Crusty blood, Bloody tampons, Dirty room, Sewer of boogies\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Flying": {
+        "image_path": "base_agents/Joan/signifier_images/Flying.png",
+        "signifier_data": {
+          "name": "Flying",
+          "significance": "Represents a desire for mastery, control, and escape. Also linked to exhibitionism and the overcoming of limitations.",
+          "associations": [
+            "Levitation",
+            "Stadium",
+            "Landing",
+            "Hovering",
+            "Control",
+            "Fear",
+            "Drunk driving"
+          ],
+          "relation_to_desire": "The subject desires to transcend limitations and assert control over their environment. Flying represents a fantasy of power and freedom, but also carries anxieties about control and the potential for a crash.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Flying'.\n\nPsychoanalytic significance: Represents a desire for mastery, control, and escape. Also linked to exhibitionism and the overcoming of limitations.\nAssociations: Levitation, Stadium, Landing, Hovering, Control, Fear, Drunk driving\n\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      },
+      "Eliza": {
+        "image_path": "base_agents/Joan/signifier_images/Eliza.png",
+        "signifier_data": {
+          "name": "Eliza",
+          "significance": "Object of desire, idealized and frustrating. Represents a connection that is simultaneously sought and avoided.",
+          "associations": [
+            "Seminars",
+            "Teaching",
+            "Making Out",
+            "Field Trips",
+            "Flying",
+            "Rejection",
+            "Helping",
+            "Connection"
+          ],
+          "relation_to_desire": "Represents the idealized other, the pursuit of whom is constantly thwarted or unsatisfying. The subject desires connection but also fears the intensity of that connection.",
+          "repressed": false
+        },
+        "visualization_concept": "Create a surrealist image representing the unconscious signifier 'Eliza'.\n\nPsychoanalytic significance: Object of desire, idealized and frustrating. Represents a connection that is simultaneously sought and avoided.\nAssociations: Seminars, Teaching, Making Out, Field Trips, Flying, Rejection, Helping, Connection\nThis signifier circles the void of object a, the impossible object-cause of desire.\n\nStyle: Surrealist art in the manner of Salvador Dal\u00ed and Ren\u00e9 Magritte\nMood: Uncanny, dreamlike, symbolic\nElements: Visual distortion, impossible geometries, symbolic condensation\nQuality: High-resolution, detailed, evocative of unconscious depths"
+      }
+    },
+    "metadata": {
+      "agent_name": "Joan",
+      "extraction_date": "2025-07-05T19:06:35.185280",
+      "theoretical_framework": "Lacanian Psychoanalysis",
+      "dream_count": 42,
+      "fallback_mode": false
+    }
+  },
+  "unconscious_extraction_status": "completed",
+  "extraction_errors": []
+}

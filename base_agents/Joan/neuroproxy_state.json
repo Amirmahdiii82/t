@@ -1,0 +1,53 @@
+{
+  "agent_name": "Joan",
+  "neurochemical_state": {
+    "dopamine": 0.5,
+    "serotonin": 0.5,
+    "norepinephrine": 0.5,
+    "cortisol": 0.3,
+    "oxytocin": 0.4042202470360008,
+    "gaba": 0.6
+  },
+  "derived_pad_state": {
+    "pleasure": 0.4108440494072001,
+    "arousal": 0.18,
+    "dominance": 0.3754220247036001
+  },
+  "current_emotion": "content",
+  "emotional_history": [
+    {
+      "timestamp": "2025-07-05T19:12:29.448638",
+      "context": "dialogue",
+      "input_summary": "hi !",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.3,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.41152671156384724,
+        "arousal": 0.18,
+        "dominance": 0.37576335578192366
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T19:12:32.937940",
+      "context": "agent_response",
+      "input_summary": "That's an interesting perspective, don't you think?.",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.3,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.4108440494072001,
+        "arousal": 0.18,
+        "dominance": 0.3754220247036001
+      },
+      "resulting_emotion": "content"
+    }
+  ],
+  "last_update": "2025-07-05T19:12:32.937962",
+  "timestamp": "2025-07-05T19:12:45.172580"
+}

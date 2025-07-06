@@ -1,0 +1,341 @@
+{
+  "agent_name": "Mark",
+  "neurochemical_state": {
+    "dopamine": 0.638860932584121,
+    "serotonin": 0.5752860477865717,
+    "norepinephrine": 0.5803051176390098,
+    "cortisol": 0.3,
+    "oxytocin": 0.4,
+    "gaba": 0.5330790686341584
+  },
+  "derived_pad_state": {
+    "pleasure": 0.48495144312974237,
+    "arousal": 0.25997051298218066,
+    "dominance": 0.45179176874230315
+  },
+  "current_emotion": "content",
+  "emotional_history": [
+    {
+      "timestamp": "2025-06-11T00:54:21.107121",
+      "context": "user_interaction",
+      "input_summary": "who is Sally ? you know her ?",
+      "emotional_analysis": {
+        "dominant_emotion": "curious",
+        "intensity": 0.4,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.4119217990943703,
+        "arousal": 0.18461231782648874,
+        "dominance": 0.37884359818874064
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T00:54:21.928289",
+      "context": "agent_response",
+      "input_summary": "Sally is our family friend. She's really nice and always gives me hugs. We went to her house once an...",
+      "emotional_analysis": {
+        "dominant_emotion": "happy",
+        "intensity": 0.8,
+        "valence": 0.9
+      },
+      "resulting_pad": {
+        "pleasure": 0.5136412778169814,
+        "arousal": 0.20703015338572284,
+        "dominance": 0.4606538455265462
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T00:54:58.353634",
+      "context": "user_interaction",
+      "input_summary": "she has cancer unfotunatly",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.9
+      },
+      "resulting_pad": {
+        "pleasure": 0.4168508137893867,
+        "arousal": 0.136165774620965,
+        "dominance": 0.37148162614445673
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T00:54:59.654251",
+      "context": "agent_response",
+      "input_summary": "Oh no, that's so sad. My mom said that cancer is a very bad sickness. I don't want Sally to be sick....",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.7
+      },
+      "resulting_pad": {
+        "pleasure": 0.37586124009247424,
+        "arousal": 0.13482800188177776,
+        "dominance": 0.3483937055933745
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T00:58:48.406600",
+      "context": "user_interaction",
+      "input_summary": "yes doctor jacob said she will live  for 1 month",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.8
+      },
+      "resulting_pad": {
+        "pleasure": 0.366501394612203,
+        "arousal": 0.12412102230952235,
+        "dominance": 0.33200330159744684
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T00:58:50.733833",
+      "context": "agent_response",
+      "input_summary": "Oh no, one month? That's not very long. I don't want Sally to... to not be here anymore. She's alway...",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.7
+      },
+      "resulting_pad": {
+        "pleasure": 0.3255134277053814,
+        "arousal": 0.13081501755106267,
+        "dominance": 0.3139360337962556
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:01:38.309268",
+      "context": "user_interaction",
+      "input_summary": "yes it is really sad",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.8
+      },
+      "resulting_pad": {
+        "pleasure": 0.366501394612203,
+        "arousal": 0.16126213921756444,
+        "dominance": 0.33953190637610403
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:01:38.922021",
+      "context": "agent_response",
+      "input_summary": "Yes, it's really, really sad. I don't want Sally to be sick. I want her to be happy and give me hugs...",
+      "emotional_analysis": {
+        "dominant_emotion": "sad",
+        "intensity": 0.8,
+        "valence": -0.6
+      },
+      "resulting_pad": {
+        "pleasure": 0.33136927863161225,
+        "arousal": 0.16929414203717813,
+        "dominance": 0.32548019705901926
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:33:57.807485",
+      "context": "user_interaction",
+      "input_summary": "hello",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.0,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.41000000000000003,
+        "arousal": 0.18,
+        "dominance": 0.37500000000000006
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:34:00.264618",
+      "context": "agent_response",
+      "input_summary": "Hello. That's a nice greeting. What's up? Do you want to talk about something or play a game? I just...",
+      "emotional_analysis": {
+        "dominant_emotion": "excited",
+        "intensity": 0.7,
+        "valence": 0.8
+      },
+      "resulting_pad": {
+        "pleasure": 0.47104280210798366,
+        "arousal": 0.24254631940128377,
+        "dominance": 0.43483998827334364
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:36:29.269171",
+      "context": "user_interaction",
+      "input_summary": "do you melissa ?",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.2,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.411103783729169,
+        "arousal": 0.18,
+        "dominance": 0.37555189186458454
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:36:30.990974",
+      "context": "agent_response",
+      "input_summary": "Who's Melissa? I don't think I know anyone named Melissa. Is she a character from a movie or somethi...",
+      "emotional_analysis": {
+        "dominant_emotion": "confusion",
+        "intensity": 0.4,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.4111036506765896,
+        "arousal": 0.18461231782648874,
+        "dominance": 0.3784345239798503
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:38:13.333588",
+      "context": "user_interaction",
+      "input_summary": "what about Melissa",
+      "emotional_analysis": {
+        "dominant_emotion": "curiosity",
+        "intensity": 0.2,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.411103783729169,
+        "arousal": 0.18132454047500274,
+        "dominance": 0.3763797296614612
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:38:15.995104",
+      "context": "agent_response",
+      "input_summary": "I already said I don't know anyone named Melissa. You asked me that before. I'm starting to think ma...",
+      "emotional_analysis": {
+        "dominant_emotion": "frustrated",
+        "intensity": 0.6,
+        "valence": -0.2
+      },
+      "resulting_pad": {
+        "pleasure": 0.40738179584791123,
+        "arousal": 0.1919560523686542,
+        "dominance": 0.3811634306543645
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:38:47.694447",
+      "context": "user_interaction",
+      "input_summary": "what about Mary",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.0,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.41000000000000003,
+        "arousal": 0.18248081149489265,
+        "dominance": 0.3765505071843079
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:38:49.669615",
+      "context": "agent_response",
+      "input_summary": "Wait, you're asking about Mary now? I thought we were talking about Melissa before. I don't know any...",
+      "emotional_analysis": {
+        "dominant_emotion": "confused",
+        "intensity": 0.6,
+        "valence": 0.2
+      },
+      "resulting_pad": {
+        "pleasure": 0.41651249009829994,
+        "arousal": 0.22766880354215832,
+        "dominance": 0.3980811501737643
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:40:15.670575",
+      "context": "user_interaction",
+      "input_summary": "what about John you doesnt know him either ?",
+      "emotional_analysis": {
+        "dominant_emotion": "defensive",
+        "intensity": 0.7,
+        "valence": -0.3
+      },
+      "resulting_pad": {
+        "pleasure": 0.3972201030069492,
+        "arousal": 0.1908253245117607,
+        "dominance": 0.37469929654134004
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T01:40:18.335924",
+      "context": "agent_response",
+      "input_summary": "John? Yeah, I know John. He's my brother. We always play together and have so much fun. We built a r...",
+      "emotional_analysis": {
+        "dominant_emotion": "happy",
+        "intensity": 0.8,
+        "valence": 0.9
+      },
+      "resulting_pad": {
+        "pleasure": 0.4721730960125241,
+        "arousal": 0.2667799279642268,
+        "dominance": 0.44898197448097305
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T02:54:12.287463",
+      "context": "user_interaction",
+      "input_summary": "visualize'",
+      "emotional_analysis": {
+        "dominant_emotion": "neutral",
+        "intensity": 0.0,
+        "valence": 0.0
+      },
+      "resulting_pad": {
+        "pleasure": 0.41000000000000003,
+        "arousal": 0.18,
+        "dominance": 0.37500000000000006
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-06-11T02:54:13.310666",
+      "context": "agent_response",
+      "input_summary": "Visualize... That's like what I do when I'm playing with my Legos. I close my eyes and imagine a who...",
+      "emotional_analysis": {
+        "dominant_emotion": "excited",
+        "intensity": 0.8,
+        "valence": 0.9
+      },
+      "resulting_pad": {
+        "pleasure": 0.48495144312974237,
+        "arousal": 0.25997051298218066,
+        "dominance": 0.45179176874230315
+      },
+      "resulting_emotion": "content"
+    }
+  ],
+  "last_update": "2025-06-11T02:54:13.310688",
+  "timestamp": "2025-06-27T18:17:49.141071"
+}
