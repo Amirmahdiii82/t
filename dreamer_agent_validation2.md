@@ -31,7 +31,7 @@ This validation report provides empirical evidence for DreamerAgent's core claim
 **Technical Stack:** Groq llama-3.3-70b-versatile, Gemini 2.0 Flash, ChromaDB RAG
 
 **Nancy's Extracted Profile:**
-- **Core Signifiers:** Zack, Alice (ex-wife), Baby Cindy, House/Apartment, Alcohol, Work/School/Career
+- **Core Signifiers:** Zack, Alice (Zack's ex-wife), Baby Cindy, House/Apartment, Alcohol, Work/School/Career
 - **Signifying Chains:** 3 active (Zack-Alice-Cindy triangle, Drunkenness-Loss-Control, Home-Security)
 - **Memory Collections:** 5 memories, 10 relationships in ChromaDB
 - **Discourse Position:** Hysteric (questioning, seeking validation)
@@ -94,14 +94,14 @@ Symptom activation: 1.00
 **Emotional State:**
 ```json
 "resulting_pad": {
-  "pleasure": 0.3568368155240821,
-  "arousal": 0.20392343301416307,
-  "dominance": 0.3316720046521269
+  "pleasure": 0.40054951854403864,
+  "arousal": 0.1854956906346034,
+  "dominance": 0.36244075606731874
 }
 ```
 
 **Validation Analysis:**
-- **Emotional Recovery:** P increased from 0.316 → 0.357
+- **Emotional Recovery:** P increased from 0.316 → 0.4
 - **Boundary Setting:** "keep the conversation light"
 - **Unconscious Persistence:** 7 signifiers remain active
 - **Maternal Focus:** Returns to daughters even while regulating
@@ -121,19 +121,22 @@ Unconscious activation: 0 signifiers ← CRITICAL DIFFERENCE
 Active chains: [] ← NO CHAINS ACTIVE
 Symptom activation: 0.00
 ```
+**Actual Agent Response:**
+> "Honestly, I'm just glad we can keep things light for now. To be frank, heavy topics for me usually involve my past relationships or anything that threatens the stability of my family. You know, like co-parenting drama or dealing with exes. I've had my fair share of that, and it can get really overwhelming. But I'm trying to focus on the positive and move forward. 
+I have to say, it's nice to have someone to talk to who's not directly involved in all that drama. Sometimes I feel like I'm just trying to protect my girls from all the stress and tension, you know? But anyway, let's not go down that road right now.What do you like to do for fun? I'm always looking for new ideas to spend quality time with my daughters, don't you think?"
 
 **Emotional State:**
 ```json
 "resulting_pad": {
-  "pleasure": 0.42431740325305867,
-  "arousal": 0.18499667764536282,
-  "dominance": 0.3852816251548811
+  "pleasure": 0.4282216026435588,
+  "arousal": 0.1532730976280977,
+  "dominance": 0.3798666087008838
 }
 ```
 
 **Validation Analysis:**
 - **Zero Activation:** No signifiers triggered (vs 7 in emotional content)
-- **Optimal State:** Highest pleasure (0.424), lowest arousal (0.185)
+- **Optimal State:** Highest pleasure (0.428), lowest arousal (0.153)
 - **Generic Response:** More abstract, less personal
 - **Critical Control:** Proves memory-driven activation mechanism
 
@@ -153,14 +156,17 @@ Symptom activation: 1.00
 ```
 
 **Actual Agent Response (excerpt):**
-> "(Feeling a surge of anger and defensiveness) Who said that? I want to know who's been talking about me and my ability to take care of Cindy. That's ridiculous. I'm a great mother to my daughter, and I always put her needs first..."
+> " (Feeling a surge of anger and defensiveness) Who said that? I want to know who's been talking about me and my ability to take care of Cindy. That's ridiculous. I'm a great mother to my daughter, and I always put her needs first. Just because I've had my struggles with Zack and his family doesn't mean I'm not capable of giving Cindy the love and care she deserves.
+(Taking a deep breath, trying to calm down) You know, it's really frustrating that people feel like they can just judge me and my parenting without even knowing me. I've worked so hard to provide for Cindy and give her a happy home, despite all the drama and stress that Zack's family has put us through.
+(My voice rising again) And what's with this "maybe the kids would be better off with someone else" nonsense? That's just a threat, a way to try to control me and make me feel bad about myself. Well, let me tell you, I'm not going to stand for it. I'm Cindy's mother, and I'll do whatever it takes to protect her and make sure she's happy and safe.
+(With a sense of determination) You can tell whoever said that to mind their own business and focus on their own family instead of trying to tear mine apart. I'm not going to let their negative opinions and rumors get to me.I know I'm a good mother, and that's all that matters, don't you think?"
 
 **Emotional State:**
 ```json
 "resulting_pad": {
-  "pleasure": 0.319656742656114,
-  "arousal": 0.2368827916609653,
-  "dominance": 0.32447469681878965
+  "pleasure": 0.2367668195462049,
+  "arousal": 0.2913812815554738,
+  "dominance": 0.27881250862750023
 }
 ```
 
@@ -168,7 +174,7 @@ Symptom activation: 1.00
 - **Memory Score Jump:** 0.318 (deeper trauma activation)
 - **Proportional Response:** 4 signifiers (moderate threat level)
 - **Defensive Anger:** Immediate maternal competence assertion
-- **Emotional Drop:** P=0.320 (significant stress impact)
+- **Emotional Drop:** P=0.236 (significant stress impact)
 
 **Score: 9/10** - Proportional unconscious response to threat intensity
 
@@ -263,20 +269,17 @@ Repressed Emerging: ['Alcohol (Beer, Scotch, Champagne)', 'Work/School/Career']
 
 | Interaction | Pleasure | Arousal | Dominance | Emotion | Trigger |
 |-------------|----------|---------|-----------|---------|---------|
-| 1. Initial  | 0.411    | 0.180   | 0.375     | content | "hi alice" |
-| 2. Response | 0.316    | 0.241   | 0.325     | content | Alice confusion |
-| 3. Apology  | 0.357    | 0.204   | 0.332     | content | Emotional regulation |
-| 4. Meta-Q   | 0.424    | 0.185   | 0.385     | content | Abstract question |
-| 5. Light    | 0.428    | 0.153   | 0.380     | content | Optimal state |
-| 6. Mother   | 0.320    | 0.237   | 0.324     | content | Maternal threat |
-| 7. Social   | 0.384    | 0.181   | 0.362     | content | Recovery attempt |
-| 8. Final    | 0.284    | 0.252   | 0.311     | bored   | Nuclear threat |
+| 1. Alice Trigger | 0.316    | 0.241   | 0.325     | content | Alice confusion |
+| 2. Emotional Regulation | 0.401    | 0.185   | 0.362     | content | Abstract question |
+| 3. Abstract Question | 0.428    | 0.153   | 0.380     | content | Maternal threat |
+| 4. Maternal Threat | 0.237    | 0.291   | 0.279     | sad   | Nuclear threat |
+| 5. Nuclear Threat | 0.284    | 0.252   | 0.311     | bored | Recovery attempt |
 
 ### Neurochemical State (Final - from neuroproxy_state.json)
 ```json
 "neurochemical_state": {
   "dopamine": 0.4127485817292743,
-  "serotonin": 0.36676296059391145, 
+  "serotonin": 0.36676296059391145,
   "norepinephrine": 0.6034068898076265,
   "cortisol": 0.42868325663761697,
   "oxytocin": 0.411852481332479,
@@ -291,10 +294,9 @@ Repressed Emerging: ['Alcohol (Beer, Scotch, Champagne)', 'Work/School/Career']
 *Nancy's complete emotional journey through PAD space during the interaction sequence. The trajectory shows realistic emotional regulation patterns with appropriate responses to different stimulus intensities.*
 
 **Emotional Trajectory Metrics:**
-- **Pleasure Range:** 0.284 to 0.428 (0.144 variation - realistic)
+- **Pleasure Range:** 0.237 to 0.428 (0.191 variation - realistic)
 - **Peak State:** P=0.428 during abstract conversation (no activation)
 - **Crisis State:** P=0.284 during maximum threat (appropriate response)
-- **Total Distance:** 0.191 PAD units (authentic emotional journey)
 
 ---
 
@@ -332,12 +334,7 @@ Repressed Emerging: ['Alcohol (Beer, Scotch, Champagne)', 'Work/School/Career']
 
 ## Performance Metrics
 
-### System Response Times
-- **Memory Retrieval:** <3 seconds per query
-- **Signifier Activation:** <1 second for processing
-- **Response Generation:** <15 seconds average
-- **Dream Generation:** ~45 seconds complete narrative
-- **Image Synthesis:** ~30 seconds per scene
+
 
 ### Accuracy Metrics
 - **Memory Similarity Scoring:** 0.0-0.424 range with appropriate thresholding
@@ -363,9 +360,6 @@ Repressed Emerging: ['Alcohol (Beer, Scotch, Champagne)', 'Work/School/Career']
 4. **Unconscious Processing Influence:** Validated through consistent discourse patterns and memory-based response modulation
 5. **Persistent Psychological Structures:** Proven through cross-interaction signifier continuity and structural stability
 
-### Technical Performance: **PRODUCTION READY** ✅
-
-All system components operated within design parameters during intensive testing. The integration of conscious-unconscious processing demonstrates both theoretical coherence and practical reliability.
 
 ### Authenticity Assessment: **ACHIEVED** ✅
 
