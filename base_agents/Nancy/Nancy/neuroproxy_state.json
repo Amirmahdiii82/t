@@ -1,0 +1,117 @@
+{
+  "agent_name": "Nancy",
+  "neurochemical_state": {
+    "dopamine": 0.5234937752621255,
+    "serotonin": 0.49345012082743583,
+    "norepinephrine": 0.5080854261834389,
+    "cortisol": 0.35362200198561505,
+    "oxytocin": 0.4141208485016889,
+    "gaba": 0.5171039748610494
+  },
+  "derived_pad_state": {
+    "pleasure": 0.39730573253743817,
+    "arousal": 0.22352613346460884,
+    "dominance": 0.3680849975444689
+  },
+  "current_emotion": "content",
+  "emotional_history": [
+    {
+      "timestamp": "2025-07-05T20:57:31.982194",
+      "context": "dialogue",
+      "input_summary": "I've been having trust issues with my partner lately. I keep worrying they might be interested in so...",
+      "emotional_analysis": {
+        "dominant_emotion": "anxious",
+        "intensity": 0.8,
+        "valence": -0.7
+      },
+      "resulting_pad": {
+        "pleasure": 0.32551232415062514,
+        "arousal": 0.2342059544063316,
+        "dominance": 0.3259804177745211
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T20:57:33.803464",
+      "context": "agent_response",
+      "input_summary": "I'm so glad you came to talk to me about this. I can totally understand why you'd be feeling that wa...",
+      "emotional_analysis": {
+        "dominant_emotion": "empathy",
+        "intensity": 0.8,
+        "valence": 0.5
+      },
+      "resulting_pad": {
+        "pleasure": 0.3886049782398808,
+        "arousal": 0.18646076634553732,
+        "dominance": 0.3600513755209561
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T20:59:01.303281",
+      "context": "dialogue",
+      "input_summary": "Sometimes I feel like I don't have a stable foundation in my life. Like I'm always worried about los...",
+      "emotional_analysis": {
+        "dominant_emotion": "anxious",
+        "intensity": 0.7,
+        "valence": -0.6
+      },
+      "resulting_pad": {
+        "pleasure": 0.3393346872148957,
+        "arousal": 0.2263083326336429,
+        "dominance": 0.33230010887027744
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T20:59:03.616373",
+      "context": "agent_response",
+      "input_summary": "I totally get what you mean. It's like, no matter how hard we work to build this sense of security, ...",
+      "emotional_analysis": {
+        "dominant_emotion": "empathetic",
+        "intensity": 0.7,
+        "valence": 0.5
+      },
+      "resulting_pad": {
+        "pleasure": 0.39611444982964483,
+        "arousal": 0.2167128882897473,
+        "dominance": 0.36972736070334544
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T20:59:35.828803",
+      "context": "dialogue",
+      "input_summary": "I have complicated feelings about authority figures. Sometimes I feel like I need to protect the peo...",
+      "emotional_analysis": {
+        "dominant_emotion": "anxious",
+        "intensity": 0.7,
+        "valence": -0.5
+      },
+      "resulting_pad": {
+        "pleasure": 0.3407537925476156,
+        "arousal": 0.23296189832313793,
+        "dominance": 0.3307708705388747
+      },
+      "resulting_emotion": "content"
+    },
+    {
+      "timestamp": "2025-07-05T20:59:37.371538",
+      "context": "agent_response",
+      "input_summary": "That can be really tough to navigate. I can understand why you'd feel the need to protect the people...",
+      "emotional_analysis": {
+        "dominant_emotion": "empathy",
+        "intensity": 0.7,
+        "valence": 0.5
+      },
+      "resulting_pad": {
+        "pleasure": 0.39730573253743817,
+        "arousal": 0.22352613346460884,
+        "dominance": 0.3680849975444689
+      },
+      "resulting_emotion": "content"
+    }
+  ],
+  "last_update": "2025-07-05T20:59:37.371547",
+  "timestamp": "2025-07-05T20:59:37.371681"
+}

@@ -1,0 +1,106 @@
+{
+  "id": "dream_1751737905",
+  "agent_name": "Nancy",
+  "timestamp": "2025-07-05T21:21:45.882926",
+  "title": "The Leaky House on Cindy Lane",
+  "narrative": "I'm in our house, but it's not quite our house. It's\u2026older, more run-down. The walls are peeling, and there's a constant drip, drip, drip coming from the ceiling. I try to find the source, but it's everywhere. Zack is there, but he's\u2026distant. He's sitting at the kitchen table with a half-empty glass of scotch, staring blankly. I ask him to help me find the leak, but he just shrugs and says, 'It's always leaked.' Cindy is crawling around in the puddles, giggling. Alice is there too, she is changing Cindy's diaper, which keeps leaking all over the floor. I try to grab Cindy, but my arms feel heavy, and I can't reach her. Alice laughs, a high-pitched, mocking laugh. Then, I'm at school, taking a test I haven't studied for. The questions are all about plumbing and leaky pipes. I don't understand any of it. The professor walks by and says, 'You'll never fix it, Nancy. It's always leaked.' The school then turns into our house and the ceiling gets even more leaky. I run to Zack and ask for help, but he won't even look at me.",
+  "scenes": [
+    {
+      "setting": "Dilapidated house with leaks",
+      "narrative": "Nancy is in a run-down version of her house, with leaks everywhere. Zack is distant and drinking scotch. Cindy is crawling in the puddles.",
+      "signifiers_expressed": [
+        "House/Apartment",
+        "Zack",
+        "Alcohol",
+        "Baby Cindy"
+      ],
+      "visual_description": "A decaying house interior, with water dripping incessantly. Zack sits at a table, bathed in dim light, a glass of scotch in his hand. A baby crawls through puddles of water on the floor. A spectral figure of a women is changing the baby's diaper."
+    },
+    {
+      "setting": "School exam room",
+      "narrative": "Nancy is taking an exam about plumbing she is unprepared for. The professor is dismissive and predicts her failure.",
+      "signifiers_expressed": [
+        "Work/School/Career",
+        "House/Apartment"
+      ],
+      "visual_description": "A sterile, cold exam room. Nancy sits hunched over a test, looking panicked. A stern professor looms over her, radiating disapproval. The exam questions float like spectral text."
+    },
+    {
+      "setting": "Dilapidated house with leaks",
+      "narrative": "Nancy is back in her house but the leaks got worse, and Zack still wont help. She reaches out to him, and he continues to ignore her.",
+      "signifiers_expressed": [
+        "House/Apartment",
+        "Zack",
+        "Alcohol",
+        "Baby Cindy"
+      ],
+      "visual_description": "A decaying house interior, with water dripping incessantly. Zack sits at a table, bathed in dim light, a glass of scotch in his hand. A spectral figure of a women is changing the baby's diaper. Cindy is crawling through puddles of water on the floor."
+    }
+  ],
+  "activated_signifiers": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Baby Cindy",
+    "House/Apartment",
+    "Zack",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "active_chains": [
+    "Zack-Alice-Cindy triangle",
+    "Drunkenness-Loss of Control-Family Disruption",
+    "Home/Apartment - Security"
+  ],
+  "emerging_repressed": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "object_a_proximity": 3.4000000000000004,
+  "symptom_activation": true,
+  "manifest_content": [
+    "Leaky house",
+    "Distant Zack",
+    "Baby crawling in puddles",
+    "Scotch",
+    "Exam about plumbing",
+    "Dismissive professor"
+  ],
+  "latent_content": [
+    "Anxiety about infidelity and instability",
+    "Fear of Zack's alcohol consumption",
+    "Concerns about being a good mother",
+    "Feeling unprepared for life's challenges",
+    "Desire for a secure and stable home",
+    "Emerging awareness that she is choosing the unhappiness"
+  ],
+  "images": [
+    {
+      "scene_number": 2,
+      "image_path": "base_agents/Nancy/dreams/images/dream_1751737899_scene_2.png",
+      "signifiers_depicted": [
+        "Work/School/Career",
+        "House/Apartment"
+      ],
+      "description": "A sterile, cold exam room. Nancy sits hunched over a test, looking panicked. A stern professor looms over her, radiating disapproval. The exam questions float like spectral text.",
+      "generation_method": "unconscious_based"
+    }
+  ],
+  "emotional_state": {
+    "pleasure": 0.28372623342456404,
+    "arousal": 0.25170911044859173,
+    "dominance": 0.31060916023143403,
+    "emotion_category": "bored",
+    "response_style": "balanced",
+    "neurochemical_state": {
+      "dopamine": 0.4127485817292743,
+      "serotonin": 0.36676296059391145,
+      "norepinephrine": 0.6034068898076265,
+      "cortisol": 0.42868325663761697,
+      "oxytocin": 0.411852481332479,
+      "gaba": 0.5264667104927903
+    },
+    "emotional_description": "relatively neutral",
+    "timestamp": "2025-07-05T21:18:01.528041"
+  },
+  "generation_method": "unconscious_structure_based"
+}

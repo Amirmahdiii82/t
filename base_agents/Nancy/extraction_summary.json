@@ -1,17 +1,18 @@
 {
   "agent_name": "Nancy",
-  "extraction_date": "20250610_195019",
+  "extraction_date": "20250705_203953",
   "conscious_status": "completed",
   "unconscious_status": "completed",
   "overall_status": "completed",
+  "extraction_errors": [],
   "conscious_stats": {
-    "memories_extracted": 1,
+    "memories_extracted": 5,
     "relationships_extracted": 10,
     "persona_extracted": true
   },
   "unconscious_stats": {
     "signifiers_extracted": 6,
     "signifying_chains": 3,
-    "visualizations_created": 5
+    "visualizations_created": 3
   }
 }

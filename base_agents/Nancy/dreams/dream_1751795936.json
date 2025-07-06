@@ -1,0 +1,93 @@
+{
+  "id": "dream_1751795936",
+  "agent_name": "Nancy",
+  "timestamp": "2025-07-06T13:28:56.151628",
+  "title": "Dream of Alcohol (Beer, Scotch, Champagne)",
+  "narrative": "In the dream, Alcohol (Beer, Scotch, Champagne) appeared. Then Zack emerged, connected to Baby Cindy through This chain revolves around Nancy's anxieties about... Suddenly, Alcohol (Beer, Scotch, Champagne) appeared unexpectedly, bringing Associated with negative experiences and feelings of loss of control (father's drunkenness, Zack's drinking). It represents a threat to stability and the family unit.. Suddenly, Alcohol (Beer, Scotch, Champagne) appeared unexpectedly, bringing Associated with negative experiences and feelings of loss of control (father's drunkenness, Zack's drinking). It represents a threat to stability and the family unit.. Suddenly, Work/School/Career appeared unexpectedly, bringing Signifies Nancy's attempts at self-improvement and independence, but is often associated with failure and anxiety (failing grades, work-related conflicts, professional help, moving, etc.).. There was a sense of something missing, an empty space that seemed important but couldn't be reached.",
+  "scenes": [
+    {
+      "setting": "Dream space 1",
+      "narrative": "A scene involving Alcohol (Beer, Scotch, Champagne) and its associations",
+      "signifiers_expressed": [
+        "Alcohol (Beer, Scotch, Champagne)"
+      ],
+      "visual_description": "Surrealist scene featuring Alcohol (Beer, Scotch, Champagne) with symbolic elements"
+    },
+    {
+      "setting": "Dream space 2",
+      "narrative": "A scene involving Baby Cindy and its associations",
+      "signifiers_expressed": [
+        "Baby Cindy",
+        "Zack",
+        "Alice",
+        "Alcohol"
+      ],
+      "visual_description": "Surrealist scene featuring Baby Cindy with symbolic elements"
+    },
+    {
+      "setting": "Dream space 3",
+      "narrative": "A scene involving House/Apartment and its associations",
+      "signifiers_expressed": [
+        "House/Apartment",
+        "Belonging",
+        "Security"
+      ],
+      "visual_description": "Surrealist scene featuring House/Apartment with symbolic elements"
+    }
+  ],
+  "activated_signifiers": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Baby Cindy",
+    "House/Apartment",
+    "Zack",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "active_chains": [
+    "Zack-Alice-Cindy triangle",
+    "Drunkenness-Loss of Control-Family Disruption",
+    "Home/Apartment - Security"
+  ],
+  "emerging_repressed": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "object_a_proximity": 3.4000000000000004,
+  "symptom_activation": true,
+  "manifest_content": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Baby Cindy",
+    "House/Apartment",
+    "Zack",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "latent_content": [
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Alcohol (Beer, Scotch, Champagne)",
+    "Work/School/Career"
+  ],
+  "images": [],
+  "emotional_state": {
+    "pleasure": 0.28372623342456404,
+    "arousal": 0.25170911044859173,
+    "dominance": 0.31060916023143403,
+    "emotion_category": "bored",
+    "response_style": "balanced",
+    "neurochemical_state": {
+      "dopamine": 0.4127485817292743,
+      "serotonin": 0.36676296059391145,
+      "norepinephrine": 0.6034068898076265,
+      "cortisol": 0.42868325663761697,
+      "oxytocin": 0.411852481332479,
+      "gaba": 0.5264667104927903
+    },
+    "emotional_description": "relatively neutral",
+    "timestamp": "2025-07-06T13:28:43.714997"
+  },
+  "generation_method": "unconscious_structure_based"
+}
