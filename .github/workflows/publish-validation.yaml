@@ -1,0 +1,44 @@
+name: Deploy validation-test to GitHub Pages
+
+on:
+  push:
+    branches: [master]  
+    paths:
+      - 'validation-test/**'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        run: sudo apt-get install pandoc
+
+      - name: Convert Markdown to HTML
+        run: |
+          mkdir site
+          pandoc validation-test/dreamer_agent_validation.md -o site/index.html
+          cp -r validation-test/images site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy
+        uses: actions/deploy-pages@v4
